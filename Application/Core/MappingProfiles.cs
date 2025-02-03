@@ -8,6 +8,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
+            // Use it instead of product.Title = request.ProductDto.Title ?? product.Title;
             CreateMap<CreateProductDto, Product>()
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src => new Money(src.Price.Amount, Enum.Parse<Currency>(src.Price.Currency))))
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => new Rating(src.Rating.Rate, src.Rating.Count)))
