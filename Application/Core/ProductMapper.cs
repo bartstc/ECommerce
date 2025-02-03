@@ -1,7 +1,7 @@
-using API.Dtos;
+using Application.Dtos;
 using Domain;
 
-namespace API.Mappers
+namespace Application.Mappers
 {
     public static class ProductMapper
     {
@@ -33,6 +33,29 @@ namespace API.Mappers
                 },
                 AddedAt = product.AddedAt,
                 EditedAt = product.EditedAt
+            };
+        }
+
+        public static Product ToDomain(this CreateProductDto productDto)
+        {
+            return new Product
+            {
+                Id = Guid.NewGuid(),
+                Title = productDto.Title,
+                Description = productDto.Description,
+                Price = new Money(productDto.Price.Amount, Enum.Parse<Currency>(productDto.Price.Currency)),
+                Rating = new Rating(productDto.Rating.Rate, productDto.Rating.Count),
+                Image = productDto.Image,
+                Category = productDto.Category switch
+                {
+                    "men's clothing" => Category.MensClothing,
+                    "women's clothing" => Category.WomensClothing,
+                    "jewelery" => Category.Jewelery,
+                    "electronics" => Category.Electronics,
+                    _ => throw new ArgumentException("Invalid category value")
+                },
+                AddedAt = DateTime.UtcNow,
+                EditedAt = DateTime.UtcNow
             };
         }
     }

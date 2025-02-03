@@ -1,32 +1,38 @@
-using API.Dtos;
-using API.Mappers;
+using Application.Dtos;
+using Application.Products;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace API.Controllers
 {
     public class ProductsController : BaseApiController
     {
-        private readonly DataContext _context;
-        public ProductsController(DataContext context)
-        {
-            _context = context;
-        }
-
         [HttpGet]
         public async Task<ActionResult<List<ProductDto>>> GetProducts()
         {
-            var products = await _context.Products.ToListAsync();
-            return products.Select(p => p.ToDto()).ToList();
+            return await Mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProduct(Guid id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null) return NotFound();
-            return product.ToDto();
+            return await Mediator.Send(new Details.Query(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(CreateProductDto productDto)
+        {
+            await Mediator.Send(new Create.Command(productDto));
+
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditProduct(Guid id, CreateProductDto productDto)
+        {
+            await Mediator.Send(new Edit.Command(id, productDto));
+
+            return Ok();
         }
     }
 }
