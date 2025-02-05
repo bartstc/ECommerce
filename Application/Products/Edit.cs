@@ -1,5 +1,7 @@
 using Application.Dtos;
+using Application.Validators;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -8,6 +10,14 @@ namespace Application.Products
     public class Edit
     {
         public record Command(Guid Id, CreateProductDto ProductDto) : IRequest;
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.ProductDto).SetValidator(new ProductValidator());
+            }
+        }
 
         public class Handler : IRequestHandler<Command>
         {
