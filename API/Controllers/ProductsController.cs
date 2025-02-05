@@ -1,6 +1,5 @@
 using Application.Dtos;
 using Application.Products;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
