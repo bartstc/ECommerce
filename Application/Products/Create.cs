@@ -1,3 +1,4 @@
+using Application.Core;
 using Application.Dtos;
 using Application.Mappers;
 using Application.Validators;
@@ -9,7 +10,7 @@ namespace Application.Products
 {
     public class Create
     {
-        public record Command(CreateProductDto ProductDto) : IRequest;
+        public record Command(CreateProductDto ProductDto) : IRequest<Result<Unit>>;
 
         public class CommandValidator : AbstractValidator<Command>
         {
@@ -19,7 +20,7 @@ namespace Application.Products
             }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
 
@@ -28,12 +29,16 @@ namespace Application.Products
                 _context = context;
             }
 
-            public async Task Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var product = request.ProductDto.ToDomain();
 
                 _context.Products.Add(product);
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
+
+                if (!result) return Result<Unit>.Failure("Failed to create product");
+
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }
