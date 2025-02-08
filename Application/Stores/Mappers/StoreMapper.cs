@@ -1,7 +1,7 @@
 using Application.Stores.Dtos;
 using Domain;
 
-namespace Application.Core
+namespace Application.Stores.Mappers
 {
     public static class StoreMapper
     {

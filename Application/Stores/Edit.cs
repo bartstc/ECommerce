@@ -1,6 +1,7 @@
 using Application.Core;
 using Application.Stores.Dtos;
-using Application.Validators;
+using Application.Stores.Mappers;
+using Application.Stores.Validators;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

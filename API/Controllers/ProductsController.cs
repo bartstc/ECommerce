@@ -1,5 +1,5 @@
-using Application.Dtos;
 using Application.Products;
+using Application.Products.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

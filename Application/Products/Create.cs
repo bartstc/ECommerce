@@ -1,7 +1,7 @@
 using Application.Core;
-using Application.Dtos;
-using Application.Mappers;
-using Application.Validators;
+using Application.Products.Mappers;
+using Application.Products.Dtos;
+using Application.Products.Validators;
 using FluentValidation;
 using MediatR;
 using Persistence;

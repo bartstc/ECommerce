@@ -1,6 +1,6 @@
 using Application.Core;
-using Application.Dtos;
-using Application.Mappers;
+using Application.Products.Mappers;
+using Application.Products.Dtos;
 using MediatR;
 using Persistence;
 

@@ -1,5 +1,6 @@
 using Application.Core;
 using Application.Stores.Dtos;
+using Application.Stores.Mappers;
 using MediatR;
 using Persistence;
 

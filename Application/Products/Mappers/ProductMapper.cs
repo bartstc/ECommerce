@@ -1,7 +1,7 @@
-using Application.Dtos;
+using Application.Products.Dtos;
 using Domain;
 
-namespace Application.Mappers
+namespace Application.Products.Mappers
 {
     public static class ProductMapper
     {
