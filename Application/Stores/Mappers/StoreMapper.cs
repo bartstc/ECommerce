@@ -7,14 +7,13 @@ namespace Application.Stores.Mappers
     {
         public static StoreDto ToDto(this Store store)
         {
-            return new StoreDto
-            {
-                Id = store.Id,
-                Name = store.Name,
-                Description = store.Description,
-                CreatedAt = store.CreatedAt,
-                EditedAt = store.EditedAt
-            };
+            return new StoreDto(
+                Id: store.Id,
+                Name: store.Name,
+                Description: store.Description,
+                CreatedAt: store.CreatedAt,
+                EditedAt: store.EditedAt
+            );
         }
 
         public static Store ToDomain(this CreateStoreDto storeDto)

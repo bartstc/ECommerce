@@ -1,8 +1,7 @@
 namespace Application.Stores.Dtos
 {
-    public class CreateStoreDto
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
+    public record CreateStoreDto(
+        string Name,
+        string Description
+    );
 }
