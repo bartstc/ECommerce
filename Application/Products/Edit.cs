@@ -1,9 +1,10 @@
 using Application.Core;
 using Application.Dtos;
+using Application.Mappers;
 using Application.Validators;
-using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Products
@@ -23,11 +24,9 @@ namespace Application.Products
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
-            private readonly IMapper _mapper;
 
-            public Handler(DataContext context, IMapper mapper)
+            public Handler(DataContext context)
             {
-                _mapper = mapper;
                 _context = context;
             }
 
@@ -37,8 +36,10 @@ namespace Application.Products
 
                 if (product == null) return null;
 
-                _mapper.Map(request.ProductDto, product);
-                product.EditedAt = DateTime.UtcNow;
+                var updatedProduct = request.ProductDto.ToDomain(product);
+
+                _context.Entry(product).CurrentValues.SetValues(updatedProduct);
+                _context.Entry(product).State = EntityState.Modified;
 
                 var result = await _context.SaveChangesAsync() > 0;
 

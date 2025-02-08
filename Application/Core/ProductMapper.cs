@@ -54,7 +54,29 @@ namespace Application.Mappers
                     "electronics" => Category.Electronics,
                     _ => throw new ArgumentException("Invalid category value")
                 },
-                AddedAt = DateTime.UtcNow,
+                AddedAt = DateTime.UtcNow
+            };
+        }
+
+        public static Product ToDomain(this CreateProductDto productDto, Product product)
+        {
+            return new Product
+            {
+                Id = product.Id,
+                Title = productDto.Title,
+                Description = productDto.Description,
+                Price = new Money(productDto.Price.Amount, Enum.Parse<Currency>(productDto.Price.Currency)),
+                Rating = new Rating(productDto.Rating.Rate, productDto.Rating.Count),
+                Image = productDto.Image,
+                Category = productDto.Category switch
+                {
+                    "men's clothing" => Category.MensClothing,
+                    "women's clothing" => Category.WomensClothing,
+                    "jewelery" => Category.Jewelery,
+                    "electronics" => Category.Electronics,
+                    _ => throw new ArgumentException("Invalid category value")
+                },
+                AddedAt = product.AddedAt,
                 EditedAt = DateTime.UtcNow
             };
         }
