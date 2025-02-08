@@ -14,6 +14,7 @@ namespace API.Extensions
             services.AddIdentityCore<AppUser>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.User.RequireUniqueEmail = true;
                 // opt.Password.RequireDigit = false;
                 // opt.Password.RequireLowercase = false;
                 // opt.Password.RequireUppercase = false;
