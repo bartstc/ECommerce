@@ -23,6 +23,7 @@ namespace Application.Stores.Mappers
                 Id = Guid.NewGuid(),
                 Name = storeDto.Name,
                 Description = storeDto.Description,
+                Products = new List<Product>(),
                 CreatedAt = DateTime.UtcNow
             };
         }
@@ -34,6 +35,7 @@ namespace Application.Stores.Mappers
                 Id = store.Id,
                 Name = storeDto.Name,
                 Description = storeDto.Description,
+                Products = store.Products,
                 CreatedAt = store.CreatedAt,
                 EditedAt = store.EditedAt
             };

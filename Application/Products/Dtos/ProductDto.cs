@@ -8,6 +8,7 @@ namespace Application.Products.Dtos
         RatingDto Rating,
         string Image,
         string Category,
+        Guid StoreId,
         DateTime AddedAt,
         DateTime? EditedAt
     );

@@ -5,6 +5,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Application.Stores.Repositories;
+using Application.Interfaces;
+using Infrastructure.Security;
 
 namespace API.Extensions
 {
@@ -30,6 +32,8 @@ namespace API.Extensions
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(List).Assembly));
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<Create>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IStoresRepository, StoresRepository>();

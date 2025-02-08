@@ -37,6 +37,20 @@ namespace Persistence
                 entity.Property(e => e.Category).HasConversion<string>();
                 entity.Property(e => e.AddedAt);
                 entity.Property(e => e.EditedAt);
+
+                entity.HasOne(e => e.Store)
+                    .WithMany(s => s.Products)
+                    .HasForeignKey(e => e.StoreId);
+            });
+
+            // no need to configure the reverse relationship with Products, EF will understand it
+            modelBuilder.Entity<Store>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name);
+                entity.Property(e => e.Description);
+                entity.Property(e => e.CreatedAt);
+                entity.Property(e => e.EditedAt);
             });
         }
     }
