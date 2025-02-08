@@ -1,8 +1,8 @@
 using Application.Core;
-using Application.Products.Mappers;
 using Application.Products.Dtos;
+using Application.Products.Mappers;
+using Domain;
 using MediatR;
-using Persistence;
 
 namespace Application.Products
 {
@@ -12,16 +12,16 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Query, Result<ProductDto>>
         {
-            private readonly DataContext _context;
+            private readonly IProductsRepository _productsRepository;
 
-            public Handler(DataContext context)
+            public Handler(IProductsRepository productsRepository)
             {
-                _context = context;
+                _productsRepository = productsRepository;
             }
 
             public async Task<Result<ProductDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var product = await _context.Products.FindAsync(request.Id);
+                var product = await _productsRepository.GetProduct(request.Id);
 
                 if (product == null) return null;
 

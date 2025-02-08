@@ -53,7 +53,7 @@ namespace Application.Products.Mappers
                 Image = productDto.Image,
                 Category = MapStringToCategory(productDto.Category),
                 AddedAt = product.AddedAt,
-                EditedAt = DateTime.UtcNow
+                EditedAt = product.EditedAt
             };
         }
 

@@ -1,4 +1,4 @@
-using Application.Core;
+using Domain;
 using Application.Products;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -29,6 +29,8 @@ namespace API.Extensions
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(List).Assembly));
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<Create>();
+
+            services.AddScoped<IProductsRepository, ProductsRepository>();
 
             return services;
         }

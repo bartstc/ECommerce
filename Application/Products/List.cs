@@ -1,9 +1,8 @@
 using Application.Core;
 using Application.Products.Dtos;
 using Application.Products.Mappers;
+using Domain;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
 
 namespace Application.Products
 {
@@ -13,15 +12,15 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Query, Result<List<ProductDto>>>
         {
-            private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IProductsRepository _productsRepository;
+            public Handler(IProductsRepository productsRepository)
             {
-                _context = context;
+                _productsRepository = productsRepository;
             }
 
             public async Task<Result<List<ProductDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = await _context.Products.ToListAsync();
+                var products = await _productsRepository.GetProducts();
                 var productDtos = products.Select(p => p.ToDto()).ToList();
 
                 return Result<List<ProductDto>>.Success(productDtos);

@@ -4,7 +4,7 @@ using Application.Products.Dtos;
 using Application.Products.Validators;
 using FluentValidation;
 using MediatR;
-using Persistence;
+using Domain;
 
 namespace Application.Products
 {
@@ -22,19 +22,18 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext _context;
+            private readonly IProductsRepository _productsRepository;
 
-            public Handler(DataContext context)
+            public Handler(IProductsRepository productsRepository)
             {
-                _context = context;
+                _productsRepository = productsRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var product = request.ProductDto.ToDomain();
 
-                _context.Products.Add(product);
-                var result = await _context.SaveChangesAsync() > 0;
+                var result = await _productsRepository.CreateProduct(product);
 
                 if (!result) return Result<Unit>.Failure("Failed to create product");
 

@@ -35,7 +35,7 @@ namespace Application.Stores.Mappers
                 Name = storeDto.Name,
                 Description = storeDto.Description,
                 CreatedAt = store.CreatedAt,
-                EditedAt = DateTime.UtcNow
+                EditedAt = store.EditedAt
             };
         }
     }

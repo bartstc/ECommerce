@@ -1,6 +1,6 @@
 using Application.Core;
+using Domain;
 using MediatR;
-using Persistence;
 
 namespace Application.Products
 {
@@ -10,22 +10,20 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext _context;
+            private readonly IProductsRepository _productsRepository;
 
-            public Handler(DataContext context)
+            public Handler(IProductsRepository productsRepository)
             {
-                _context = context;
+                _productsRepository = productsRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var product = await _context.Products.FindAsync(request.Id);
+                var product = await _productsRepository.GetProduct(request.Id);
 
                 if (product == null) return null;
 
-                _context.Remove(product);
-
-                var result = await _context.SaveChangesAsync() > 0;
+                var result = await _productsRepository.DeleteProduct(product);
 
                 if (!result) return Result<Unit>.Failure("Failed to delete the product");
 
