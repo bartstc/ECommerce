@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using Application.Stores.Repositories;
 
 namespace API.Extensions
 {
@@ -31,6 +32,7 @@ namespace API.Extensions
             services.AddValidatorsFromAssemblyContaining<Create>();
 
             services.AddScoped<IProductsRepository, ProductsRepository>();
+            services.AddScoped<IStoresRepository, StoresRepository>();
 
             return services;
         }

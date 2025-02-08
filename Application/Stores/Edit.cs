@@ -4,8 +4,7 @@ using Application.Stores.Mappers;
 using Application.Stores.Validators;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
+using Domain;
 
 namespace Application.Stores
 {
@@ -23,25 +22,22 @@ namespace Application.Stores
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext _context;
+            private readonly IStoresRepository _storesRepository;
 
-            public Handler(DataContext context)
+            public Handler(IStoresRepository storesRepository)
             {
-                _context = context;
+                _storesRepository = storesRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var store = await _context.Stores.FindAsync(request.Id);
+                var store = await _storesRepository.GetStore(request.Id);
 
                 if (store == null) return null;
 
                 var updatedStore = request.StoreDto.ToDomain(store);
 
-                _context.Entry(store).CurrentValues.SetValues(updatedStore);
-                _context.Entry(store).State = EntityState.Modified;
-
-                var result = await _context.SaveChangesAsync() > 0;
+                var result = await _storesRepository.UpdateStore(updatedStore);
 
                 if (!result) return Result<Unit>.Failure("Failed to edit the store");
 

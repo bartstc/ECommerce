@@ -1,6 +1,6 @@
 using Application.Core;
 using MediatR;
-using Persistence;
+using Domain;
 
 namespace Application.Stores
 {
@@ -10,22 +10,20 @@ namespace Application.Stores
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext _context;
+            private readonly IStoresRepository _storesRepository;
 
-            public Handler(DataContext context)
+            public Handler(IStoresRepository storesRepository)
             {
-                _context = context;
+                _storesRepository = storesRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var store = await _context.Stores.FindAsync(request.Id);
+                var store = await _storesRepository.GetStore(request.Id);
 
                 if (store == null) return null;
 
-                _context.Remove(store);
-
-                var result = await _context.SaveChangesAsync() > 0;
+                var result = await _storesRepository.DeleteStore(store);
 
                 if (!result) return Result<Unit>.Failure("Failed to delete the store");
 

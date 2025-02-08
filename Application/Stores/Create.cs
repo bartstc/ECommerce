@@ -4,7 +4,7 @@ using Application.Stores.Dtos;
 using Application.Stores.Validators;
 using FluentValidation;
 using MediatR;
-using Persistence;
+using Domain;
 
 namespace Application.Stores
 {
@@ -22,19 +22,18 @@ namespace Application.Stores
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly DataContext _context;
+            private readonly IStoresRepository _storesRepository;
 
-            public Handler(DataContext context)
+            public Handler(IStoresRepository storesRepository)
             {
-                _context = context;
+                _storesRepository = storesRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var store = request.StoreDto.ToDomain();
 
-                _context.Stores.Add(store);
-                var result = await _context.SaveChangesAsync() > 0;
+                var result = await _storesRepository.CreateStore(store);
 
                 if (!result) return Result<Unit>.Failure("Failed to create store");
 
