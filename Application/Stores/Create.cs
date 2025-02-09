@@ -5,6 +5,7 @@ using Application.Stores.Validators;
 using FluentValidation;
 using MediatR;
 using Domain;
+using Domain.Errors;
 
 namespace Application.Stores
 {
@@ -37,7 +38,7 @@ namespace Application.Stores
 
                 var result = await _storeRepository.Complete();
 
-                if (!result) return Result<Unit>.Failure("Failed to create store");
+                if (!result) return Result<Unit>.Failure(StoresError.FailedToCreateStore);
 
                 return Result<Unit>.Success(Unit.Value);
             }

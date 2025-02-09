@@ -1,6 +1,7 @@
 using Application.Core;
 using MediatR;
 using Domain;
+using Domain.Errors;
 
 namespace Application.Stores
 {
@@ -21,13 +22,13 @@ namespace Application.Stores
             {
                 var store = await _storeRepository.GetStore(request.Id);
 
-                if (store == null) return null;
+                if (store == null) return Result<Unit>.Failure(StoresError.StoreNotFound);
 
                 _storeRepository.DeleteStore(store);
 
                 var result = await _storeRepository.Complete();
 
-                if (!result) return Result<Unit>.Failure("Failed to delete the store");
+                if (!result) return Result<Unit>.Failure(StoresError.FailedToDeleteStore);
 
                 return Result<Unit>.Success(Unit.Value);
             }

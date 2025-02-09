@@ -3,6 +3,7 @@ using Application.Stores.Dtos;
 using Application.Stores.Mappers;
 using MediatR;
 using Domain;
+using Domain.Errors;
 
 namespace Application.Stores
 {
@@ -23,7 +24,7 @@ namespace Application.Stores
             {
                 var store = await _storeRepository.GetStore(request.Id);
 
-                if (store == null) return null;
+                if (store == null) return Result<StoreDto>.Failure(StoresError.StoreNotFound);
 
                 return Result<StoreDto>.Success(store.ToDto());
             }
