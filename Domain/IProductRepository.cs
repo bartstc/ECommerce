@@ -4,8 +4,9 @@ namespace Domain
     {
         Task<Product> GetProduct(Guid id);
         Task<List<Product>> GetProducts();
-        Task<bool> CreateProduct(Product product);
-        Task<bool> UpdateProduct(Product product);
-        Task<bool> DeleteProduct(Product product);
+        void AddProduct(Product product);
+        void UpdateProduct(Product product);
+        void DeleteProduct(Product product);
+        Task<bool> Complete();
     }
 }

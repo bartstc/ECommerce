@@ -33,7 +33,9 @@ namespace Application.Stores
             {
                 var store = request.StoreDto.ToDomain();
 
-                var result = await _storeRepository.CreateStore(store);
+                _storeRepository.CreateStore(store);
+
+                var result = await _storeRepository.Complete();
 
                 if (!result) return Result<Unit>.Failure("Failed to create store");
 

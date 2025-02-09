@@ -13,5 +13,10 @@ namespace Domain
         public Store Store { get; set; }
         public DateTime AddedAt { get; set; }
         public DateTime? EditedAt { get; set; }
+
+        public void RateProduct(double rate)
+        {
+            Rating = Rating.UpdateRating(rate);
+        }
     }
 }

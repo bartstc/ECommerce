@@ -13,5 +13,14 @@ namespace Domain
             Rate = rate;
             Count = count;
         }
+
+        public Rating UpdateRating(double newRate)
+        {
+            var totalRating = (Rate * Count) + newRate;
+            var newCount = Count + 1;
+            var averageRating = totalRating / newCount;
+
+            return new Rating(averageRating, newCount);
+        }
     }
 }

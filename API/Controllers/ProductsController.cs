@@ -40,5 +40,12 @@ namespace API.Controllers
             var result = await Mediator.Send(new Delete.Command(id));
             return HandleResult(result);
         }
+
+        [HttpPatch("{id}/rate")]
+        public async Task<IActionResult> RateProduct(Guid id, RateProductDto rateProductDto)
+        {
+            var result = await Mediator.Send(new RateProduct.Command(id, rateProductDto));
+            return HandleResult(result);
+        }
     }
 }

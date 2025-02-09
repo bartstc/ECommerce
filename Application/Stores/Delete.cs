@@ -23,7 +23,9 @@ namespace Application.Stores
 
                 if (store == null) return null;
 
-                var result = await _storeRepository.DeleteStore(store);
+                _storeRepository.DeleteStore(store);
+
+                var result = await _storeRepository.Complete();
 
                 if (!result) return Result<Unit>.Failure("Failed to delete the store");
 

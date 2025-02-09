@@ -12,7 +12,7 @@ namespace Application.Stores.Mappers
                 Name: store.Name,
                 Description: store.Description,
                 Rating: new RatingDto(
-                    Rate: store.Rating.Rate,
+                    Rate: Math.Round(store.Rating.Rate, 2),
                     Count: store.Rating.Count
                 ),
                 CreatedAt: store.CreatedAt,

@@ -23,13 +23,12 @@ namespace Application.Products
             return await _context.Products.ToListAsync();
         }
 
-        public async Task<bool> CreateProduct(Product product)
+        public void AddProduct(Product product)
         {
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> UpdateProduct(Product product)
+        public async void UpdateProduct(Product product)
         {
             var existingProduct = await _context.Products
               .Include(p => p.Price)
@@ -38,7 +37,7 @@ namespace Application.Products
 
             if (existingProduct == null)
             {
-                return false;
+                throw new Exception("Product not found");
             }
 
             existingProduct.Title = product.Title;
@@ -49,13 +48,15 @@ namespace Application.Products
 
             existingProduct.Price = new Money(product.Price.Amount, product.Price.Currency);
             existingProduct.Rating = new Rating(product.Rating.Rate, product.Rating.Count);
-
-            return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteProduct(Product product)
+        public void DeleteProduct(Product product)
         {
             _context.Remove(product);
+        }
+
+        public async Task<bool> Complete()
+        {
             return await _context.SaveChangesAsync() > 0;
         }
     }

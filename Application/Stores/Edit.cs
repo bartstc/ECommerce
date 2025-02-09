@@ -37,7 +37,9 @@ namespace Application.Stores
 
                 var updatedStore = request.StoreDto.ToDomain(store);
 
-                var result = await _storeRepository.UpdateStore(updatedStore);
+                _storeRepository.UpdateStore(updatedStore);
+
+                var result = await _storeRepository.Complete();
 
                 if (!result) return Result<Unit>.Failure("Failed to edit the store");
 

@@ -9,5 +9,10 @@ namespace Domain
         public Rating Rating { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? EditedAt { get; set; }
+
+        public void RecalculateRating(double rate)
+        {
+            Rating = Rating.UpdateRating(rate);
+        }
     }
 }

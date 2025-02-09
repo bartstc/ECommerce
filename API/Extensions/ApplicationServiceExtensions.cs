@@ -7,6 +7,7 @@ using Persistence;
 using Application.Stores.Repositories;
 using Application.Interfaces;
 using Infrastructure.Security;
+using Application.Products.Repositories;
 
 namespace API.Extensions
 {
@@ -35,8 +36,14 @@ namespace API.Extensions
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
 
+            // Products module
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IStoreRepository, StoreRepository>();
+            services.AddScoped<IStoreRepository, Application.Products.Repositories.StoreRepository>();
+
+            // Stores module
+            services.AddScoped<IStoreRepository, Application.Stores.Repositories.StoreRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

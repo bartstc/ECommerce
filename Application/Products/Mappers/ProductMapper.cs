@@ -16,7 +16,7 @@ namespace Application.Products.Mappers
                     Currency: product.Price.Currency.ToString()
                 ),
                 Rating: new RatingDto(
-                    Rate: product.Rating.Rate,
+                    Rate: Math.Round(product.Rating.Rate, 2),
                     Count: product.Rating.Count
                 ),
                 Image: product.Image,

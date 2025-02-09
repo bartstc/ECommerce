@@ -23,7 +23,9 @@ namespace Application.Products
 
                 if (product == null) return null;
 
-                var result = await _productRepository.DeleteProduct(product);
+                _productRepository.DeleteProduct(product);
+
+                var result = await _productRepository.Complete();
 
                 if (!result) return Result<Unit>.Failure("Failed to delete the product");
 

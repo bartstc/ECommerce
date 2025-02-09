@@ -37,7 +37,9 @@ namespace Application.Products
 
                 var updatedProduct = request.ProductDto.ToDomain(product);
 
-                var result = await _productRepository.UpdateProduct(updatedProduct);
+                _productRepository.UpdateProduct(updatedProduct);
+
+                var result = await _productRepository.Complete();
 
                 if (!result) return Result<Unit>.Failure("Failed to edit the product");
 

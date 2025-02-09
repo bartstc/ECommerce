@@ -2,7 +2,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
-namespace Application.Stores.Repositories
+namespace Application.Products.Repositories
 {
     public class StoreRepository : IStoreRepository
     {
@@ -15,7 +15,9 @@ namespace Application.Stores.Repositories
 
         public async Task<Store> GetStore(Guid id)
         {
-            return await _context.Stores.FindAsync(id);
+            return await _context.Stores
+                .Include(s => s.Products)
+                .FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Store> GetStoreWithProducts(Guid id)

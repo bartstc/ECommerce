@@ -33,7 +33,9 @@ namespace Application.Products
             {
                 var product = request.ProductDto.ToDomain();
 
-                var result = await _productRepository.CreateProduct(product);
+                _productRepository.AddProduct(product);
+
+                var result = await _productRepository.Complete();
 
                 if (!result) return Result<Unit>.Failure("Failed to create product");
 
