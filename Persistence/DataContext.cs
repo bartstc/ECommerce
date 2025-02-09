@@ -49,6 +49,11 @@ namespace Persistence
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name);
                 entity.Property(e => e.Description);
+                entity.OwnsOne(e => e.Rating, rating =>
+                    {
+                        rating.Property(p => p.Rate).HasColumnName("RatingRate");
+                        rating.Property(p => p.Count).HasColumnName("RatingCount");
+                    });
                 entity.Property(e => e.CreatedAt);
                 entity.Property(e => e.EditedAt);
             });

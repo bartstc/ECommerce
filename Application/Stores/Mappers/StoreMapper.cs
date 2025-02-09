@@ -11,6 +11,10 @@ namespace Application.Stores.Mappers
                 Id: store.Id,
                 Name: store.Name,
                 Description: store.Description,
+                Rating: new RatingDto(
+                    Rate: store.Rating.Rate,
+                    Count: store.Rating.Count
+                ),
                 CreatedAt: store.CreatedAt,
                 EditedAt: store.EditedAt
             );
@@ -23,6 +27,7 @@ namespace Application.Stores.Mappers
                 Id = Guid.NewGuid(),
                 Name = storeDto.Name,
                 Description = storeDto.Description,
+                Rating = new Rating(0, 0),
                 Products = new List<Product>(),
                 CreatedAt = DateTime.UtcNow
             };
@@ -35,6 +40,7 @@ namespace Application.Stores.Mappers
                 Id = store.Id,
                 Name = storeDto.Name,
                 Description = storeDto.Description,
+                Rating = store.Rating,
                 Products = store.Products,
                 CreatedAt = store.CreatedAt,
                 EditedAt = store.EditedAt

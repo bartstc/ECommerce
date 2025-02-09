@@ -31,6 +31,7 @@ namespace Persistence
                         Id = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         Name = "Store 1",
                         Description = "Store 1 Description",
+                        Rating = new Rating(4.5, 20),
                         CreatedAt = DateTime.Parse("2025-02-02T00:00:00Z"),
                         Products = new List<Product>()
                     },
@@ -38,6 +39,7 @@ namespace Persistence
                     {
                         Name = "Store 2",
                         Description = "Store 2 Description",
+                        Rating = new Rating(0, 0),
                         CreatedAt = DateTime.Parse("2025-02-02T00:00:00Z"),
                         Products = new List<Product>()
                     },
@@ -45,6 +47,7 @@ namespace Persistence
                     {
                         Name = "Store 3",
                         Description = "Store 3 Description",
+                        Rating = new Rating(0, 0),
                         CreatedAt = DateTime.Parse("2025-02-02T00:00:00Z"),
                         Products = new List<Product>()
                     }

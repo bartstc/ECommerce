@@ -4,7 +4,13 @@ namespace Application.Stores.Dtos
         Guid Id,
         string Name,
         string Description,
+        RatingDto Rating,
         DateTime CreatedAt,
         DateTime? EditedAt
     );
+
+    public record RatingDto(
+         double Rate,
+         int Count
+     );
 }
