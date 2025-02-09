@@ -3,6 +3,7 @@ using Application.Products.Dtos;
 using Application.Products.Mappers;
 using Application.Products.Validators;
 using Domain;
+using Domain.Errors;
 using FluentValidation;
 using MediatR;
 
@@ -33,7 +34,7 @@ namespace Application.Products
             {
                 var product = await _productRepository.GetProduct(request.Id);
 
-                if (product == null) return null;
+                if (product == null) return Result<Unit>.Failure(ProductsError.ProductNotFound);
 
                 var updatedProduct = request.ProductDto.ToDomain(product);
 
@@ -41,7 +42,7 @@ namespace Application.Products
 
                 var result = await _productRepository.Complete();
 
-                if (!result) return Result<Unit>.Failure("Failed to edit the product");
+                if (!result) return Result<Unit>.Failure(ProductsError.FailedToUpdateProduct);
 
                 return Result<Unit>.Success(Unit.Value);
             }

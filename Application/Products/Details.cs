@@ -2,6 +2,7 @@ using Application.Core;
 using Application.Products.Dtos;
 using Application.Products.Mappers;
 using Domain;
+using Domain.Errors;
 using MediatR;
 
 namespace Application.Products
@@ -23,7 +24,7 @@ namespace Application.Products
             {
                 var product = await _productRepository.GetProduct(request.Id);
 
-                if (product == null) return null;
+                if (product == null) return Result<ProductDto>.Failure(ProductsError.ProductNotFound);
 
                 return Result<ProductDto>.Success(product.ToDto());
             }

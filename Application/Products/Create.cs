@@ -5,6 +5,7 @@ using Application.Products.Validators;
 using FluentValidation;
 using MediatR;
 using Domain;
+using Domain.Errors;
 
 namespace Application.Products
 {
@@ -37,7 +38,7 @@ namespace Application.Products
 
                 var result = await _productRepository.Complete();
 
-                if (!result) return Result<Unit>.Failure("Failed to create product");
+                if (!result) return Result<Unit>.Failure(ProductsError.FailedToCreateProduct);
 
                 return Result<Unit>.Success(Unit.Value);
             }

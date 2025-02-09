@@ -2,6 +2,7 @@ using Application.Core;
 using Application.Interfaces;
 using Application.Products.Dtos;
 using Domain;
+using Domain.Errors;
 using MediatR;
 
 namespace Application.Products
@@ -31,11 +32,11 @@ namespace Application.Products
             {
                 var product = await _productRepository.GetProduct(request.Id);
 
-                if (product == null) return null;
+                if (product == null) return Result<Unit>.Failure(ProductsError.ProductNotFound);
 
                 var store = await _storeRepository.GetStore(product.StoreId);
 
-                if (store == null) return null;
+                if (store == null) return Result<Unit>.Failure(ProductsError.StoreNotFound);
 
                 product.RateProduct(request.rateProductDto.Rating);
                 store.RecalculateRating(request.rateProductDto.Rating);
@@ -45,7 +46,7 @@ namespace Application.Products
 
                 var result = await _unitOfWork.Complete();
 
-                if (!result) return Result<Unit>.Failure("Failed to rate the product");
+                if (!result) return Result<Unit>.Failure(ProductsError.FailedToRateProduct);
 
                 return Result<Unit>.Success(Unit.Value);
             }
