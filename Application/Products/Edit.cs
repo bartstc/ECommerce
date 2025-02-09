@@ -22,22 +22,22 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly IProductsRepository _productsRepository;
+            private readonly IProductRepository _productRepository;
 
-            public Handler(IProductsRepository productsRepository)
+            public Handler(IProductRepository productRepository)
             {
-                _productsRepository = productsRepository;
+                _productRepository = productRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var product = await _productsRepository.GetProduct(request.Id);
+                var product = await _productRepository.GetProduct(request.Id);
 
                 if (product == null) return null;
 
                 var updatedProduct = request.ProductDto.ToDomain(product);
 
-                var result = await _productsRepository.UpdateProduct(updatedProduct);
+                var result = await _productRepository.UpdateProduct(updatedProduct);
 
                 if (!result) return Result<Unit>.Failure("Failed to edit the product");
 

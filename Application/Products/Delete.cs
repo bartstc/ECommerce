@@ -10,20 +10,20 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly IProductsRepository _productsRepository;
+            private readonly IProductRepository _productRepository;
 
-            public Handler(IProductsRepository productsRepository)
+            public Handler(IProductRepository productRepository)
             {
-                _productsRepository = productsRepository;
+                _productRepository = productRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var product = await _productsRepository.GetProduct(request.Id);
+                var product = await _productRepository.GetProduct(request.Id);
 
                 if (product == null) return null;
 
-                var result = await _productsRepository.DeleteProduct(product);
+                var result = await _productRepository.DeleteProduct(product);
 
                 if (!result) return Result<Unit>.Failure("Failed to delete the product");
 

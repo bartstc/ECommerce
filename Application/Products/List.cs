@@ -12,15 +12,15 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Query, Result<List<ProductDto>>>
         {
-            private readonly IProductsRepository _productsRepository;
-            public Handler(IProductsRepository productsRepository)
+            private readonly IProductRepository _productRepository;
+            public Handler(IProductRepository productRepository)
             {
-                _productsRepository = productsRepository;
+                _productRepository = productRepository;
             }
 
             public async Task<Result<List<ProductDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = await _productsRepository.GetProducts();
+                var products = await _productRepository.GetProducts();
                 var productDtos = products.Select(p => p.ToDto()).ToList();
 
                 return Result<List<ProductDto>>.Success(productDtos);

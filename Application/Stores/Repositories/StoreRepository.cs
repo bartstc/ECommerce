@@ -3,11 +3,11 @@ using Persistence;
 
 namespace Application.Stores.Repositories
 {
-    public class StoresRepository : IStoresRepository
+    public class StoreRepository : IStoreRepository
     {
         private readonly DataContext _context;
 
-        public StoresRepository(DataContext context)
+        public StoreRepository(DataContext context)
         {
             _context = context;
         }

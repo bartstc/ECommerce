@@ -1,6 +1,6 @@
 namespace Domain
 {
-    public interface IStoresRepository
+    public interface IStoreRepository
     {
         Task<Store> GetStore(Guid id);
         Task<bool> CreateStore(Store store);

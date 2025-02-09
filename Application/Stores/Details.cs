@@ -12,16 +12,16 @@ namespace Application.Stores
 
         public class Handler : IRequestHandler<Query, Result<StoreDto>>
         {
-            private readonly IStoresRepository _storesRepository;
+            private readonly IStoreRepository _storeRepository;
 
-            public Handler(IStoresRepository storesRepository)
+            public Handler(IStoreRepository storeRepository)
             {
-                _storesRepository = storesRepository;
+                _storeRepository = storeRepository;
             }
 
             public async Task<Result<StoreDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var store = await _storesRepository.GetStore(request.Id);
+                var store = await _storeRepository.GetStore(request.Id);
 
                 if (store == null) return null;
 

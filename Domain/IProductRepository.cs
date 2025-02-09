@@ -1,6 +1,6 @@
 namespace Domain
 {
-    public interface IProductsRepository
+    public interface IProductRepository
     {
         Task<Product> GetProduct(Guid id);
         Task<List<Product>> GetProducts();

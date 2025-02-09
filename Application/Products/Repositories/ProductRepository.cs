@@ -4,11 +4,11 @@ using Persistence;
 
 namespace Application.Products
 {
-    public class ProductsRepository : IProductsRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly DataContext _context;
 
-        public ProductsRepository(DataContext context)
+        public ProductRepository(DataContext context)
         {
             _context = context;
         }

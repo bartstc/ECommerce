@@ -22,18 +22,18 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly IProductsRepository _productsRepository;
+            private readonly IProductRepository _productRepository;
 
-            public Handler(IProductsRepository productsRepository)
+            public Handler(IProductRepository productRepository)
             {
-                _productsRepository = productsRepository;
+                _productRepository = productRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var product = request.ProductDto.ToDomain();
 
-                var result = await _productsRepository.CreateProduct(product);
+                var result = await _productRepository.CreateProduct(product);
 
                 if (!result) return Result<Unit>.Failure("Failed to create product");
 

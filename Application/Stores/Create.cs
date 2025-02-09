@@ -22,18 +22,18 @@ namespace Application.Stores
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly IStoresRepository _storesRepository;
+            private readonly IStoreRepository _storeRepository;
 
-            public Handler(IStoresRepository storesRepository)
+            public Handler(IStoreRepository storeRepository)
             {
-                _storesRepository = storesRepository;
+                _storeRepository = storeRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var store = request.StoreDto.ToDomain();
 
-                var result = await _storesRepository.CreateStore(store);
+                var result = await _storeRepository.CreateStore(store);
 
                 if (!result) return Result<Unit>.Failure("Failed to create store");
 

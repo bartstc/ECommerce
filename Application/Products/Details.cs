@@ -12,16 +12,16 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Query, Result<ProductDto>>
         {
-            private readonly IProductsRepository _productsRepository;
+            private readonly IProductRepository _productRepository;
 
-            public Handler(IProductsRepository productsRepository)
+            public Handler(IProductRepository productRepository)
             {
-                _productsRepository = productsRepository;
+                _productRepository = productRepository;
             }
 
             public async Task<Result<ProductDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var product = await _productsRepository.GetProduct(request.Id);
+                var product = await _productRepository.GetProduct(request.Id);
 
                 if (product == null) return null;
 
