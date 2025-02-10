@@ -34,6 +34,7 @@ namespace Persistence.Modules.Stores.Repositories
             existingStore.Name = store.Name;
             existingStore.Description = store.Description;
             existingStore.EditedAt = DateTime.UtcNow;
+            existingStore.Rating = new Rating(store.Rating.Rate, store.Rating.Count);
         }
 
         public void DeleteStore(Store store)

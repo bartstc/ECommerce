@@ -35,12 +35,9 @@ namespace API.Extensions
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
 
-            // Products module
             services.AddScoped<IProductRepository, Persistence.Modules.Products.Repositories.ProductRepository>();
-            services.AddScoped<IStoreRepository, Persistence.Modules.Products.Repositories.StoreRepository>();
-
-            // Stores module
             services.AddScoped<IStoreRepository, Persistence.Modules.Stores.Repositories.StoreRepository>();
+
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
