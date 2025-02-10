@@ -1,11 +1,11 @@
 using System.Security.Claims;
 using API.Dtos;
 using API.Services;
-using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Entities;
 
 namespace API.Controllers
 {

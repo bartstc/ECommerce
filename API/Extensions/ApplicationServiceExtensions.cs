@@ -4,10 +4,9 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Application.Stores.Repositories;
 using Application.Interfaces;
 using Infrastructure.Security;
-using Application.Products.Repositories;
+using Application.Core;
 
 namespace API.Extensions
 {
@@ -37,11 +36,11 @@ namespace API.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>();
 
             // Products module
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IStoreRepository, Application.Products.Repositories.StoreRepository>();
+            services.AddScoped<IProductRepository, Persistence.Modules.Products.Repositories.ProductRepository>();
+            services.AddScoped<IStoreRepository, Persistence.Modules.Products.Repositories.StoreRepository>();
 
             // Stores module
-            services.AddScoped<IStoreRepository, Application.Stores.Repositories.StoreRepository>();
+            services.AddScoped<IStoreRepository, Persistence.Modules.Stores.Repositories.StoreRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

@@ -1,9 +1,9 @@
 using System.Text;
 using API.Services;
-using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
+using Persistence.Entities;
 
 namespace API.Extensions
 {

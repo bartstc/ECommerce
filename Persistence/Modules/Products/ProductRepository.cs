@@ -1,8 +1,8 @@
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
+using Persistence.Modules.Products.Mappers;
 
-namespace Application.Products
+namespace Persistence.Modules.Products.Repositories
 {
     public class ProductRepository : IProductRepository
     {
@@ -15,17 +15,18 @@ namespace Application.Products
 
         public async Task<Product> GetProduct(Guid id)
         {
-            return await _context.Products.FindAsync(id);
+            var productEntity = await _context.Products.FindAsync(id);
+            return productEntity.ToDomain();
         }
 
         public async Task<List<Product>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products.Select(p => p.ToDomain()).ToListAsync();
         }
 
         public void AddProduct(Product product)
         {
-            _context.Products.Add(product);
+            _context.Products.Add(product.ToPersistence());
         }
 
         public async void UpdateProduct(Product product)
@@ -52,7 +53,7 @@ namespace Application.Products
 
         public void DeleteProduct(Product product)
         {
-            _context.Remove(product);
+            _context.Remove(product.ToPersistence());
         }
 
         public async Task<bool> Complete()

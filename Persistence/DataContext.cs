@@ -1,6 +1,8 @@
-using Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Entities;
+using Persistence.Modules.Products.Entities;
+using Persistence.Modules.Stores.Entities;
 
 namespace Persistence
 {
@@ -10,15 +12,15 @@ namespace Persistence
         {
         }
 
-        public DbSet<Store> Stores { get; set; }
+        public DbSet<StoreEntity> Stores { get; set; }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductEntity> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Product>(entity =>
+            modelBuilder.Entity<ProductEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Title);
@@ -44,7 +46,7 @@ namespace Persistence
             });
 
             // no need to configure the reverse relationship with Products, EF will understand it
-            modelBuilder.Entity<Store>(entity =>
+            modelBuilder.Entity<StoreEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name);

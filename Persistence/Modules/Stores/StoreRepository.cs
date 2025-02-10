@@ -1,8 +1,7 @@
 using Domain;
-using Microsoft.EntityFrameworkCore;
-using Persistence;
+using Persistence.Modules.Stores.Mappers;
 
-namespace Application.Stores.Repositories
+namespace Persistence.Modules.Stores.Repositories
 {
     public class StoreRepository : IStoreRepository
     {
@@ -15,19 +14,13 @@ namespace Application.Stores.Repositories
 
         public async Task<Store> GetStore(Guid id)
         {
-            return await _context.Stores.FindAsync(id);
-        }
-
-        public async Task<Store> GetStoreWithProducts(Guid id)
-        {
-            return await _context.Stores
-                .Include(s => s.Products)
-                .FirstOrDefaultAsync(s => s.Id == id);
+            var storeEntity = await _context.Stores.FindAsync(id);
+            return storeEntity.ToDomain();
         }
 
         public void CreateStore(Store store)
         {
-            _context.Stores.Add(store);
+            _context.Stores.Add(store.ToPersistence());
         }
 
         public async void UpdateStore(Store store)
@@ -45,7 +38,7 @@ namespace Application.Stores.Repositories
 
         public void DeleteStore(Store store)
         {
-            _context.Stores.Remove(store);
+            _context.Stores.Remove(store.ToPersistence());
         }
 
         public async Task<bool> Complete()

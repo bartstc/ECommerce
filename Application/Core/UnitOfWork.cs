@@ -1,6 +1,7 @@
 using Application.Interfaces;
+using Persistence;
 
-namespace Persistence
+namespace Application.Core
 {
     public class UnitOfWork : IUnitOfWork
     {

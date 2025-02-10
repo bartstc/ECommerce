@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Domain;
 using Microsoft.IdentityModel.Tokens;
+using Persistence.Entities;
 
 namespace API.Services
 {
