@@ -1,12 +1,20 @@
 using Application.Stores;
 using Application.Stores.Dtos;
 using Domain.Errors;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     public class StoresController : BaseApiController
     {
+        private readonly IMediator Mediator;
+
+        public StoresController(IMediator mediator)
+        {
+            Mediator = mediator;
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStore(Guid id)
         {

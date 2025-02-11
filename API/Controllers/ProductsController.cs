@@ -1,12 +1,21 @@
 using Application.Products;
 using Application.Products.Dtos;
 using Domain.Errors;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     public class ProductsController : BaseApiController
     {
+        private readonly IMediator Mediator;
+
+        public ProductsController(IMediator mediator)
+        {
+            Mediator = mediator;
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
