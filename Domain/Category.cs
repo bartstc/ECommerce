@@ -2,8 +2,7 @@ namespace Domain
 {
     public enum Category
     {
-        MensClothing,
-        WomensClothing,
+        Clothing,
         Jewelery,
         Electronics
     }

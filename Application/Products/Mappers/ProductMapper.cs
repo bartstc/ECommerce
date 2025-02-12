@@ -65,8 +65,7 @@ namespace Application.Products.Mappers
         {
             return category switch
             {
-                Category.MensClothing => "men's clothing",
-                Category.WomensClothing => "women's clothing",
+                Category.Clothing => "clothing",
                 Category.Jewelery => "jewelery",
                 Category.Electronics => "electronics",
                 _ => throw new ArgumentException("Invalid category value")
@@ -77,8 +76,7 @@ namespace Application.Products.Mappers
         {
             return category switch
             {
-                "men's clothing" => Category.MensClothing,
-                "women's clothing" => Category.WomensClothing,
+                "clothing" => Category.Clothing,
                 "jewelery" => Category.Jewelery,
                 "electronics" => Category.Electronics,
                 _ => throw new ArgumentException("Invalid category value")

@@ -31,8 +31,7 @@ namespace Application.Products.Validators
         {
             return category switch
             {
-                "men's clothing" => true,
-                "women's clothing" => true,
+                "clothing" => true,
                 "jewelery" => true,
                 "electronics" => true,
                 _ => false

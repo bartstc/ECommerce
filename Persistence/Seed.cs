@@ -70,7 +70,7 @@ namespace Persistence
                         Price = new Money(109.95m, Currency.USD),
                         Rating = new Rating(3.9, 120),
                         Image = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-                        Category = Category.MensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -81,7 +81,7 @@ namespace Persistence
                         Price = new Money(22.3m, Currency.USD),
                         Rating = new Rating(4.1, 259),
                         Image = "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
-                        Category = Category.MensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -92,7 +92,7 @@ namespace Persistence
                         Price = new Money(55.99m, Currency.USD),
                         Rating = new Rating(4.7, 500),
                         Image = "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
-                        Category = Category.MensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -103,7 +103,7 @@ namespace Persistence
                         Price = new Money(15.99m, Currency.USD),
                         Rating = new Rating(2.1, 430),
                         Image = "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
-                        Category = Category.MensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -224,7 +224,7 @@ namespace Persistence
                         Price = new Money(56.99m, Currency.USD),
                         Rating = new Rating(2.6, 235),
                         Image = "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
-                        Category = Category.WomensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -235,7 +235,7 @@ namespace Persistence
                         Price = new Money(29.95m, Currency.USD),
                         Rating = new Rating(2.9, 340),
                         Image = "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
-                        Category = Category.WomensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -246,7 +246,7 @@ namespace Persistence
                         Price = new Money(39.99m, Currency.USD),
                         Rating = new Rating(3.8, 679),
                         Image = "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
-                        Category = Category.WomensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -257,7 +257,7 @@ namespace Persistence
                         Price = new Money(9.85m, Currency.USD),
                         Rating = new Rating(4.7, 130),
                         Image = "https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_.jpg",
-                        Category = Category.WomensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -268,7 +268,7 @@ namespace Persistence
                         Price = new Money(7.95m, Currency.USD),
                         Rating = new Rating(4.5, 146),
                         Image = "https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg",
-                        Category = Category.WomensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
@@ -279,7 +279,7 @@ namespace Persistence
                         Price = new Money(12.99m, Currency.USD),
                         Rating = new Rating(3.6, 145),
                         Image = "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg",
-                        Category = Category.WomensClothing,
+                        Category = Category.Clothing,
                         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     }

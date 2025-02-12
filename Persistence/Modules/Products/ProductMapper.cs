@@ -5,23 +5,6 @@ namespace Persistence.Modules.Products.Mappers
 {
     public static class ProductMapper
     {
-        // public static Product Create(this ProductEntity productEntity)
-        // {
-        //     return new Product
-        //     {
-        //         Id = Guid.NewGuid(),
-        //         Title = productEntity.Title,
-        //         Description = productEntity.Description,
-        //         Price = new Money(productEntity.Price.Amount, productEntity.Price.Currency),
-        //         Rating = new Rating(productEntity.Rating.Rate, productEntity.Rating.Count),
-        //         Image = productEntity.Image,
-        //         Category = productEntity.Category,
-        //         // temporary, will be provided from the user's metchant profile's store
-        //         StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
-        //         AddedAt = DateTime.UtcNow
-        //     };
-        // }
-
         public static Product ToDomain(this ProductEntity productEntity)
         {
             return new Product
