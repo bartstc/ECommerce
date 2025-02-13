@@ -33,17 +33,18 @@ namespace ECommerce.Tests.Application.Products
         public async Task Handle_Should_ReturnSuccessResult_WhenProductIsFound()
         {
             var productId = Guid.NewGuid();
-            var product = new Product
-            {
-                Id = productId,
-                Title = "Test Product",
-                Description = "Test Description",
-                Price = new Money(100, Currency.USD),
-                Rating = new Rating(4.5, 10),
-                Image = "test-image.jpg",
-                Category = Category.Electronics,
-                AddedAt = DateTime.UtcNow
-            };
+            var productData = new ProductData(
+                productId,
+                "Test Product",
+                "Test Description",
+                Money.Of(100, Currency.USDollar.Code),
+                Rating.Of(4.5, 10),
+                "test-image.jpg",
+                Category.Electronics,
+                DateTime.UtcNow,
+                null
+            );
+            var product = Product.Create(productData);
             var query = new Details.Query(productId);
 
             _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
@@ -53,7 +54,7 @@ namespace ECommerce.Tests.Application.Products
             result.IsSuccess.ShouldBeTrue();
             result.Value.ShouldNotBeNull();
             result.Value.Id.ShouldBe(productId);
-            result.Value.Title.ShouldBe("Test Product");
+            result.Value.Name.ShouldBe("Test Product");
         }
     }
 }

@@ -34,7 +34,18 @@ namespace ECommerce.Tests.Application.Products
         {
             var productId = Guid.NewGuid();
             var command = new Delete.Command(productId);
-            var product = new Product { Id = productId, Title = "Test Product", Price = new Money(100, Currency.USD) };
+            var productData = new ProductData(
+                productId,
+                "Test Product",
+                "Test Description",
+                Money.Of(100, Currency.USDollar.Code),
+                Rating.Of(5, 1),
+                "http://example.com/image.jpg",
+                Category.Electronics,
+                DateTime.UtcNow,
+                null
+            );
+            var product = Product.Create(productData);
 
             _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
             _productRepositoryMock.Setup(repo => repo.Complete()).ReturnsAsync(false);
@@ -50,7 +61,18 @@ namespace ECommerce.Tests.Application.Products
         {
             var productId = Guid.NewGuid();
             var command = new Delete.Command(productId);
-            var product = new Product { Id = productId, Title = "Test Product", Price = new Money(100, Currency.USD) };
+            var productData = new ProductData(
+                productId,
+                "Test Product",
+                "Test Description",
+                Money.Of(100, Currency.USDollar.Code),
+                Rating.Of(5, 1),
+                "http://example.com/image.jpg",
+                Category.Electronics,
+                DateTime.UtcNow,
+                null
+            );
+            var product = Product.Create(productData);
 
             _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
             _productRepositoryMock.Setup(repo => repo.Complete()).ReturnsAsync(true);

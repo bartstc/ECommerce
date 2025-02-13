@@ -5,6 +5,10 @@ using Domain;
 using Domain.Errors;
 using Moq;
 using Shouldly;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace ECommerce.Tests.Application.Products
 {
@@ -38,7 +42,18 @@ namespace ECommerce.Tests.Application.Products
         {
             var productId = Guid.NewGuid();
             var command = new RateProduct.Command(productId, new RateProductDto(5));
-            var product = new Product { Id = productId, Rating = new Rating(0, 0), Price = new Money(0, Currency.USD) };
+            var productData = new ProductData(
+                productId,
+                "Test Product",
+                "Test Description",
+                Money.Of(100, Currency.USDollar.Code),
+                Rating.Of(0, 0),
+                "test-image.jpg",
+                Category.Electronics,
+                DateTime.UtcNow,
+                null
+            );
+            var product = Product.Create(productData);
 
             _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
             _unitOfWorkMock.Setup(uow => uow.Complete()).ReturnsAsync(true);
@@ -54,7 +69,18 @@ namespace ECommerce.Tests.Application.Products
         {
             var productId = Guid.NewGuid();
             var command = new RateProduct.Command(productId, new RateProductDto(5));
-            var product = new Product { Id = productId, Rating = new Rating(0, 0), Price = new Money(0, Currency.USD) };
+            var productData = new ProductData(
+                productId,
+                "Test Product",
+                "Test Description",
+                Money.Of(100, Currency.USDollar.Code),
+                Rating.Of(0, 0),
+                "test-image.jpg",
+                Category.Electronics,
+                DateTime.UtcNow,
+                null
+            );
+            var product = Product.Create(productData);
 
             _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
             _unitOfWorkMock.Setup(uow => uow.Complete()).ReturnsAsync(false);

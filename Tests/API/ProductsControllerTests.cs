@@ -34,7 +34,6 @@ namespace API.Controllers.Tests
                     new RatingDto(5, 10),
                     "Test Category",
                     "Test Brand",
-                    Guid.NewGuid(),
                     DateTime.UtcNow,
                     null)
             };
@@ -80,7 +79,6 @@ namespace API.Controllers.Tests
                 new RatingDto(5, 10),
                 "Test Category",
                 "Test Brand",
-                Guid.NewGuid(),
                 DateTime.UtcNow,
                 null
             );
