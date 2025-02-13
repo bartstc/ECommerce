@@ -11,114 +11,14 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250208100825_IdentityAdded")]
-    partial class IdentityAdded
+    [Migration("20250213201747_ProductsAdded")]
+    partial class ProductsAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.12");
-
-            modelBuilder.Entity("Domain.AppUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Bio")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DisplayName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("EditedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -248,54 +148,104 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Product", b =>
+            modelBuilder.Entity("Persistence.Entities.AppUser", b =>
                 {
-                    b.OwnsOne("Domain.Money", "Price", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("TEXT");
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
 
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("TEXT")
-                                .HasColumnName("PriceAmount");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
 
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasColumnType("TEXT")
-                                .HasColumnName("PriceCurrency");
+                    b.Property<string>("Bio")
+                        .HasColumnType("TEXT");
 
-                            b1.HasKey("ProductId");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
 
-                            b1.ToTable("Products");
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("TEXT");
 
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
-                    b.OwnsOne("Domain.Rating", "Rating", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("TEXT");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
 
-                            b1.Property<int>("Count")
-                                .HasColumnType("INTEGER")
-                                .HasColumnName("RatingCount");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
 
-                            b1.Property<double>("Rate")
-                                .HasColumnType("REAL")
-                                .HasColumnName("RatingRate");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
 
-                            b1.HasKey("ProductId");
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
-                            b1.ToTable("Products");
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
 
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
 
-                    b.Navigation("Price");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
 
-                    b.Navigation("Rating");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Persistence.Modules.Products.Entities.ProductEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("EditedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -309,7 +259,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Persistence.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -318,7 +268,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Persistence.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -333,7 +283,7 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Persistence.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -342,11 +292,82 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Domain.AppUser", null)
+                    b.HasOne("Persistence.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Persistence.Modules.Products.Entities.ProductEntity", b =>
+                {
+                    b.OwnsOne("Domain.Money", "Price", b1 =>
+                        {
+                            b1.Property<Guid>("ProductEntityId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("TEXT")
+                                .HasColumnName("Price");
+
+                            b1.HasKey("ProductEntityId");
+
+                            b1.ToTable("Products");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductEntityId");
+
+                            b1.OwnsOne("Domain.Currency", "Currency", b2 =>
+                                {
+                                    b2.Property<Guid>("MoneyProductEntityId")
+                                        .HasColumnType("TEXT");
+
+                                    b2.Property<string>("Code")
+                                        .IsRequired()
+                                        .HasMaxLength(5)
+                                        .HasColumnType("TEXT")
+                                        .HasColumnName("CurrencyCode");
+
+                                    b2.Property<string>("Symbol")
+                                        .HasMaxLength(5)
+                                        .HasColumnType("TEXT")
+                                        .HasColumnName("CurrencySymbol");
+
+                                    b2.HasKey("MoneyProductEntityId");
+
+                                    b2.ToTable("Products");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("MoneyProductEntityId");
+                                });
+
+                            b1.Navigation("Currency");
+                        });
+
+                    b.OwnsOne("Domain.Rating", "Rating", b1 =>
+                        {
+                            b1.Property<Guid>("ProductEntityId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<int>("Count")
+                                .HasColumnType("INTEGER")
+                                .HasColumnName("RatingCount");
+
+                            b1.Property<double>("Rate")
+                                .HasColumnType("REAL")
+                                .HasColumnName("RatingRate");
+
+                            b1.HasKey("ProductEntityId");
+
+                            b1.ToTable("Products");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductEntityId");
+                        });
+
+                    b.Navigation("Price");
+
+                    b.Navigation("Rating");
                 });
 #pragma warning restore 612, 618
         }

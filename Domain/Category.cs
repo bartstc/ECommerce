@@ -1,9 +1,8 @@
-namespace Domain
+namespace Domain;
+
+public enum Category
 {
-    public enum Category
-    {
-        Clothing,
-        Jewelery,
-        Electronics
-    }
+    Clothing,
+    Jewelery,
+    Electronics
 }

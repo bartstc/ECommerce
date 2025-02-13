@@ -34,25 +34,30 @@ namespace Persistence.Modules.Products.Repositories
             var existingProduct = await _context.Products
               .Include(p => p.Price)
               .Include(p => p.Rating)
-              .FirstOrDefaultAsync(p => p.Id == product.Id);
+              .FirstOrDefaultAsync(p => p.Id == product.Id.Value);
 
             if (existingProduct == null)
             {
                 throw new Exception("Product not found");
             }
 
-            existingProduct.Title = product.Title;
+            existingProduct.Name = product.Name;
             existingProduct.Description = product.Description;
-            existingProduct.Image = product.Image;
+            existingProduct.ImageUrl = product.ImageUrl;
             existingProduct.Category = product.Category;
             existingProduct.EditedAt = DateTime.UtcNow;
 
-            existingProduct.Price = new Money(product.Price.Amount, product.Price.Currency);
-            existingProduct.Rating = new Rating(product.Rating.Rate, product.Rating.Count);
+            existingProduct.Price = Money.Of(product.Price.Amount, product.Price.Currency.Code);
+            existingProduct.Rating = Rating.Of(product.Rating.Rate, product.Rating.Count);
         }
 
         public void DeleteProduct(Product product)
         {
+            var productEntity = _context.Products.Local.FirstOrDefault(p => p.Id == product.Id.Value);
+            if (productEntity != null)
+            {
+                _context.Entry(productEntity).State = EntityState.Detached;
+            }
             _context.Remove(product.ToPersistence());
         }
 

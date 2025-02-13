@@ -2,11 +2,11 @@ namespace Application.Products.Dtos
 {
     public record ProductDto(
         Guid Id,
-        string Title,
+        string Name,
         string Description,
         MoneyDto Price,
         RatingDto Rating,
-        string Image,
+        string ImageUrl,
         string Category,
         DateTime AddedAt,
         DateTime? EditedAt

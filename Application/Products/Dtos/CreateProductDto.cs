@@ -1,17 +1,17 @@
 namespace Application.Products.Dtos
 {
     public record CreateProductDto(
-        string Title,
+        string Name,
         string Description,
         CreatePriceDto Price,
         CreateRatingDto Rating,
-        string Image,
+        string ImageUrl,
         string Category
     );
 
     public record CreatePriceDto(
         decimal Amount,
-        string Currency
+        string Code
     );
 
     public record CreateRatingDto(

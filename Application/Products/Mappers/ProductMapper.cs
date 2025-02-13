@@ -8,18 +8,18 @@ namespace Application.Products.Mappers
         public static ProductDto ToDto(this Product product)
         {
             return new ProductDto(
-                Id: product.Id,
-                Title: product.Title,
+                Id: product.Id.Value,
+                Name: product.Name,
                 Description: product.Description,
                 Price: new MoneyDto(
                     Amount: product.Price.Amount,
-                    Currency: product.Price.Currency.ToString()
+                    Currency: product.Price.Currency.Code
                 ),
                 Rating: new RatingDto(
                     Rate: Math.Round(product.Rating.Rate, 2),
                     Count: product.Rating.Count
                 ),
-                Image: product.Image,
+                ImageUrl: product.ImageUrl,
                 Category: MapCategoryToString(product.Category),
                 AddedAt: product.AddedAt,
                 EditedAt: product.EditedAt
@@ -28,33 +28,32 @@ namespace Application.Products.Mappers
 
         public static Product ToDomain(this CreateProductDto productDto)
         {
-            return new Product
-            {
-                Id = Guid.NewGuid(),
-                Title = productDto.Title,
-                Description = productDto.Description,
-                Price = new Money(productDto.Price.Amount, Enum.Parse<Currency>(productDto.Price.Currency)),
-                Rating = new Rating(productDto.Rating.Rate, productDto.Rating.Count),
-                Image = productDto.Image,
-                Category = MapStringToCategory(productDto.Category),
-                AddedAt = DateTime.UtcNow
-            };
+            return Product.Create(new ProductData(
+                null,
+                productDto.Name,
+                productDto.Description,
+                Money.Of(productDto.Price.Amount, productDto.Price.Code),
+                Rating.Of(productDto.Rating.Rate, productDto.Rating.Count),
+                productDto.ImageUrl,
+                MapStringToCategory(productDto.Category),
+                DateTime.Now,
+                null
+            ));
         }
 
         public static Product ToDomain(this CreateProductDto productDto, Product product)
         {
-            return new Product
-            {
-                Id = product.Id,
-                Title = productDto.Title,
-                Description = productDto.Description,
-                Price = new Money(productDto.Price.Amount, Enum.Parse<Currency>(productDto.Price.Currency)),
-                Rating = new Rating(productDto.Rating.Rate, productDto.Rating.Count),
-                Image = productDto.Image,
-                Category = MapStringToCategory(productDto.Category),
-                AddedAt = product.AddedAt,
-                EditedAt = product.EditedAt
-            };
+            return Product.Create(new ProductData(
+                product.Id.Value,
+                productDto.Name,
+                productDto.Description,
+                Money.Of(productDto.Price.Amount, productDto.Price.Code),
+                Rating.Of(productDto.Rating.Rate, productDto.Rating.Count),
+                productDto.ImageUrl,
+                MapStringToCategory(productDto.Category),
+                product.AddedAt,
+                product.EditedAt
+            ));
         }
 
         private static string MapCategoryToString(Category category)

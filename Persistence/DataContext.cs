@@ -20,19 +20,28 @@ namespace Persistence
             modelBuilder.Entity<ProductEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Title);
+                entity.Property(e => e.Name);
                 entity.Property(e => e.Description);
                 entity.OwnsOne(e => e.Price, price =>
                 {
-                    price.Property(p => p.Amount).HasColumnName("PriceAmount");
-                    price.Property(p => p.Currency).HasColumnName("PriceCurrency").HasConversion<string>();
+                    price.Property(p => p.Amount).HasColumnName("Price");
+                    price.OwnsOne(p => p.Currency, currency =>
+                    {
+                        currency.Property(e => e.Code)
+                            .HasColumnName("CurrencyCode")
+                            .HasMaxLength(5).IsRequired();
+
+                        currency.Property(e => e.Symbol)
+                            .HasColumnName("CurrencySymbol")
+                            .HasMaxLength(5);
+                    });
                 });
                 entity.OwnsOne(e => e.Rating, rating =>
                 {
                     rating.Property(p => p.Rate).HasColumnName("RatingRate");
                     rating.Property(p => p.Count).HasColumnName("RatingCount");
                 });
-                entity.Property(e => e.Image);
+                entity.Property(e => e.ImageUrl);
                 entity.Property(e => e.Category).HasConversion<string>();
                 entity.Property(e => e.AddedAt);
                 entity.Property(e => e.EditedAt);

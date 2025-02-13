@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{D75B3D46-283D-4572-A5E7-7C4C1F642F15}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{CB1E2654-44C9-4567-B0B7-51C14E98AC23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Core", "Core\ECommerce.Core\ECommerce.Core.csproj", "{58B6E185-358E-4425-8FDA-1841BD1A6A6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +52,12 @@ Global
 		{D75B3D46-283D-4572-A5E7-7C4C1F642F15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D75B3D46-283D-4572-A5E7-7C4C1F642F15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D75B3D46-283D-4572-A5E7-7C4C1F642F15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B6E185-358E-4425-8FDA-1841BD1A6A6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B6E185-358E-4425-8FDA-1841BD1A6A6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B6E185-358E-4425-8FDA-1841BD1A6A6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B6E185-358E-4425-8FDA-1841BD1A6A6F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{58B6E185-358E-4425-8FDA-1841BD1A6A6F} = {CB1E2654-44C9-4567-B0B7-51C14E98AC23}
 	EndGlobalSection
 EndGlobal
