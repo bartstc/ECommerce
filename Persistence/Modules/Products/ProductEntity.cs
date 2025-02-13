@@ -1,5 +1,4 @@
 using Domain;
-using Persistence.Modules.Stores.Entities;
 
 namespace Persistence.Modules.Products.Entities
 {
@@ -12,8 +11,6 @@ namespace Persistence.Modules.Products.Entities
         public Rating Rating { get; set; }
         public string Image { get; set; }
         public Category Category { get; set; }
-        public Guid StoreId { get; set; }
-        public StoreEntity Store { get; set; }
         public DateTime AddedAt { get; set; }
         public DateTime? EditedAt { get; set; }
     }

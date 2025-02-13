@@ -21,7 +21,6 @@ namespace Application.Products.Mappers
                 ),
                 Image: product.Image,
                 Category: MapCategoryToString(product.Category),
-                StoreId: product.StoreId,
                 AddedAt: product.AddedAt,
                 EditedAt: product.EditedAt
             );
@@ -38,8 +37,6 @@ namespace Application.Products.Mappers
                 Rating = new Rating(productDto.Rating.Rate, productDto.Rating.Count),
                 Image = productDto.Image,
                 Category = MapStringToCategory(productDto.Category),
-                // temporary, will be provided from the user's metchant profile's store
-                StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                 AddedAt = DateTime.UtcNow
             };
         }
@@ -55,7 +52,6 @@ namespace Application.Products.Mappers
                 Rating = new Rating(productDto.Rating.Rate, productDto.Rating.Count),
                 Image = productDto.Image,
                 Category = MapStringToCategory(productDto.Category),
-                StoreId = product.StoreId,
                 AddedAt = product.AddedAt,
                 EditedAt = product.EditedAt
             };

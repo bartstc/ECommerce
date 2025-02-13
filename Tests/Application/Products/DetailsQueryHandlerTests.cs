@@ -42,7 +42,6 @@ namespace ECommerce.Tests.Application.Products
                 Rating = new Rating(4.5, 10),
                 Image = "test-image.jpg",
                 Category = Category.Electronics,
-                StoreId = Guid.NewGuid(),
                 AddedAt = DateTime.UtcNow
             };
             var query = new Details.Query(productId);

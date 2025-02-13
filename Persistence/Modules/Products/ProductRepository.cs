@@ -16,7 +16,7 @@ namespace Persistence.Modules.Products.Repositories
         public async Task<Product> GetProduct(Guid id)
         {
             var productEntity = await _context.Products.FindAsync(id);
-            return productEntity.ToDomain();
+            return productEntity?.ToDomain();
         }
 
         public async Task<List<Product>> GetProducts()

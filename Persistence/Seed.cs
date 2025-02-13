@@ -2,7 +2,6 @@ using Domain;
 using Microsoft.AspNetCore.Identity;
 using Persistence.Entities;
 using Persistence.Modules.Products.Entities;
-using Persistence.Modules.Stores.Entities;
 
 namespace Persistence
 {
@@ -25,40 +24,6 @@ namespace Persistence
                 }
             }
 
-            if (!context.Stores.Any())
-            {
-                var stores = new List<StoreEntity>
-                {
-                    new StoreEntity
-                    {
-                        Id = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
-                        Name = "Store 1",
-                        Description = "Store 1 Description",
-                        Rating = new Rating(4.5, 20),
-                        CreatedAt = DateTime.Parse("2025-02-02T00:00:00Z"),
-                        Products = new List<ProductEntity>()
-                    },
-                    new StoreEntity
-                    {
-                        Name = "Store 2",
-                        Description = "Store 2 Description",
-                        Rating = new Rating(0, 0),
-                        CreatedAt = DateTime.Parse("2025-02-02T00:00:00Z"),
-                        Products = new List<ProductEntity>()
-                    },
-                    new StoreEntity
-                    {
-                        Name = "Store 3",
-                        Description = "Store 3 Description",
-                        Rating = new Rating(0, 0),
-                        CreatedAt = DateTime.Parse("2025-02-02T00:00:00Z"),
-                        Products = new List<ProductEntity>()
-                    }
-                };
-
-                await context.Stores.AddRangeAsync(stores);
-            }
-
             if (!context.Products.Any())
             {
                 var products = new List<ProductEntity>
@@ -71,7 +36,6 @@ namespace Persistence
                         Rating = new Rating(3.9, 120),
                         Image = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -82,7 +46,6 @@ namespace Persistence
                         Rating = new Rating(4.1, 259),
                         Image = "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -93,7 +56,6 @@ namespace Persistence
                         Rating = new Rating(4.7, 500),
                         Image = "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -104,7 +66,6 @@ namespace Persistence
                         Rating = new Rating(2.1, 430),
                         Image = "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -115,7 +76,6 @@ namespace Persistence
                         Rating = new Rating(4.6, 400),
                         Image = "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
                         Category = Category.Jewelery,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -126,7 +86,6 @@ namespace Persistence
                         Rating = new Rating(3.9, 70),
                         Image = "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg",
                         Category = Category.Jewelery,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -137,7 +96,6 @@ namespace Persistence
                         Rating = new Rating(3, 400),
                         Image = "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
                         Category = Category.Jewelery,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -148,7 +106,6 @@ namespace Persistence
                         Rating = new Rating(1.9, 100),
                         Image = "https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_.jpg",
                         Category = Category.Jewelery,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -159,7 +116,6 @@ namespace Persistence
                         Rating = new Rating(3.3, 203),
                         Image = "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg",
                         Category = Category.Electronics,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -170,7 +126,6 @@ namespace Persistence
                         Rating = new Rating(2.9, 470),
                         Image = "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -181,7 +136,6 @@ namespace Persistence
                         Rating = new Rating(4.8, 319),
                         Image = "https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -192,7 +146,6 @@ namespace Persistence
                         Rating = new Rating(4.8, 400),
                         Image = "https://fakestoreapi.com/img/61mtL65D4cL._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -203,7 +156,6 @@ namespace Persistence
                         Rating = new Rating(2.9, 250),
                         Image = "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -214,7 +166,6 @@ namespace Persistence
                         Rating = new Rating(2.2, 140),
                         Image = "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -225,7 +176,6 @@ namespace Persistence
                         Rating = new Rating(2.6, 235),
                         Image = "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -236,7 +186,6 @@ namespace Persistence
                         Rating = new Rating(2.9, 340),
                         Image = "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -247,7 +196,6 @@ namespace Persistence
                         Rating = new Rating(3.8, 679),
                         Image = "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -258,7 +206,6 @@ namespace Persistence
                         Rating = new Rating(4.7, 130),
                         Image = "https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -269,7 +216,6 @@ namespace Persistence
                         Rating = new Rating(4.5, 146),
                         Image = "https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     },
                     new ProductEntity
@@ -280,7 +226,6 @@ namespace Persistence
                         Rating = new Rating(3.6, 145),
                         Image = "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg",
                         Category = Category.Clothing,
-                        StoreId = Guid.Parse("c4f297c6-dd1a-44ad-bf41-428ac0310a62"),
                         AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
                     }
                 };

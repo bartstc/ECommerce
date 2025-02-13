@@ -16,7 +16,6 @@ namespace Persistence.Modules.Products.Mappers
                 Rating = new Rating(productEntity.Rating.Rate, productEntity.Rating.Count),
                 Image = productEntity.Image,
                 Category = productEntity.Category,
-                StoreId = productEntity.StoreId,
                 AddedAt = productEntity.AddedAt,
                 EditedAt = productEntity.EditedAt
             };
@@ -33,7 +32,6 @@ namespace Persistence.Modules.Products.Mappers
                 Rating = new Rating(product.Rating.Rate, product.Rating.Count),
                 Image = product.Image,
                 Category = product.Category,
-                StoreId = product.StoreId,
                 AddedAt = product.AddedAt,
                 EditedAt = product.EditedAt
             };

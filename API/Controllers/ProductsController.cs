@@ -62,7 +62,6 @@ namespace API.Controllers
         {
             var result = await Mediator.Send(new RateProduct.Command(id, rateProductDto));
             if (result.Error == ProductsError.ProductNotFound) return NotFound(result.Error);
-            if (result.Error == ProductsError.StoreNotFound) return BadRequest(result.Error);
             return HandleResult(result);
         }
     }
