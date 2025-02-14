@@ -29,7 +29,7 @@ namespace ECommerce.Tests.Application.Products
                 "updated-image.jpg",
                 "electronics"
             ));
-            _productRepositoryMock.Setup(repo => repo.GetProduct(command.Id)).ReturnsAsync((Product)null);
+            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(command.Id))).ReturnsAsync((Product)null);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
@@ -62,7 +62,7 @@ namespace ECommerce.Tests.Application.Products
             );
             var product = Product.Create(productData);
 
-            _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
+            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(productId))).ReturnsAsync(product);
             _productRepositoryMock.Setup(repo => repo.Complete()).ReturnsAsync(false);
 
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -96,7 +96,7 @@ namespace ECommerce.Tests.Application.Products
             );
             var product = Product.Create(productData);
 
-            _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
+            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(productId))).ReturnsAsync(product);
             _productRepositoryMock.Setup(repo => repo.Complete()).ReturnsAsync(true);
 
             var result = await _handler.Handle(command, CancellationToken.None);

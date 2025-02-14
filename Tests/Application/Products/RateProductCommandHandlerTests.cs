@@ -25,7 +25,7 @@ namespace ECommerce.Tests.Application.Products
         public async Task Handle_Should_ReturnFailureResult_WhenProductNotFound()
         {
             var command = new RateProduct.Command(Guid.NewGuid(), new RateProductDto(5));
-            _productRepositoryMock.Setup(repo => repo.GetProduct(command.Id)).ReturnsAsync((Product)null);
+            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(command.Id))).ReturnsAsync((Product)null);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 
@@ -51,7 +51,7 @@ namespace ECommerce.Tests.Application.Products
             );
             var product = Product.Create(productData);
 
-            _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
+            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(productId))).ReturnsAsync(product);
             _unitOfWorkMock.Setup(uow => uow.Complete()).ReturnsAsync(true);
 
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -78,7 +78,7 @@ namespace ECommerce.Tests.Application.Products
             );
             var product = Product.Create(productData);
 
-            _productRepositoryMock.Setup(repo => repo.GetProduct(productId)).ReturnsAsync(product);
+            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(productId))).ReturnsAsync(product);
             _unitOfWorkMock.Setup(uow => uow.Complete()).ReturnsAsync(false);
 
             var result = await _handler.Handle(command, CancellationToken.None);
