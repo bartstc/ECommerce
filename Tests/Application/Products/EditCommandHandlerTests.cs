@@ -1,7 +1,7 @@
 using Application.Products;
 using Application.Products.Dtos;
+using Application.Products.Exceptions;
 using Domain;
-using Domain.Errors;
 using Moq;
 using Shouldly;
 
@@ -34,7 +34,7 @@ namespace ECommerce.Tests.Application.Products
             var result = await _handler.Handle(command, CancellationToken.None);
 
             result.IsSuccess.ShouldBeFalse();
-            result.Error.ShouldBe(ProductsError.ProductNotFound);
+            result.Error.ShouldBeOfType<ProductNotFoundException>();
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace ECommerce.Tests.Application.Products
             var result = await _handler.Handle(command, CancellationToken.None);
 
             result.IsSuccess.ShouldBeFalse();
-            result.Error.ShouldBe(ProductsError.FailedToUpdateProduct);
+            result.Error.ShouldBeOfType<FailedToUpdateProductException>();
         }
 
         [Fact]

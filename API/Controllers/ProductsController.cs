@@ -1,6 +1,6 @@
 using Application.Products;
 using Application.Products.Dtos;
-using Domain.Errors;
+using Application.Products.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +27,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetProduct(Guid id)
         {
             var result = await Mediator.Send(new Details.Query(id));
-            if (result.Error == ProductsError.ProductNotFound) return NotFound(result.Error);
+            if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
             return HandleResult(result);
         }
 
@@ -35,7 +35,7 @@ namespace API.Controllers
         public async Task<IActionResult> CreateProduct(CreateProductDto productDto)
         {
             var result = await Mediator.Send(new Create.Command(productDto));
-            if (result.Error == ProductsError.FailedToCreateProduct) return BadRequest(result.Error);
+            if (result.Error is FailedToCreateProductException) return BadRequest(result.Error.Message);
             return HandleResult(result);
         }
 
@@ -43,8 +43,8 @@ namespace API.Controllers
         public async Task<IActionResult> EditProduct(Guid id, CreateProductDto productDto)
         {
             var result = await Mediator.Send(new Edit.Command(id, productDto));
-            if (result.Error == ProductsError.ProductNotFound) return NotFound(result.Error);
-            if (result.Error == ProductsError.FailedToUpdateProduct) return BadRequest(result.Error);
+            if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
+            if (result.Error is FailedToUpdateProductException) return BadRequest(result.Error.Message);
             return HandleResult(result);
         }
 
@@ -52,8 +52,8 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
             var result = await Mediator.Send(new Delete.Command(id));
-            if (result.Error == ProductsError.ProductNotFound) return NotFound(result.Error);
-            if (result.Error == ProductsError.FailedToDeleteProduct) return BadRequest(result.Error);
+            if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
+            if (result.Error is FailedToDeleteProductException) return BadRequest(result.Error.Message);
             return HandleResult(result);
         }
 
@@ -61,7 +61,7 @@ namespace API.Controllers
         public async Task<IActionResult> RateProduct(Guid id, RateProductDto rateProductDto)
         {
             var result = await Mediator.Send(new RateProduct.Command(id, rateProductDto));
-            if (result.Error == ProductsError.ProductNotFound) return NotFound(result.Error);
+            if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
             return HandleResult(result);
         }
     }

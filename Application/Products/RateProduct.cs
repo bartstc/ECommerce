@@ -1,6 +1,6 @@
 using Application.Products.Dtos;
+using Application.Products.Exceptions;
 using Domain;
-using Domain.Errors;
 using ECommerce.Core.Application;
 using ECommerce.Core.Persistence;
 using MediatR;
@@ -29,7 +29,7 @@ namespace Application.Products
             {
                 var product = await _productRepository.GetProduct(request.Id);
 
-                if (product == null) return Result<Unit>.Failure(ProductsError.ProductNotFound);
+                if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
                 product.RateProduct(request.rateProductDto.Rating);
 
@@ -37,7 +37,7 @@ namespace Application.Products
 
                 var result = await _unitOfWork.Complete();
 
-                if (!result) return Result<Unit>.Failure(ProductsError.FailedToRateProduct);
+                if (!result) return Result<Unit>.Failure(new FailedToRateProductException());
 
                 return Result<Unit>.Success(Unit.Value);
             }

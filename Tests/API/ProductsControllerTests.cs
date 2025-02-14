@@ -1,6 +1,6 @@
 using Application.Products;
 using Application.Products.Dtos;
-using Domain.Errors;
+using Application.Products.Exceptions;
 using ECommerce.Core.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +55,7 @@ namespace API.Controllers.Tests
             // Arrange
             var productId = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<Details.Query>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<ProductDto>.Failure(ProductsError.ProductNotFound));
+                .ReturnsAsync(Result<ProductDto>.Failure(new ProductNotFoundException()));
 
             // Act
             var result = await _controller.GetProduct(productId);
@@ -63,7 +63,7 @@ namespace API.Controllers.Tests
             // Assert
             result.ShouldBeOfType<NotFoundObjectResult>();
             var notFoundResult = result as NotFoundObjectResult;
-            notFoundResult.Value.ShouldBe(ProductsError.ProductNotFound);
+            notFoundResult.Value.ShouldBe("Product not found");
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace API.Controllers.Tests
                 "Test Brand"
             );
             _mediatorMock.Setup(m => m.Send(It.IsAny<Create.Command>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<Unit>.Failure(ProductsError.FailedToCreateProduct));
+                .ReturnsAsync(Result<Unit>.Failure(new FailedToCreateProductException()));
 
             // Act
             var result = await _controller.CreateProduct(productDto);
@@ -115,7 +115,7 @@ namespace API.Controllers.Tests
             // Assert
             result.ShouldBeOfType<BadRequestObjectResult>();
             var badRequestResult = result as BadRequestObjectResult;
-            badRequestResult.Value.ShouldBe(ProductsError.FailedToCreateProduct);
+            badRequestResult.Value.ShouldBe("Failed to create the product");
         }
 
         [Fact]
@@ -154,7 +154,7 @@ namespace API.Controllers.Tests
                 "Updated Brand"
             );
             _mediatorMock.Setup(m => m.Send(It.IsAny<Edit.Command>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<Unit>.Failure(ProductsError.ProductNotFound));
+                .ReturnsAsync(Result<Unit>.Failure(new ProductNotFoundException()));
 
             // Act
             var result = await _controller.EditProduct(productId, productDto);
@@ -162,7 +162,7 @@ namespace API.Controllers.Tests
             // Assert
             result.ShouldBeOfType<NotFoundObjectResult>();
             var notFoundResult = result as NotFoundObjectResult;
-            notFoundResult.Value.ShouldBe(ProductsError.ProductNotFound);
+            notFoundResult.Value.ShouldBe("Product not found");
         }
 
         [Fact]
@@ -194,7 +194,7 @@ namespace API.Controllers.Tests
             // Arrange
             var productId = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<Delete.Command>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<Unit>.Failure(ProductsError.FailedToDeleteProduct));
+                .ReturnsAsync(Result<Unit>.Failure(new FailedToDeleteProductException()));
 
             // Act
             var result = await _controller.DeleteProduct(productId);
@@ -202,7 +202,7 @@ namespace API.Controllers.Tests
             // Assert
             result.ShouldBeOfType<BadRequestObjectResult>();
             var badRequestResult = result as BadRequestObjectResult;
-            badRequestResult.Value.ShouldBe(ProductsError.FailedToDeleteProduct);
+            badRequestResult.Value.ShouldBe("Failed to delete the product");
         }
 
         [Fact]

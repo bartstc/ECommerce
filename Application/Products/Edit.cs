@@ -1,8 +1,8 @@
 using Application.Products.Dtos;
+using Application.Products.Exceptions;
 using Application.Products.Mappers;
 using Application.Products.Validators;
 using Domain;
-using Domain.Errors;
 using ECommerce.Core.Application;
 using FluentValidation;
 using MediatR;
@@ -34,7 +34,7 @@ namespace Application.Products
             {
                 var product = await _productRepository.GetProduct(request.Id);
 
-                if (product == null) return Result<Unit>.Failure(ProductsError.ProductNotFound);
+                if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
                 var updatedProduct = request.ProductDto.ToDomain(product);
 
@@ -42,7 +42,7 @@ namespace Application.Products
 
                 var result = await _productRepository.Complete();
 
-                if (!result) return Result<Unit>.Failure(ProductsError.FailedToUpdateProduct);
+                if (!result) return Result<Unit>.Failure(new FailedToUpdateProductException());
 
                 return Result<Unit>.Success(Unit.Value);
             }
