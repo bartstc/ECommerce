@@ -20,6 +20,10 @@ namespace API.Extensions
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            // services.AddMarten(async opt =>
+            // {
+            //     opt.Connection(config.GetConnectionString("DefaultConnection"));
+            // });
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));

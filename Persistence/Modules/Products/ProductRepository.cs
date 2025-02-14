@@ -1,6 +1,5 @@
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Persistence.Modules.Products.Mappers;
 
 namespace Persistence.Modules.Products.Repositories
 {
@@ -13,20 +12,20 @@ namespace Persistence.Modules.Products.Repositories
             _context = context;
         }
 
-        public async Task<Product> GetProduct(Guid id)
+        public async Task<Product> GetProduct(ProductId id)
         {
-            var productEntity = await _context.Products.FindAsync(id);
-            return productEntity?.ToDomain();
+            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            return product;
         }
 
         public async Task<List<Product>> GetProducts()
         {
-            return await _context.Products.Select(p => p.ToDomain()).ToListAsync();
+            return await _context.Products.ToListAsync();
         }
 
         public void AddProduct(Product product)
         {
-            _context.Products.Add(product.ToPersistence());
+            _context.Products.Add(product);
         }
 
         public async void UpdateProduct(Product product)
@@ -34,31 +33,38 @@ namespace Persistence.Modules.Products.Repositories
             var existingProduct = await _context.Products
               .Include(p => p.Price)
               .Include(p => p.Rating)
-              .FirstOrDefaultAsync(p => p.Id == product.Id.Value);
+              .FirstOrDefaultAsync(p => p.Id == product.Id);
 
             if (existingProduct == null)
             {
                 throw new Exception("Product not found");
             }
 
-            existingProduct.Name = product.Name;
-            existingProduct.Description = product.Description;
-            existingProduct.ImageUrl = product.ImageUrl;
-            existingProduct.Category = product.Category;
-            existingProduct.EditedAt = DateTime.UtcNow;
+            var newData = new ProductData(
+                product.Id.Value,
+                product.Name,
+                product.Description,
+                product.Price,
+                product.Rating,
+                product.ImageUrl,
+                product.Category,
+                product.AddedAt,
+                DateTime.UtcNow
+            );
 
-            existingProduct.Price = Money.Of(product.Price.Amount, product.Price.Currency.Code);
-            existingProduct.Rating = Rating.Of(product.Rating.Rate, product.Rating.Count);
+            existingProduct.Update(newData);
+
+            _context.Products.Update(existingProduct);
         }
 
         public void DeleteProduct(Product product)
         {
-            var productEntity = _context.Products.Local.FirstOrDefault(p => p.Id == product.Id.Value);
+            var productEntity = _context.Products.Local.FirstOrDefault(p => p.Id == product.Id);
             if (productEntity != null)
             {
                 _context.Entry(productEntity).State = EntityState.Detached;
             }
-            _context.Remove(product.ToPersistence());
+            _context.Remove(product);
         }
 
         public async Task<bool> Complete()

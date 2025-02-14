@@ -22,7 +22,7 @@ namespace Application.Products
 
             public async Task<Result<ProductDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var product = await _productRepository.GetProduct(request.Id);
+                var product = await _productRepository.GetProduct(ProductId.Of(request.Id));
 
                 if (product == null) return Result<ProductDto>.Failure(new ProductNotFoundException());
 

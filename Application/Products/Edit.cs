@@ -32,7 +32,7 @@ namespace Application.Products
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var product = await _productRepository.GetProduct(request.Id);
+                var product = await _productRepository.GetProduct(ProductId.Of(request.Id));
 
                 if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
 

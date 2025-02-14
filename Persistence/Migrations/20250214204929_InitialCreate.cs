@@ -59,16 +59,17 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
+                    Category = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
                     Price = table.Column<decimal>(type: "numeric", nullable: true),
                     CurrencyCode = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
                     CurrencySymbol = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
                     RatingRate = table.Column<double>(type: "double precision", nullable: true),
                     RatingCount = table.Column<int>(type: "integer", nullable: true),
-                    ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    Category = table.Column<string>(type: "text", nullable: false),
                     AddedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EditedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    EditedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    AggregateId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {

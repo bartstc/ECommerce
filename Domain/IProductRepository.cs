@@ -2,7 +2,7 @@ namespace Domain;
 
 public interface IProductRepository
 {
-    Task<Product> GetProduct(Guid id);
+    Task<Product> GetProduct(ProductId id);
     Task<List<Product>> GetProducts();
     void AddProduct(Product product);
     void UpdateProduct(Product product);

@@ -1,7 +1,7 @@
+using Domain;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Entities;
-using Persistence.Modules.Products.Entities;
 
 namespace Persistence
 {
@@ -11,15 +11,22 @@ namespace Persistence
         {
         }
 
-        public DbSet<ProductEntity> Products { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ProductEntity>(entity =>
+            modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(x => x.Id)
+                    .HasConversion(
+                        v => v.Value,
+                        v => ProductId.Of(v));
+
+                entity.Ignore(t => t.Version);
+
                 entity.Property(e => e.Name);
                 entity.Property(e => e.Description);
                 entity.OwnsOne(e => e.Price, price =>
