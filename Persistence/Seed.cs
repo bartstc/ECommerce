@@ -33,20 +33,20 @@ namespace Persistence
                         Name = "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
                         Description = "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
                         Price = Money.Of(109.95m, Currency.USDollar.Code),
-                        Rating =  Rating.Of(3.9, 120),
+                        Rating = Rating.Of(3.9, 120),
                         ImageUrl = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
                         Name = "Mens Casual Premium Slim Fit T-Shirts",
                         Description = "Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.",
-                        Price =  Money.Of(22.3m, Currency.USDollar.Code),
-                        Rating =  Rating.Of(4.1, 259),
+                        Price = Money.Of(22.3m, Currency.USDollar.Code),
+                        Rating = Rating.Of(4.1, 259),
                         ImageUrl = "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -56,7 +56,7 @@ namespace Persistence
                         Rating = Rating.Of(4.7, 500),
                         ImageUrl = "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -66,7 +66,7 @@ namespace Persistence
                         Rating = Rating.Of(2.1, 430),
                         ImageUrl = "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -76,7 +76,7 @@ namespace Persistence
                         Rating = Rating.Of(4.6, 400),
                         ImageUrl = "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg",
                         Category = Category.Jewelery,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -86,7 +86,7 @@ namespace Persistence
                         Rating = Rating.Of(3.9, 70),
                         ImageUrl = "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg",
                         Category = Category.Jewelery,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -96,7 +96,7 @@ namespace Persistence
                         Rating = Rating.Of(3, 400),
                         ImageUrl = "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
                         Category = Category.Jewelery,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -106,7 +106,7 @@ namespace Persistence
                         Rating = Rating.Of(1.9, 100),
                         ImageUrl = "https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_.jpg",
                         Category = Category.Jewelery,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -116,7 +116,7 @@ namespace Persistence
                         Rating = Rating.Of(3.3, 203),
                         ImageUrl = "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg",
                         Category = Category.Electronics,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -126,7 +126,7 @@ namespace Persistence
                         Rating = Rating.Of(2.9, 470),
                         ImageUrl = "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -136,7 +136,7 @@ namespace Persistence
                         Rating = Rating.Of(4.8, 319),
                         ImageUrl = "https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -146,7 +146,7 @@ namespace Persistence
                         Rating = Rating.Of(4.8, 400),
                         ImageUrl = "https://fakestoreapi.com/img/61mtL65D4cL._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -156,7 +156,7 @@ namespace Persistence
                         Rating = Rating.Of(2.9, 250),
                         ImageUrl = "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -166,7 +166,7 @@ namespace Persistence
                         Rating = Rating.Of(2.2, 140),
                         ImageUrl = "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg",
                         Category = Category.Electronics,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -176,7 +176,7 @@ namespace Persistence
                         Rating = Rating.Of(2.6, 235),
                         ImageUrl = "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -186,7 +186,7 @@ namespace Persistence
                         Rating = Rating.Of(2.9, 340),
                         ImageUrl = "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -196,7 +196,7 @@ namespace Persistence
                         Rating = Rating.Of(3.8, 679),
                         ImageUrl = "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -206,7 +206,7 @@ namespace Persistence
                         Rating = Rating.Of(4.7, 130),
                         ImageUrl = "https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -216,7 +216,7 @@ namespace Persistence
                         Rating = Rating.Of(4.5, 146),
                         ImageUrl = "https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     },
                     new ProductEntity
                     {
@@ -226,7 +226,7 @@ namespace Persistence
                         Rating = Rating.Of(3.6, 145),
                         ImageUrl = "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg",
                         Category = Category.Clothing,
-                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z")
+                        AddedAt = DateTime.Parse("2025-02-02T00:00:00Z").ToUniversalTime()
                     }
                 };
 

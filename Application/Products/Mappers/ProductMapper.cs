@@ -36,7 +36,7 @@ namespace Application.Products.Mappers
                 Rating.Of(productDto.Rating.Rate, productDto.Rating.Count),
                 productDto.ImageUrl,
                 MapStringToCategory(productDto.Category),
-                DateTime.Now,
+                DateTime.UtcNow,
                 null
             ));
         }
