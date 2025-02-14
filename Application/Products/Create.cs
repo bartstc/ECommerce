@@ -1,4 +1,3 @@
-using Application.Core;
 using Application.Products.Mappers;
 using Application.Products.Dtos;
 using Application.Products.Validators;
@@ -6,6 +5,7 @@ using FluentValidation;
 using MediatR;
 using Domain;
 using Domain.Errors;
+using ECommerce.Core.Application;
 
 namespace Application.Products
 {

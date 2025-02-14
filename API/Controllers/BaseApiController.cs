@@ -1,4 +1,4 @@
-using Application.Core;
+using ECommerce.Core.Application;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers

@@ -1,8 +1,8 @@
-using Application.Core;
-using Application.Interfaces;
 using Application.Products.Dtos;
 using Domain;
 using Domain.Errors;
+using ECommerce.Core.Application;
+using ECommerce.Core.Persistence;
 using MediatR;
 
 namespace Application.Products

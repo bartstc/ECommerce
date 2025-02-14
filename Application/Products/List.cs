@@ -1,7 +1,7 @@
-using Application.Core;
 using Application.Products.Dtos;
 using Application.Products.Mappers;
 using Domain;
+using ECommerce.Core.Application;
 using MediatR;
 
 namespace Application.Products

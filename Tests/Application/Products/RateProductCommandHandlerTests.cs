@@ -1,14 +1,10 @@
-using Application.Interfaces;
 using Application.Products;
 using Application.Products.Dtos;
 using Domain;
 using Domain.Errors;
+using ECommerce.Core.Persistence;
 using Moq;
 using Shouldly;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace ECommerce.Tests.Application.Products
 {

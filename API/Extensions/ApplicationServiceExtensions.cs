@@ -4,9 +4,10 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Application.Interfaces;
 using Infrastructure.Security;
 using Application.Core;
+using ECommerce.Core.Persistence;
+using Application.Interfaces;
 
 namespace API.Extensions
 {

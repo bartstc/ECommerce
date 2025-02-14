@@ -1,4 +1,4 @@
-using Application.Interfaces;
+using ECommerce.Core.Persistence;
 using Persistence;
 
 namespace Application.Core

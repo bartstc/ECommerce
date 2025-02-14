@@ -1,7 +1,7 @@
-using Application.Core;
 using Application.Products;
 using Application.Products.Dtos;
 using Domain.Errors;
+using ECommerce.Core.Application;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

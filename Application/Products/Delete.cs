@@ -1,6 +1,6 @@
-using Application.Core;
 using Domain;
 using Domain.Errors;
+using ECommerce.Core.Application;
 using MediatR;
 
 namespace Application.Products

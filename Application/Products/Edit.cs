@@ -1,9 +1,9 @@
-using Application.Core;
 using Application.Products.Dtos;
 using Application.Products.Mappers;
 using Application.Products.Validators;
 using Domain;
 using Domain.Errors;
+using ECommerce.Core.Application;
 using FluentValidation;
 using MediatR;
 
