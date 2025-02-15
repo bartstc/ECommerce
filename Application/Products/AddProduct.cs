@@ -5,6 +5,7 @@ using MediatR;
 using Domain;
 using ECommerce.Core.Application;
 using ECommerce.Core.Persistence;
+using Application.Products.Mappers;
 
 namespace Application.Products;
 
@@ -31,16 +32,7 @@ public class AddProduct
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var productData = new ProductData(
-                request.ProductDto.Name,
-                request.ProductDto.Description,
-                Money.Of(request.ProductDto.Price.Amount, request.ProductDto.Price.Code),
-                request.ProductDto.ImageUrl,
-                // todo: map from dto
-                Category.Electronics
-            );
-
-            var product = Product.Create(productData);
+            var product = Product.Create(request.ProductDto.ToProductData());
 
             await _productWriteRepository.AppendEventsAsync(product);
 

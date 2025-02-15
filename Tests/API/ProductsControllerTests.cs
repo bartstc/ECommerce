@@ -102,7 +102,6 @@ namespace API.Controllers.Tests
                 "Test Product",
                 "Test Description",
                 new CreatePriceDto(100, "USD"),
-                new CreateRatingDto(5, 10),
                 "Test Category",
                 "Test Brand"
             );
@@ -126,7 +125,6 @@ namespace API.Controllers.Tests
                 "Test Product",
                 "Test Description",
                 new CreatePriceDto(100, "USD"),
-                new CreateRatingDto(5, 10),
                 "Test Category",
                 "Test Brand"
             );
@@ -149,7 +147,6 @@ namespace API.Controllers.Tests
                 "Updated Product",
                 "Updated Description",
                 new CreatePriceDto(150, "USD"),
-                new CreateRatingDto(4, 20),
                 "Updated Category",
                 "Updated Brand"
             );
@@ -174,7 +171,6 @@ namespace API.Controllers.Tests
                 "Updated Product",
                 "Updated Description",
                 new CreatePriceDto(150, "USD"),
-                new CreateRatingDto(4, 20),
                 "Updated Category",
                 "Updated Brand"
             );

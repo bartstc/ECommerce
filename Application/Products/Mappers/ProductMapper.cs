@@ -27,6 +27,17 @@ namespace Application.Products.Mappers
             );
         }
 
+        public static ProductData ToProductData(this CreateProductDto productDto)
+        {
+            return new ProductData(
+                productDto.Name,
+                productDto.Description,
+                Money.Of(productDto.Price.Amount, productDto.Price.Code),
+                productDto.ImageUrl,
+                MapStringToCategory(productDto.Category)
+            );
+        }
+
         private static string MapCategoryToString(Category category)
         {
             return category switch

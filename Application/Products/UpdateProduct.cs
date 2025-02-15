@@ -1,5 +1,6 @@
 using Application.Products.Dtos;
 using Application.Products.Exceptions;
+using Application.Products.Mappers;
 using Application.Products.Validators;
 using Domain;
 using ECommerce.Core.Application;
@@ -37,16 +38,7 @@ namespace Application.Products
 
                 if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
-                var productData = new ProductData(
-                    request.ProductDto.Name,
-                    request.ProductDto.Description,
-                    Money.Of(request.ProductDto.Price.Amount, request.ProductDto.Price.Code),
-                    request.ProductDto.ImageUrl,
-                    // todo: map from dto
-                    Category.Electronics
-                );
-
-                product.Update(productData);
+                product.Update(request.ProductDto.ToProductData());
 
                 await _productWriteRepository.AppendEventsAsync(product);
 
