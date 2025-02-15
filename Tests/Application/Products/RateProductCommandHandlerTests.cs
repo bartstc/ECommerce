@@ -25,7 +25,7 @@ namespace ECommerce.Tests.Application.Products
         public async Task Handle_Should_ReturnFailureResult_WhenProductNotFound()
         {
             var command = new RateProduct.Command(Guid.NewGuid(), new RateProductDto(5));
-            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(command.Id))).ReturnsAsync((Product)null);
+            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(command.ProductId))).ReturnsAsync((Product)null);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 

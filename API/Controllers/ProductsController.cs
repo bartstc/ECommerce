@@ -75,7 +75,7 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RateProduct(Guid id, RateProductDto rateProductDto)
     {
-        var result = await Mediator.Send(new RateProduct.Command(id, rateProductDto));
+        var result = await Mediator.Send(new RateProduct.Command(ProductId.Of(id), rateProductDto));
         if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
         if (result.Error is FailedToRateProductException) return BadRequest(result.Error.Message);
         return HandleResult(result);

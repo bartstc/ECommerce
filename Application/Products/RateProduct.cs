@@ -3,37 +3,44 @@ using Application.Products.Exceptions;
 using Domain;
 using ECommerce.Core.Application;
 using ECommerce.Core.Persistence;
+using FluentValidation;
 using MediatR;
 
 namespace Application.Products
 {
     public class RateProduct
     {
-        public record Command(Guid Id, RateProductDto rateProductDto) : IRequest<Result<Unit>>;
+        public record Command(ProductId ProductId, RateProductDto rateProductDto) : IRequest<Result<Unit>>;
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.rateProductDto.Rating).NotEmpty().InclusiveBetween(1, 5);
+            }
+        }
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            public Handler(
-            )
+            private readonly IEventStoreRepository<Product> _productWriteRepository;
+
+            public Handler(IEventStoreRepository<Product> productWriteRepository)
             {
+                _productWriteRepository = productWriteRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                throw new Exception("Not implemented");
-                // var product = await _productRepository.GetProduct(ProductId.Of(request.Id));
 
-                // if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
+                var product = await _productWriteRepository.FetchStreamAsync(request.ProductId.Value);
 
-                // product.RateProduct(request.rateProductDto.Rating);
+                if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
-                // _productRepository.UpdateProduct(product);
+                product.Rate(request.rateProductDto.Rating);
 
-                // var result = await _unitOfWork.Complete();
+                await _productWriteRepository.AppendEventsAsync(product);
 
-                // if (!result) return Result<Unit>.Failure(new FailedToRateProductException());
-
-                // return Result<Unit>.Success(Unit.Value);
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }

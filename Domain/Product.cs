@@ -48,6 +48,13 @@ public class Product : AggregateRoot<ProductId>
         Apply(@event);
     }
 
+    public void Rate(double rating)
+    {
+        var @event = ProductRated.Create(Id.Value, rating);
+        AppendEvent(@event);
+        Apply(@event);
+    }
+
     private void Apply(ProductAdded @event)
     {
         Id = ProductId.Of(@event.ProductId);
@@ -70,6 +77,11 @@ public class Product : AggregateRoot<ProductId>
         Price = Money.Of(@event.PriceAmount, @event.PriceCode);
     }
 
+    private void Apply(ProductRated @event)
+    {
+        Rating = Rating.Of(@event.Rating, Rating.Count + 1);
+    }
+
     private Product(ProductData productData)
     {
         var productId = Guid.NewGuid();
@@ -87,9 +99,4 @@ public class Product : AggregateRoot<ProductId>
     }
 
     private Product() { }
-
-    public void RateProduct(double rate)
-    {
-        Rating = Rating.UpdateRating(rate);
-    }
 }
