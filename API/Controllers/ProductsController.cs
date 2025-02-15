@@ -31,7 +31,7 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> GetProduct(Guid id)
     {
         var result = await Mediator.Send(new GetProduct.Query(ProductId.Of(id)));
-        if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
+        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
         return HandleResult(result);
     }
 
@@ -41,7 +41,6 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> AddProduct(CreateProductDto productDto)
     {
         var result = await Mediator.Send(new AddProduct.Command(productDto));
-        if (result.Error is FailedToCreateProductException) return BadRequest(result.Error.Message);
         return HandleResult(result);
     }
 
@@ -52,8 +51,7 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> UpdateProduct(Guid id, CreateProductDto productDto)
     {
         var result = await Mediator.Send(new UpdateProduct.Command(ProductId.Of(id), productDto));
-        if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
-        if (result.Error is FailedToUpdateProductException) return BadRequest(result.Error.Message);
+        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
         return HandleResult(result);
     }
 
@@ -64,8 +62,7 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
         var result = await Mediator.Send(new DeleteProduct.Command(ProductId.Of(id)));
-        if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
-        if (result.Error is FailedToDeleteProductException) return BadRequest(result.Error.Message);
+        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
         return HandleResult(result);
     }
 
@@ -76,8 +73,7 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> RateProduct(Guid id, RateProductDto rateProductDto)
     {
         var result = await Mediator.Send(new RateProduct.Command(ProductId.Of(id), rateProductDto));
-        if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
-        if (result.Error is FailedToRateProductException) return BadRequest(result.Error.Message);
+        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
         return HandleResult(result);
     }
 }

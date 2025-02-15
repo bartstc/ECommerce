@@ -21,13 +21,20 @@ namespace Application.Products
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var product = await _productWriteRepository.FetchStreamAsync(request.ProductId.Value);
+                try
+                {
+                    var product = await _productWriteRepository.FetchStreamAsync(request.ProductId.Value);
 
-                if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
+                    if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
-                product.Delete();
+                    product.Delete();
 
-                await _productWriteRepository.AppendEventsAsync(product);
+                    await _productWriteRepository.AppendEventsAsync(product);
+                }
+                catch (Exception ex)
+                {
+                    return Result<Unit>.FromException(ex);
+                }
 
                 return Result<Unit>.Success(Unit.Value);
             }

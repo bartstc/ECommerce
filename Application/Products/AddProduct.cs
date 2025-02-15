@@ -32,9 +32,16 @@ public class AddProduct
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
-            var product = Product.Create(request.ProductDto.ToProductData());
+            try
+            {
+                var product = Product.Create(request.ProductDto.ToProductData());
 
-            await _productWriteRepository.AppendEventsAsync(product);
+                await _productWriteRepository.AppendEventsAsync(product);
+            }
+            catch (Exception ex)
+            {
+                return Result<Unit>.FromException(ex);
+            }
 
             return Result<Unit>.Success(Unit.Value);
         }
