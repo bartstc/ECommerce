@@ -9,7 +9,7 @@ namespace Application.Products.Dtos
         string ImageUrl,
         string Category,
         DateTime AddedAt,
-        DateTime? EditedAt
+        DateTime? UpdatedAt
     );
 
     public record MoneyDto(

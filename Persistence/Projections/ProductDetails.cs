@@ -16,6 +16,8 @@ public class ProductDetails
     public int RatingCount { get; set; }
     public ProductStatus Status { get; set; }
     public DateTime AddedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
 
     internal void Apply(ProductAdded @event)
     {
@@ -38,6 +40,7 @@ public class ProductDetails
         PriceCode = @event.PriceCode;
         ImageUrl = @event.ImageUrl;
         Category = @event.Category;
+        UpdatedAt = @event.Timestamp;
     }
 
     internal void Apply(ProductRated @event)
@@ -51,5 +54,6 @@ public class ProductDetails
     internal void Apply(ProductDeleted @event)
     {
         Status = ProductStatus.Deleted;
+        DeletedAt = @event.Timestamp;
     }
 }

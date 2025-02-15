@@ -23,9 +23,7 @@ namespace Application.Products.Mappers
                 ImageUrl: product.ImageUrl,
                 Category: MapCategoryToString(product.Category),
                 AddedAt: product.AddedAt,
-                // todo: add missing EditedAt property
-                null
-            // EditedAt: product.EditedAt
+                UpdatedAt: product.UpdatedAt
             );
         }
 

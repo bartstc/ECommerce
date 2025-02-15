@@ -14,6 +14,8 @@ public class Product : AggregateRoot<ProductId>
     public Rating Rating { get; private set; }
     public ProductStatus Status { get; private set; }
     public DateTime AddedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
+    public DateTime? DeletedAt { get; private set; }
 
     public static Product Create(ProductData productData)
     {
@@ -93,6 +95,7 @@ public class Product : AggregateRoot<ProductId>
         Description = @event.Description;
         ImageUrl = @event.ImageUrl;
         Price = Money.Of(@event.PriceAmount, @event.PriceCode);
+        UpdatedAt = @event.Timestamp;
     }
 
     private void Apply(ProductRated @event)
@@ -103,6 +106,7 @@ public class Product : AggregateRoot<ProductId>
     private void Apply(ProductDeleted @event)
     {
         Status = ProductStatus.Deleted;
+        DeletedAt = @event.Timestamp;
     }
 
     private Product(ProductData productData)
