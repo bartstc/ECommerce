@@ -1,26 +1,14 @@
-using Application.Products.Dtos;
 using Application.Products.Exceptions;
-using Application.Products.Validators;
 using Domain;
 using ECommerce.Core.Application;
 using ECommerce.Core.Persistence;
-using FluentValidation;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace Application.Products
 {
-    public class UpdateProduct
+    public class DeleteProduct
     {
-        public record Command(ProductId ProductId, CreateProductDto ProductDto) : IRequest<Result<Unit>>;
-
-        public class CommandValidator : AbstractValidator<Command>
-        {
-            public CommandValidator()
-            {
-                RuleFor(x => x.ProductDto).SetValidator(new ProductValidator());
-            }
-        }
+        public record Command(ProductId ProductId) : IRequest<Result<Unit>>;
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
@@ -37,16 +25,7 @@ namespace Application.Products
 
                 if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
-                var productData = new ProductData(
-                    request.ProductDto.Name,
-                    request.ProductDto.Description,
-                    Money.Of(request.ProductDto.Price.Amount, request.ProductDto.Price.Code),
-                    request.ProductDto.ImageUrl,
-                    // todo: map from dto
-                    Category.Electronics
-                );
-
-                product.Update(productData);
+                product.Delete();
 
                 await _productWriteRepository.AppendEventsAsync(product);
 

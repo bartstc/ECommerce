@@ -12,6 +12,7 @@ public class Product : AggregateRoot<ProductId>
     public string ImageUrl { get; private set; }
     public Money Price { get; private set; }
     public Rating Rating { get; private set; }
+    public ProductStatus Status { get; private set; }
     public DateTime AddedAt { get; private set; }
 
     public static Product Create(ProductData productData)
@@ -35,6 +36,9 @@ public class Product : AggregateRoot<ProductId>
 
     public void Update(ProductData productData)
     {
+        if (Status != ProductStatus.Active)
+            throw new BusinessRuleException($"Product cannot be updated when '{Status}'");
+
         var @event = ProductUpdated.Create(
             Id.Value,
             productData.Name,
@@ -50,7 +54,20 @@ public class Product : AggregateRoot<ProductId>
 
     public void Rate(double rating)
     {
+        if (Status != ProductStatus.Active)
+            throw new BusinessRuleException($"Product cannot be rated when '{Status}'");
+
         var @event = ProductRated.Create(Id.Value, rating);
+        AppendEvent(@event);
+        Apply(@event);
+    }
+
+    public void Delete()
+    {
+        if (Status == ProductStatus.Deleted)
+            throw new BusinessRuleException("Product is already deleted.");
+
+        var @event = ProductDeleted.Create(Id.Value);
         AppendEvent(@event);
         Apply(@event);
     }
@@ -59,6 +76,7 @@ public class Product : AggregateRoot<ProductId>
     {
         Id = ProductId.Of(@event.ProductId);
         Rating = Rating.Of(0, 0);
+        Status = ProductStatus.Active;
         Name = @event.Name;
         Category = @event.Category;
         Description = @event.Description;
@@ -80,6 +98,11 @@ public class Product : AggregateRoot<ProductId>
     private void Apply(ProductRated @event)
     {
         Rating = Rating.Of(@event.Rating, Rating.Count + 1);
+    }
+
+    private void Apply(ProductDeleted @event)
+    {
+        Status = ProductStatus.Deleted;
     }
 
     private Product(ProductData productData)

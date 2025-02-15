@@ -51,7 +51,7 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProduct(Guid id, CreateProductDto productDto)
     {
-        var result = await Mediator.Send(new Edit.Command(ProductId.Of(id), productDto));
+        var result = await Mediator.Send(new UpdateProduct.Command(ProductId.Of(id), productDto));
         if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
         if (result.Error is FailedToUpdateProductException) return BadRequest(result.Error.Message);
         return HandleResult(result);
@@ -63,7 +63,7 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
-        var result = await Mediator.Send(new Delete.Command(id));
+        var result = await Mediator.Send(new DeleteProduct.Command(ProductId.Of(id)));
         if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
         if (result.Error is FailedToDeleteProductException) return BadRequest(result.Error.Message);
         return HandleResult(result);

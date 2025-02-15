@@ -10,18 +10,18 @@ namespace ECommerce.Tests.Application.Products
     public class EditCommandHandlerTests
     {
         private readonly Mock<IProductRepository> _productRepositoryMock;
-        private readonly Edit.Handler _handler;
+        private readonly UpdateProduct.Handler _handler;
 
         public EditCommandHandlerTests()
         {
             _productRepositoryMock = new Mock<IProductRepository>();
-            _handler = new Edit.Handler(_productRepositoryMock.Object);
+            _handler = new UpdateProduct.Handler(_productRepositoryMock.Object);
         }
 
         [Fact]
         public async Task Handle_Should_ReturnFailureResult_WhenProductNotFound()
         {
-            var command = new Edit.Command(Guid.NewGuid(), new CreateProductDto(
+            var command = new UpdateProduct.Command(Guid.NewGuid(), new CreateProductDto(
                 "Updated Product",
                 "Updated Description",
                 new CreatePriceDto(150, "USD"),
@@ -41,7 +41,7 @@ namespace ECommerce.Tests.Application.Products
         public async Task Handle_Should_ReturnFailureResult_WhenFailedToUpdateProduct()
         {
             var productId = Guid.NewGuid();
-            var command = new Edit.Command(productId, new CreateProductDto(
+            var command = new UpdateProduct.Command(productId, new CreateProductDto(
                 "Updated Product",
                 "Updated Description",
                 new CreatePriceDto(150, "USD"),
@@ -75,7 +75,7 @@ namespace ECommerce.Tests.Application.Products
         public async Task Handle_Should_ReturnSuccessResult_WhenProductIsUpdated()
         {
             var productId = Guid.NewGuid();
-            var command = new Edit.Command(productId, new CreateProductDto(
+            var command = new UpdateProduct.Command(productId, new CreateProductDto(
                 "Updated Product",
                 "Updated Description",
                 new CreatePriceDto(150, "USD"),

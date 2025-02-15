@@ -153,7 +153,7 @@ namespace API.Controllers.Tests
                 "Updated Category",
                 "Updated Brand"
             );
-            _mediatorMock.Setup(m => m.Send(It.IsAny<Edit.Command>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateProduct.Command>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<Unit>.Failure(new ProductNotFoundException()));
 
             // Act
@@ -178,7 +178,7 @@ namespace API.Controllers.Tests
                 "Updated Category",
                 "Updated Brand"
             );
-            _mediatorMock.Setup(m => m.Send(It.IsAny<Edit.Command>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<UpdateProduct.Command>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<Unit>.Success(Unit.Value));
 
             // Act
@@ -193,7 +193,7 @@ namespace API.Controllers.Tests
         {
             // Arrange
             var productId = Guid.NewGuid();
-            _mediatorMock.Setup(m => m.Send(It.IsAny<Delete.Command>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteProduct.Command>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<Unit>.Failure(new FailedToDeleteProductException()));
 
             // Act
@@ -210,7 +210,7 @@ namespace API.Controllers.Tests
         {
             // Arrange
             var productId = Guid.NewGuid();
-            _mediatorMock.Setup(m => m.Send(It.IsAny<Delete.Command>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteProduct.Command>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<Unit>.Success(Unit.Value));
 
             // Act

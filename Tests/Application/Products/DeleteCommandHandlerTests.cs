@@ -9,18 +9,18 @@ namespace ECommerce.Tests.Application.Products
     public class DeleteCommandHandlerTests
     {
         private readonly Mock<IProductRepository> _productRepositoryMock;
-        private readonly Delete.Handler _handler;
+        private readonly DeleteProduct.Handler _handler;
 
         public DeleteCommandHandlerTests()
         {
             _productRepositoryMock = new Mock<IProductRepository>();
-            _handler = new Delete.Handler(_productRepositoryMock.Object);
+            _handler = new DeleteProduct.Handler(_productRepositoryMock.Object);
         }
 
         [Fact]
         public async Task Handle_Should_ReturnFailureResult_WhenProductNotFound()
         {
-            var command = new Delete.Command(Guid.NewGuid());
+            var command = new DeleteProduct.Command(Guid.NewGuid());
             _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(command.Id))).ReturnsAsync((Product)null);
 
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -33,7 +33,7 @@ namespace ECommerce.Tests.Application.Products
         public async Task Handle_Should_ReturnFailureResult_WhenFailedToDeleteProduct()
         {
             var productId = Guid.NewGuid();
-            var command = new Delete.Command(productId);
+            var command = new DeleteProduct.Command(productId);
             var productData = new ProductData(
                 productId,
                 "Test Product",
@@ -60,7 +60,7 @@ namespace ECommerce.Tests.Application.Products
         public async Task Handle_Should_ReturnSuccessResult_WhenProductIsDeleted()
         {
             var productId = Guid.NewGuid();
-            var command = new Delete.Command(productId);
+            var command = new DeleteProduct.Command(productId);
             var productData = new ProductData(
                 productId,
                 "Test Product",
