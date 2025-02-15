@@ -54,7 +54,7 @@ namespace API.Controllers.Tests
         {
             // Arrange
             var productId = Guid.NewGuid();
-            _mediatorMock.Setup(m => m.Send(It.IsAny<Details.Query>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetProduct.Query>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<ProductDto>.Failure(new ProductNotFoundException()));
 
             // Act
@@ -82,7 +82,7 @@ namespace API.Controllers.Tests
                 DateTime.UtcNow,
                 null
             );
-            _mediatorMock.Setup(m => m.Send(It.IsAny<Details.Query>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetProduct.Query>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<ProductDto>.Success(product));
 
             // Act

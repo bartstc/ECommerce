@@ -30,7 +30,7 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetProduct(Guid id)
     {
-        var result = await Mediator.Send(new Details.Query(id));
+        var result = await Mediator.Send(new GetProduct.Query(ProductId.Of(id)));
         if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
         return HandleResult(result);
     }

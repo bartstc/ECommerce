@@ -97,7 +97,7 @@ public class Product : AggregateRoot<ProductId>
 
     private void Apply(ProductRated @event)
     {
-        Rating = Rating.Of(@event.Rating, Rating.Count + 1);
+        Rating = Rating.Recalculate(@event.Rating);
     }
 
     private void Apply(ProductDeleted @event)

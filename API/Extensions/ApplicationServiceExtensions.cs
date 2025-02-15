@@ -5,9 +5,9 @@ using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Security;
 using Application.Interfaces;
-using Marten;
 using ECommerce.Core.Persistence;
 using Persistence;
+using Persistence.Projections;
 
 namespace API.Extensions
 {
@@ -24,7 +24,7 @@ namespace API.Extensions
             {
                 opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
-            services.AddMarten(config);
+            services.AddMarten(config, options => options.ConfigureProjections());
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>

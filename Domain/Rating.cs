@@ -18,7 +18,7 @@ public class Rating : ValueObject<Rating>
         return new Rating(rate, count);
     }
 
-    public Rating UpdateRating(double newRate)
+    public Rating Recalculate(double newRate)
     {
         var totalRating = (Rate * Count) + newRate;
         var newCount = Count + 1;
