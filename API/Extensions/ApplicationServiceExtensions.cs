@@ -32,7 +32,7 @@ namespace API.Extensions
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
                 });
             });
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(List).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetProducts).Assembly));
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<AddProduct>();
             services.AddHttpContextAccessor();

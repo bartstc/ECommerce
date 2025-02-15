@@ -37,7 +37,7 @@ namespace API.Controllers.Tests
                     DateTime.UtcNow,
                     null)
             };
-            _mediatorMock.Setup(m => m.Send(It.IsAny<List.Query>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<GetProducts.Query>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<List<ProductDto>>.Success(products));
 
             // Act

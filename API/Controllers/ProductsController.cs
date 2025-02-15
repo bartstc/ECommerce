@@ -21,7 +21,7 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProducts()
     {
-        var result = await Mediator.Send(new List.Query());
+        var result = await Mediator.Send(new GetProducts.Query());
         return HandleResult(result);
     }
 
