@@ -4,7 +4,6 @@ namespace Application.Products.Dtos
         string Name,
         string Description,
         CreatePriceDto Price,
-        CreateRatingDto Rating,
         string ImageUrl,
         string Category
     );
@@ -12,10 +11,5 @@ namespace Application.Products.Dtos
     public record CreatePriceDto(
         decimal Amount,
         string Code
-    );
-
-    public record CreateRatingDto(
-        double Rate,
-        int Count
     );
 }

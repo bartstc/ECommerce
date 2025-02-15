@@ -29,7 +29,7 @@ namespace ECommerce.Tests.Application.Products
                 "updated-image.jpg",
                 "electronics"
             ));
-            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(command.Id))).ReturnsAsync((Product)null);
+            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(command.ProductId))).ReturnsAsync((Product)null);
 
             var result = await _handler.Handle(command, CancellationToken.None);
 

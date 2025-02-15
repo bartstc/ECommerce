@@ -45,6 +45,6 @@ public class EventStoreRepository<TA>(
     public async Task<TA> FetchStreamAsync(Guid id, int? version = null, CancellationToken cancellationToken = default)
     {
         var aggregate = await _documentSession.Events.AggregateStreamAsync<TA>(id, version ?? 0);
-        return aggregate ?? throw new InvalidOperationException($"No aggregate found with id {id}.");
+        return aggregate ?? null;
     }
 }

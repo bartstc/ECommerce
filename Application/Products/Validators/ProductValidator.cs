@@ -16,12 +16,6 @@ namespace Application.Products.Validators
                     RuleFor(x => x.Price.Code).NotEmpty()
                         .Must(BeValudCurrencyCode).WithMessage("Invalid currency code value");
                 });
-            RuleFor(x => x.Rating).NotNull().WithMessage("Rating is required.")
-                .DependentRules(() =>
-                {
-                    RuleFor(x => x.Rating.Rate).InclusiveBetween(0, 5).WithMessage("Rating rate must be between 0 and 5.");
-                    RuleFor(x => x.Rating.Count).GreaterThanOrEqualTo(0).WithMessage("Rating count must be greater than or equal to 0.");
-                });
             RuleFor(x => x.ImageUrl).NotEmpty();
             RuleFor(x => x.Category)
                 .NotEmpty()

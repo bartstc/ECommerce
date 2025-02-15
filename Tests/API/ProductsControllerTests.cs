@@ -157,7 +157,7 @@ namespace API.Controllers.Tests
                 .ReturnsAsync(Result<Unit>.Failure(new ProductNotFoundException()));
 
             // Act
-            var result = await _controller.EditProduct(productId, productDto);
+            var result = await _controller.UpdateProduct(productId, productDto);
 
             // Assert
             result.ShouldBeOfType<NotFoundObjectResult>();
@@ -182,7 +182,7 @@ namespace API.Controllers.Tests
                 .ReturnsAsync(Result<Unit>.Success(Unit.Value));
 
             // Act
-            var result = await _controller.EditProduct(productId, productDto);
+            var result = await _controller.UpdateProduct(productId, productDto);
 
             // Assert
             result.ShouldBeOfType<OkObjectResult>();

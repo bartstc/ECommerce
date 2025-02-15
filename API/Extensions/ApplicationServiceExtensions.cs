@@ -24,10 +24,7 @@ namespace API.Extensions
             {
                 opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
-            services.AddMarten(opt =>
-            {
-                opt.Connection(config.GetConnectionString("DefaultConnection"));
-            });
+            services.AddMarten(config);
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy", policy =>

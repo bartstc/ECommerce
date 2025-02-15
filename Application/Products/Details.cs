@@ -1,7 +1,4 @@
 using Application.Products.Dtos;
-using Application.Products.Exceptions;
-using Application.Products.Mappers;
-using Domain;
 using ECommerce.Core.Application;
 using MediatR;
 

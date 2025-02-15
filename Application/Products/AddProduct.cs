@@ -35,7 +35,6 @@ public class AddProduct
                 request.ProductDto.Name,
                 request.ProductDto.Description,
                 Money.Of(request.ProductDto.Price.Amount, request.ProductDto.Price.Code),
-                Rating.Of(request.ProductDto.Rating.Rate, request.ProductDto.Rating.Count),
                 request.ProductDto.ImageUrl,
                 // todo: map from dto
                 Category.Electronics

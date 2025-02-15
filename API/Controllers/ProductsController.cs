@@ -1,6 +1,7 @@
 using Application.Products;
 using Application.Products.Dtos;
 using Application.Products.Exceptions;
+using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,9 +49,9 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> EditProduct(Guid id, CreateProductDto productDto)
+    public async Task<IActionResult> UpdateProduct(Guid id, CreateProductDto productDto)
     {
-        var result = await Mediator.Send(new Edit.Command(id, productDto));
+        var result = await Mediator.Send(new Edit.Command(ProductId.Of(id), productDto));
         if (result.Error is ProductNotFoundException) return NotFound(result.Error.Message);
         if (result.Error is FailedToUpdateProductException) return BadRequest(result.Error.Message);
         return HandleResult(result);

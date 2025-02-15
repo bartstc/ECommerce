@@ -2,7 +2,7 @@ using EcommerceDDD.Core.Domain;
 
 namespace Domain.Events;
 
-public record class ProductAdded : DomainEvent
+public record class ProductUpdated : DomainEvent
 {
     public Guid ProductId { get; private set; }
     public string Name { get; private set; }
@@ -12,7 +12,7 @@ public record class ProductAdded : DomainEvent
     public string ImageUrl { get; private set; }
     public Category Category { get; private set; }
 
-    private ProductAdded(
+    private ProductUpdated(
         Guid productId,
         string name,
         string description,
@@ -30,7 +30,7 @@ public record class ProductAdded : DomainEvent
         Category = category;
     }
 
-    public static ProductAdded Create(
+    public static ProductUpdated Create(
         Guid productId,
         string name,
         string description,
@@ -52,7 +52,7 @@ public record class ProductAdded : DomainEvent
         if (string.IsNullOrEmpty(imageUrl))
             throw new ArgumentNullException(nameof(imageUrl));
 
-        return new ProductAdded(
+        return new ProductUpdated(
             productId,
             name,
             description,
@@ -63,3 +63,4 @@ public record class ProductAdded : DomainEvent
         );
     }
 }
+
