@@ -39,7 +39,7 @@ app.MapControllers();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 
-// Create the database if it doesn't exist or apply any pending migrations
+// Apply any pending migrations and seed the database with users and events
 try
 {
     var context = services.GetRequiredService<DataContext>();

@@ -55,17 +55,6 @@ public class Product : AggregateRoot<ProductId>
         Apply(@event);
     }
 
-    // public void Update(ProductData productData)
-    // {
-    //     Name = productData.Name;
-    //     Category = productData.Category;
-    //     Description = productData.Description;
-    //     ImageUrl = productData.ImageUrl;
-    //     Price = productData.Price;
-    //     Rating = productData.Rating;
-    //     EditedAt = DateTime.UtcNow;
-    // }
-
     private Product() { }
 
     public void RateProduct(double rate)

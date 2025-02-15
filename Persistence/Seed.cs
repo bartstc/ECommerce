@@ -24,7 +24,9 @@ namespace Persistence
                 }
             }
 
-            if (!session.Query<Product>().Any())
+            var hasEvents = await session.Events.QueryAllRawEvents().AnyAsync();
+
+            if (!hasEvents)
             {
                 var products = new List<Product>
                 {
@@ -192,7 +194,9 @@ namespace Persistence
 
                 foreach (var product in products)
                 {
-                    session.Store(product);
+                    var events = product.GetUncommittedEvents().ToArray();
+                    session.Events.Append(product.Id.Value, events);
+                    product.ClearUncommittedEvents();
                 }
 
                 await session.SaveChangesAsync();
