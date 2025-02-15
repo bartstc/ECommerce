@@ -37,9 +37,9 @@ public class ProductsController : BaseApiController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateProduct(CreateProductDto productDto)
+    public async Task<IActionResult> AddProduct(CreateProductDto productDto)
     {
-        var result = await Mediator.Send(new Create.Command(productDto));
+        var result = await Mediator.Send(new AddProduct.Command(productDto));
         if (result.Error is FailedToCreateProductException) return BadRequest(result.Error.Message);
         return HandleResult(result);
     }

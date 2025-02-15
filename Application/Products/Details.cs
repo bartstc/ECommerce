@@ -13,20 +13,19 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Query, Result<ProductDto>>
         {
-            private readonly IProductRepository _productRepository;
-
-            public Handler(IProductRepository productRepository)
+            public Handler()
             {
-                _productRepository = productRepository;
             }
 
             public async Task<Result<ProductDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var product = await _productRepository.GetProduct(ProductId.Of(request.Id));
+                throw new Exception("Not implemented");
 
-                if (product == null) return Result<ProductDto>.Failure(new ProductNotFoundException());
+                // var product = await _productRepository.GetProduct(ProductId.Of(request.Id));
 
-                return Result<ProductDto>.Success(product.ToDto());
+                // if (product == null) return Result<ProductDto>.Failure(new ProductNotFoundException());
+
+                // return Result<ProductDto>.Success(product.ToDto());
             }
         }
     }

@@ -10,18 +10,18 @@ namespace ECommerce.Tests.Application.Products
     public class CreateCommandHandlerTests
     {
         private readonly Mock<IProductRepository> _productRepositoryMock;
-        private readonly Create.Handler _handler;
+        private readonly AddProduct.Handler _handler;
 
         public CreateCommandHandlerTests()
         {
             _productRepositoryMock = new Mock<IProductRepository>();
-            _handler = new Create.Handler(_productRepositoryMock.Object);
+            _handler = new AddProduct.Handler(_productRepositoryMock.Object);
         }
 
         [Fact]
         public async Task Handle_Should_ReturnFailureResult_WhenFailedToCreateProduct()
         {
-            var command = new Create.Command(new CreateProductDto(
+            var command = new AddProduct.Command(new CreateProductDto(
                 "Test Product",
                 "Test Description",
                 new CreatePriceDto(100, "USD"),
@@ -40,7 +40,7 @@ namespace ECommerce.Tests.Application.Products
         [Fact]
         public async Task Handle_Should_ReturnSuccessResult_WhenProductIsCreated()
         {
-            var command = new Create.Command(new CreateProductDto(
+            var command = new AddProduct.Command(new CreateProductDto(
                 "Test Product",
                 "Test Description",
                 new CreatePriceDto(100, "USD"),

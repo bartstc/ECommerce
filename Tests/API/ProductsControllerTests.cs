@@ -106,11 +106,11 @@ namespace API.Controllers.Tests
                 "Test Category",
                 "Test Brand"
             );
-            _mediatorMock.Setup(m => m.Send(It.IsAny<Create.Command>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<AddProduct.Command>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<Unit>.Failure(new FailedToCreateProductException()));
 
             // Act
-            var result = await _controller.CreateProduct(productDto);
+            var result = await _controller.AddProduct(productDto);
 
             // Assert
             result.ShouldBeOfType<BadRequestObjectResult>();
@@ -130,11 +130,11 @@ namespace API.Controllers.Tests
                 "Test Category",
                 "Test Brand"
             );
-            _mediatorMock.Setup(m => m.Send(It.IsAny<Create.Command>(), It.IsAny<CancellationToken>()))
+            _mediatorMock.Setup(m => m.Send(It.IsAny<AddProduct.Command>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<Unit>.Success(Unit.Value));
 
             // Act
-            var result = await _controller.CreateProduct(productDto);
+            var result = await _controller.AddProduct(productDto);
 
             // Assert
             result.ShouldBeOfType<OkObjectResult>();

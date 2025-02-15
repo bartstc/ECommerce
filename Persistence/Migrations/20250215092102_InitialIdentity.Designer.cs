@@ -12,8 +12,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250214204929_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250215092102_InitialIdentity")]
+    partial class InitialIdentity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,38 +24,6 @@ namespace Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("AggregateId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("EditedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -257,77 +225,6 @@ namespace Persistence.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Product", b =>
-                {
-                    b.OwnsOne("Domain.Money", "Price", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric")
-                                .HasColumnName("Price");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Products");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-
-                            b1.OwnsOne("Domain.Currency", "Currency", b2 =>
-                                {
-                                    b2.Property<Guid>("MoneyProductId")
-                                        .HasColumnType("uuid");
-
-                                    b2.Property<string>("Code")
-                                        .IsRequired()
-                                        .HasMaxLength(5)
-                                        .HasColumnType("character varying(5)")
-                                        .HasColumnName("CurrencyCode");
-
-                                    b2.Property<string>("Symbol")
-                                        .HasMaxLength(5)
-                                        .HasColumnType("character varying(5)")
-                                        .HasColumnName("CurrencySymbol");
-
-                                    b2.HasKey("MoneyProductId");
-
-                                    b2.ToTable("Products");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("MoneyProductId");
-                                });
-
-                            b1.Navigation("Currency");
-                        });
-
-                    b.OwnsOne("Domain.Rating", "Rating", b1 =>
-                        {
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<int>("Count")
-                                .HasColumnType("integer")
-                                .HasColumnName("RatingCount");
-
-                            b1.Property<double>("Rate")
-                                .HasColumnType("double precision")
-                                .HasColumnName("RatingRate");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Products");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.Navigation("Price");
-
-                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

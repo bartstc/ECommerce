@@ -12,18 +12,17 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Query, Result<List<ProductDto>>>
         {
-            private readonly IProductRepository _productRepository;
-            public Handler(IProductRepository productRepository)
+            public Handler()
             {
-                _productRepository = productRepository;
             }
 
             public async Task<Result<List<ProductDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var products = await _productRepository.GetProducts();
-                var productDtos = products.Select(p => p.ToDto()).ToList();
+                throw new Exception("Not implemented");
+                // var products = await _productRepository.GetProducts();
+                // var productDtos = products.Select(p => p.ToDto()).ToList();
 
-                return Result<List<ProductDto>>.Success(productDtos);
+                // return Result<List<ProductDto>>.Success(productDtos);
             }
         }
     }

@@ -22,37 +22,31 @@ namespace Application.Products.Mappers
                 ImageUrl: product.ImageUrl,
                 Category: MapCategoryToString(product.Category),
                 AddedAt: product.AddedAt,
-                EditedAt: product.EditedAt
+                null
             );
         }
 
         public static Product ToDomain(this CreateProductDto productDto)
         {
             return Product.Create(new ProductData(
-                null,
                 productDto.Name,
                 productDto.Description,
                 Money.Of(productDto.Price.Amount, productDto.Price.Code),
                 Rating.Of(productDto.Rating.Rate, productDto.Rating.Count),
                 productDto.ImageUrl,
-                MapStringToCategory(productDto.Category),
-                DateTime.UtcNow,
-                null
+                MapStringToCategory(productDto.Category)
             ));
         }
 
         public static Product ToDomain(this CreateProductDto productDto, Product product)
         {
             return Product.Create(new ProductData(
-                product.Id.Value,
                 productDto.Name,
                 productDto.Description,
                 Money.Of(productDto.Price.Amount, productDto.Price.Code),
                 Rating.Of(productDto.Rating.Rate, productDto.Rating.Count),
                 productDto.ImageUrl,
-                MapStringToCategory(productDto.Category),
-                product.AddedAt,
-                product.EditedAt
+                MapStringToCategory(productDto.Category)
             ));
         }
 

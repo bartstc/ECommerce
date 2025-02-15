@@ -11,26 +11,24 @@ namespace Application.Products
 
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
-            private readonly IProductRepository _productRepository;
-
-            public Handler(IProductRepository productRepository)
+            public Handler()
             {
-                _productRepository = productRepository;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var product = await _productRepository.GetProduct(ProductId.Of(request.Id));
+                throw new Exception("Not implemented");
+                // var product = await _productRepository.GetProduct(ProductId.Of(request.Id));
 
-                if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
+                // if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
-                _productRepository.DeleteProduct(product);
+                // _productRepository.DeleteProduct(product);
 
-                var result = await _productRepository.Complete();
+                // var result = await _productRepository.Complete();
 
-                if (!result) return Result<Unit>.Failure(new FailedToDeleteProductException());
+                // if (!result) return Result<Unit>.Failure(new FailedToDeleteProductException());
 
-                return Result<Unit>.Success(Unit.Value);
+                // return Result<Unit>.Success(Unit.Value);
             }
         }
     }

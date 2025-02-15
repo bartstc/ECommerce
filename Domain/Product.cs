@@ -1,3 +1,4 @@
+using Domain.Events;
 using Ecommerce.Core.Domain;
 using ECommerce.Core.Exceptions;
 
@@ -12,11 +13,11 @@ public class Product : AggregateRoot<ProductId>
     public Money Price { get; private set; }
     public Rating Rating { get; private set; }
     public DateTime AddedAt { get; private set; }
-    public DateTime? EditedAt { get; private set; }
+    // public DateTime? EditedAt { get; private set; }
 
     public static Product Create(ProductData productData)
     {
-        var (Id, Name, Description, Price, Rating, ImageUrl, Category, AddedAt, EditedAt) = productData
+        var (Name, Description, Price, Rating, ImageUrl, Category) = productData
             ?? throw new ArgumentNullException(nameof(productData));
 
         if (string.IsNullOrWhiteSpace(Name))
@@ -35,29 +36,35 @@ public class Product : AggregateRoot<ProductId>
         return new Product(productData);
     }
 
-    public void Update(ProductData productData)
+    private void Apply(ProductAdded @event)
     {
-        Name = productData.Name;
-        Category = productData.Category;
-        Description = productData.Description;
-        ImageUrl = productData.ImageUrl;
-        Price = productData.Price;
-        Rating = productData.Rating;
-        EditedAt = DateTime.UtcNow;
+        Id = ProductId.Of(@event.ProductId);
+        Name = @event.ProductData.Name;
+        Category = @event.ProductData.Category;
+        Description = @event.ProductData.Description;
+        ImageUrl = @event.ProductData.ImageUrl;
+        Price = @event.ProductData.Price;
+        Rating = @event.ProductData.Rating;
+        AddedAt = @event.Timestamp;
     }
 
     private Product(ProductData productData)
     {
-        Id = ProductId.Of(productData.Id ?? Guid.NewGuid());
-        Name = productData.Name;
-        Category = productData.Category;
-        Description = productData.Description;
-        ImageUrl = productData.ImageUrl;
-        Price = productData.Price;
-        Rating = productData.Rating;
-        AddedAt = productData.AddedAt;
-        EditedAt = productData.EditedAt;
+        var @event = ProductAdded.Create(Guid.NewGuid(), productData);
+        AppendEvent(@event);
+        Apply(@event);
     }
+
+    // public void Update(ProductData productData)
+    // {
+    //     Name = productData.Name;
+    //     Category = productData.Category;
+    //     Description = productData.Description;
+    //     ImageUrl = productData.ImageUrl;
+    //     Price = productData.Price;
+    //     Rating = productData.Rating;
+    //     EditedAt = DateTime.UtcNow;
+    // }
 
     private Product() { }
 

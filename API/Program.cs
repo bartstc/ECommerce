@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Entities;
+using Marten;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,13 +44,14 @@ try
 {
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var documentSession = services.GetRequiredService<IDocumentSession>();
     await context.Database.MigrateAsync();
-    await Seed.SeedData(context, userManager);
+    await Seed.SeedData(userManager, documentSession);
 }
 catch (Exception ex)
 {
     var logger = services.GetRequiredService<ILogger<Program>>();
-    logger.LogError(ex, "An error accured during migration");
+    logger.LogError(ex, "An error occurred during migration");
 }
 
 app.Run();

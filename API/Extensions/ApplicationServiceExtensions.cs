@@ -3,11 +3,11 @@ using Application.Products;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
-using Persistence;
 using Infrastructure.Security;
-using Application.Core;
-using ECommerce.Core.Persistence;
 using Application.Interfaces;
+using Marten;
+using ECommerce.Core.Persistence;
+using Persistence;
 
 namespace API.Extensions
 {
@@ -20,13 +20,13 @@ namespace API.Extensions
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            // services.AddMarten(async opt =>
-            // {
-            //     opt.Connection(config.GetConnectionString("DefaultConnection"));
-            // });
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+            });
+            services.AddMarten(opt =>
+            {
+                opt.Connection(config.GetConnectionString("DefaultConnection"));
             });
             services.AddCors(opt =>
             {
@@ -37,13 +37,11 @@ namespace API.Extensions
             });
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(List).Assembly));
             services.AddFluentValidationAutoValidation();
-            services.AddValidatorsFromAssemblyContaining<Create>();
+            services.AddValidatorsFromAssemblyContaining<AddProduct>();
             services.AddHttpContextAccessor();
             services.AddScoped<IUserAccessor, UserAccessor>();
 
-            services.AddScoped<IProductRepository, Persistence.Modules.Products.Repositories.ProductRepository>();
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IEventStoreRepository<Product>, EventStoreRepository<Product>>();
 
             return services;
         }
