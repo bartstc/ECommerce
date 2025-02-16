@@ -1,28 +1,32 @@
 using Domain;
 using Persistence.Projections;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Products.Dtos;
 
+[SwaggerSchema("Product details")]
 public record ProductDto(
-    Guid Id,
-    string Name,
-    string Description,
-    MoneyDto Price,
-    RatingDto Rating,
-    string ImageUrl,
-    string Category,
-    DateTime AddedAt,
-    DateTime? UpdatedAt
+    [property: SwaggerSchema("Product ID")] Guid Id,
+    [property: SwaggerSchema("Product name")] string Name,
+    [property: SwaggerSchema("Product description")] string Description,
+    [property: SwaggerSchema("Product price")] MoneyDto Price,
+    [property: SwaggerSchema("Product rating")] RatingDto Rating,
+    [property: SwaggerSchema("Product image URL")] string ImageUrl,
+    [property: SwaggerSchema("Product category")] string Category,
+    [property: SwaggerSchema("Date when the product was added")] DateTime AddedAt,
+    [property: SwaggerSchema("Date when the product was last updated")] DateTime? UpdatedAt
 );
 
+[SwaggerSchema("Monetary value")]
 public record MoneyDto(
-    decimal Amount,
-    string Currency
+    [property: SwaggerSchema("Amount of money")] decimal Amount,
+    [property: SwaggerSchema("Currency code")] string Currency
 );
 
+[SwaggerSchema("Product rating details")]
 public record RatingDto(
-    double Rate,
-    int Count
+    [property: SwaggerSchema("Rating value")] double Rate,
+    [property: SwaggerSchema("Number of ratings")] int Count
 );
 
 public static class ProductDtoMapper
@@ -47,8 +51,6 @@ public static class ProductDtoMapper
             UpdatedAt: product.UpdatedAt
         );
     }
-
-
 
     private static string MapCategoryToString(Category category)
     {
