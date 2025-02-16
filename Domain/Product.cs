@@ -1,4 +1,3 @@
-using Domain.Events;
 using Ecommerce.Core.Domain;
 using ECommerce.Core.Exceptions;
 
@@ -41,7 +40,7 @@ public class Product : AggregateRoot<ProductId>
         if (Status != ProductStatus.Active)
             throw new BusinessRuleException($"Product cannot be updated when '{Status}'");
 
-        var @event = ProductUpdated.Create(
+        var @event = new ProductEvent.ProductUpdated(
             Id.Value,
             productData.Name,
             productData.Description,
@@ -59,7 +58,7 @@ public class Product : AggregateRoot<ProductId>
         if (Status != ProductStatus.Active)
             throw new BusinessRuleException($"Product cannot be rated when '{Status}'");
 
-        var @event = ProductRated.Create(Id.Value, rating);
+        var @event = new ProductEvent.ProductRated(Id.Value, rating);
         AppendEvent(@event);
         Apply(@event);
     }
@@ -69,12 +68,12 @@ public class Product : AggregateRoot<ProductId>
         if (Status == ProductStatus.Deleted)
             throw new BusinessRuleException("Product is already deleted.");
 
-        var @event = ProductDeleted.Create(Id.Value);
+        var @event = new ProductEvent.ProductDeleted(Id.Value);
         AppendEvent(@event);
         Apply(@event);
     }
 
-    private void Apply(ProductAdded @event)
+    private void Apply(ProductEvent.ProductAdded @event)
     {
         Id = ProductId.Of(@event.ProductId);
         Rating = Rating.Of(0, 0);
@@ -88,7 +87,7 @@ public class Product : AggregateRoot<ProductId>
         AddedAt = @event.Timestamp;
     }
 
-    private void Apply(ProductUpdated @event)
+    private void Apply(ProductEvent.ProductUpdated @event)
     {
         Name = @event.Name;
         Category = @event.Category;
@@ -98,12 +97,12 @@ public class Product : AggregateRoot<ProductId>
         UpdatedAt = @event.Timestamp;
     }
 
-    private void Apply(ProductRated @event)
+    private void Apply(ProductEvent.ProductRated @event)
     {
         Rating = Rating.Recalculate(@event.Rating);
     }
 
-    private void Apply(ProductDeleted @event)
+    private void Apply(ProductEvent.ProductDeleted @event)
     {
         Status = ProductStatus.Deleted;
         DeletedAt = @event.Timestamp;
@@ -112,7 +111,7 @@ public class Product : AggregateRoot<ProductId>
     private Product(ProductData productData)
     {
         var productId = Guid.NewGuid();
-        var @event = ProductAdded.Create(
+        var @event = new ProductEvent.ProductAdded(
             productId,
             productData.Name,
             productData.Description,

@@ -1,5 +1,4 @@
 using Domain;
-using Domain.Events;
 
 namespace Persistence.Projections;
 
@@ -19,7 +18,7 @@ public class ProductDetails
     public DateTime? UpdatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }
 
-    internal void Apply(ProductAdded @event)
+    internal void Apply(ProductEvent.ProductAdded @event)
     {
         Id = @event.ProductId;
         Name = @event.Name;
@@ -32,7 +31,7 @@ public class ProductDetails
         Status = ProductStatus.Active;
     }
 
-    internal void Apply(ProductUpdated @event)
+    internal void Apply(ProductEvent.ProductUpdated @event)
     {
         Name = @event.Name;
         Description = @event.Description;
@@ -43,7 +42,7 @@ public class ProductDetails
         UpdatedAt = @event.Timestamp;
     }
 
-    internal void Apply(ProductRated @event)
+    internal void Apply(ProductEvent.ProductRated @event)
     {
         var rating = Rating.Of(RatingRate, RatingCount);
         var newRating = rating.Recalculate(@event.Rating);
@@ -51,7 +50,7 @@ public class ProductDetails
         RatingCount = newRating.Count;
     }
 
-    internal void Apply(ProductDeleted @event)
+    internal void Apply(ProductEvent.ProductDeleted @event)
     {
         Status = ProductStatus.Deleted;
         DeletedAt = @event.Timestamp;
