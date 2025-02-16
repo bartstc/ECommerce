@@ -11,10 +11,10 @@ public class Money : ValueObject<Money>
     public static Money Of(decimal value, string currencyCode)
     {
         if (string.IsNullOrEmpty(currencyCode))
-            throw new BusinessRuleException("Money must have currency.");
+            throw new BusinessValidationException("Money must have currency.");
 
         if (value < 0)
-            throw new BusinessRuleException("Money amount value cannot be negative.");
+            throw new BusinessValidationException("Money amount value cannot be negative.");
 
         return new Money(value, currencyCode);
     }
@@ -27,7 +27,7 @@ public class Money : ValueObject<Money>
     public static Money operator +(Money money1, Money money2)
     {
         if (!money1.Currency.Code.Equals(money2.Currency.Code))
-            throw new BusinessRuleException("You cannot sum different currencies.");
+            throw new BusinessValidationException("You cannot sum different currencies.");
 
         return Of(money1.Amount + money2.Amount, money1.Currency.Code);
     }

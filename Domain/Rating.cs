@@ -11,9 +11,9 @@ public class Rating : ValueObject<Rating>
     public static Rating Of(double rate, int count)
     {
         if (rate < 0 || rate > 5)
-            throw new BusinessRuleException("Rate must be between 0 and 5.");
+            throw new BusinessValidationException("Rate must be between 0 and 5.");
         if (count < 0)
-            throw new BusinessRuleException("Count cannot be negative.");
+            throw new BusinessValidationException("Count cannot be negative.");
 
         return new Rating(rate, count);
     }

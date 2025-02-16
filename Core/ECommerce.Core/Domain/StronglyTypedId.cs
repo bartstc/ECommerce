@@ -11,7 +11,7 @@ public abstract class StronglyTypedId<T> : ValueObject<StronglyTypedId<T>>
 		if (value is null)
 			throw new ArgumentNullException(nameof(value));
 		if (value.Equals(Guid.Empty))
-			throw new BusinessRuleException("A valid id must be provided.");
+			throw new BusinessValidationException("A valid id must be provided.");
 
 		Value = value;
 	}

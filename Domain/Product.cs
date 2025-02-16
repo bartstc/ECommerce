@@ -22,23 +22,22 @@ public class Product : AggregateRoot<ProductId>
             ?? throw new ArgumentNullException(nameof(productData));
 
         if (string.IsNullOrWhiteSpace(Name))
-            throw new BusinessRuleException("Product name cannot be null or whitespace.");
+            throw new BusinessValidationException("Product name cannot be null or whitespace.");
         if (string.IsNullOrWhiteSpace(Category.ToString()))
-            throw new BusinessRuleException("Product category cannot be null or whitespace.");
+            throw new BusinessValidationException("Product category cannot be null or whitespace.");
         if (string.IsNullOrWhiteSpace(Description))
-            throw new BusinessRuleException("Product description cannot be null or whitespace.");
+            throw new BusinessValidationException("Product description cannot be null or whitespace.");
         if (string.IsNullOrWhiteSpace(ImageUrl))
-            throw new BusinessRuleException("ImageUrl cannot be null.");
+            throw new BusinessValidationException("ImageUrl cannot be null.");
         if (Price is null)
-            throw new BusinessRuleException("Product price cannot be null.");
+            throw new BusinessValidationException("Product price cannot be null.");
 
         return new Product(productData);
     }
 
     public void Update(ProductData productData)
     {
-        if (Status != ProductStatus.Active)
-            throw new BusinessRuleException($"Product cannot be updated when '{Status}'");
+        CheckRule(new ProductRule.ProductMustBeActiveRule(Status));
 
         var @event = new ProductEvent.ProductUpdated(
             Id.Value,
@@ -55,8 +54,7 @@ public class Product : AggregateRoot<ProductId>
 
     public void Rate(double rating)
     {
-        if (Status != ProductStatus.Active)
-            throw new BusinessRuleException($"Product cannot be rated when '{Status}'");
+        CheckRule(new ProductRule.ProductMustBeActiveRule(Status));
 
         var @event = new ProductEvent.ProductRated(Id.Value, rating);
         AppendEvent(@event);
@@ -65,8 +63,7 @@ public class Product : AggregateRoot<ProductId>
 
     public void Delete()
     {
-        if (Status == ProductStatus.Deleted)
-            throw new BusinessRuleException("Product is already deleted.");
+        CheckRule(new ProductRule.ProductMustBeActiveRule(Status));
 
         var @event = new ProductEvent.ProductDeleted(Id.Value);
         AppendEvent(@event);

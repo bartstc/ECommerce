@@ -1,3 +1,18 @@
-﻿namespace ECommerce.Core.Exceptions;
+using ECommerce.Core.Domain;
 
-public class BusinessRuleException(string message) : Exception(message) { }
+namespace ECommerce.Core.Exceptions;
+
+public class BusinessRuleException : Exception
+{
+    public IBusinessRuleBase Rule { get; set; }
+
+    public BusinessRuleException(IBusinessRuleBase rule) : base(rule.Message)
+    {
+        Rule = rule;
+    }
+
+    public override string ToString()
+    {
+        return $"{Rule.GetType().FullName}: {Rule.Message}";
+    }
+}

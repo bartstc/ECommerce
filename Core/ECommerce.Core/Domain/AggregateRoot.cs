@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using ECommerce.Core.Domain;
+using ECommerce.Core.Exceptions;
 using Marten.Schema;
 
 namespace Ecommerce.Core.Domain;
@@ -24,6 +25,18 @@ public abstract class AggregateRoot<TKey> : Entity<TKey>, IAggregateRoot<TKey>
 
 	protected void AppendEvent(IDomainEvent @event)
 		=> _uncommittedEvents.Enqueue(@event);
+
+	protected void CheckRule(IBusinessRule rule)
+	{
+		if (rule.IsBroken())
+			throw new BusinessRuleException(rule);
+	}
+
+	protected static async Task CheckRuleAsync(IBusinessRuleAsync rule)
+	{
+		if (await rule.IsBrokenAsync())
+			throw new BusinessRuleException(rule);
+	}
 
 	[JsonIgnore]
 	private readonly Queue<IDomainEvent> _uncommittedEvents = new Queue<IDomainEvent>();

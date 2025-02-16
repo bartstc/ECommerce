@@ -22,8 +22,9 @@ public class Result<T>
 
     public static Result<T> FromException(Exception ex) => ex switch
     {
-        BusinessRuleException bre => Failure(bre),
         ApplicationLogicException ale => Failure(ale),
+        BusinessValidationException bre => Failure(bre),
+        BusinessRuleException bre => Failure(bre),
         _ => Failure(new Exception("An error occurred while processing the request"))
     };
 }
