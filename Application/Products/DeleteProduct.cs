@@ -23,13 +23,13 @@ namespace Application.Products
             {
                 try
                 {
-                    var product = await _productWriteRepository.FetchStreamAsync(request.ProductId.Value);
+                    var stream = await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value);
 
-                    if (product == null) return Result<Unit>.Failure(new ProductNotFoundException());
+                    if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
-                    product.Delete();
+                    stream.Aggregate.Delete();
 
-                    await _productWriteRepository.AppendEventsAsync(product);
+                    await _productWriteRepository.AppendEventsAsync(stream.Aggregate);
                 }
                 catch (Exception ex)
                 {

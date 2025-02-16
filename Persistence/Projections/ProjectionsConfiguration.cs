@@ -7,6 +7,6 @@ public static class ProjectionsConfiguration
 {
     public static void ConfigureProjections(this StoreOptions options)
     {
-        options.Projections.Add<ProductDetailsProjection>(ProjectionLifecycle.Inline);
+        options.Projections.Add<ProductDetailsProjection>(ProjectionLifecycle.Async);
     }
 }

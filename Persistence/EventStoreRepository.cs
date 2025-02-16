@@ -1,6 +1,7 @@
 using Ecommerce.Core.Domain;
 using ECommerce.Core.Persistence;
 using Marten;
+using Marten.Events;
 using Microsoft.Extensions.Logging;
 
 namespace Persistence;
@@ -15,12 +16,7 @@ public class EventStoreRepository<TA>(
     private readonly ILogger<EventStoreRepository<TA>> _logger = logger
         ?? throw new ArgumentNullException(nameof(logger));
 
-    /// <summary>
-    /// Stores uncommited events from an aggregate 
-    /// </summary>
-    /// <param name="aggregate"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    // Stores uncommited events from an aggregate 
     public async Task<long> AppendEventsAsync(TA aggregate, CancellationToken cancellationToken = default)
     {
         var events = aggregate.GetUncommittedEvents().ToArray();
@@ -34,17 +30,16 @@ public class EventStoreRepository<TA>(
         return nextVersion;
     }
 
-    /// <summary>
-    /// Fetch domain events from the stream
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="version"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    /// <exception cref="InvalidOperationException"></exception>
+    [Obsolete("FetchStreamAsync is obsolete. Use FetchForWriting instead.")]
     public async Task<TA> FetchStreamAsync(Guid id, int? version = null, CancellationToken cancellationToken = default)
     {
         var aggregate = await _documentSession.Events.AggregateStreamAsync<TA>(id, version ?? 0);
         return aggregate ?? null;
+    }
+
+    public async Task<IEventStream<A>> FetchForWriting<A>(Guid id, CancellationToken cancellationToken = default) where A : class, IAggregateRoot<StronglyTypedId<Guid>>
+    {
+        var aggregate = await _documentSession.Events.FetchForWriting<A>(id, cancellationToken);
+        return aggregate;
     }
 }

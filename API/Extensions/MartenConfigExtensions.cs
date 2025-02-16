@@ -1,4 +1,5 @@
 using Marten;
+using Marten.Events.Daemon.Resiliency;
 using MediatR;
 using Newtonsoft.Json;
 using Weasel.Core;
@@ -42,7 +43,9 @@ public static class MartenConfigExtension
 
             // Custom store options
             configureOptions?.Invoke(options);
-        }).UseLightweightSessions();
+        })
+        .AddAsyncDaemon(DaemonMode.HotCold)
+        .UseLightweightSessions();
 
         // Wrapper for IQuerySession 
         services.AddScoped<IQuerySessionWrapper, QuerySessionWrapper>();
