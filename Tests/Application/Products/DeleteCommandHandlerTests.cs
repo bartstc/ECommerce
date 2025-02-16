@@ -1,86 +1,90 @@
 using Application.Products;
-using Application.Products.Exceptions;
 using Domain;
 using Moq;
 using Shouldly;
+using ECommerce.Core.Persistence;
 
-namespace ECommerce.Tests.Application.Products
+namespace ECommerce.Tests.Application.Products;
+
+public class DeleteCommandHandlerTests
 {
-    public class DeleteCommandHandlerTests
+    private readonly Mock<IEventStoreRepository<Product>> _productWriteRepositoryMock;
+    private readonly DeleteProduct.Handler _handler;
+
+    public DeleteCommandHandlerTests()
     {
-        private readonly Mock<IProductRepository> _productRepositoryMock;
-        private readonly DeleteProduct.Handler _handler;
+        _productWriteRepositoryMock = new Mock<IEventStoreRepository<Product>>();
+        _handler = new DeleteProduct.Handler(_productWriteRepositoryMock.Object);
+    }
 
-        public DeleteCommandHandlerTests()
-        {
-            _productRepositoryMock = new Mock<IProductRepository>();
-            _handler = new DeleteProduct.Handler(_productRepositoryMock.Object);
-        }
+    [Fact]
+    public async Task Handle_Should_ReturnFailureResult_WhenProductNotFound()
+    {
+        // Arrange
+        var command = new DeleteProduct.Command(ProductId.Of(Guid.NewGuid()));
+        var productId = Guid.NewGuid();
+        _productWriteRepositoryMock.Setup(repo => repo.FetchStreamAsync(productId, null, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Product)null);
 
-        [Fact]
-        public async Task Handle_Should_ReturnFailureResult_WhenProductNotFound()
-        {
-            var command = new DeleteProduct.Command(Guid.NewGuid());
-            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(command.Id))).ReturnsAsync((Product)null);
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
 
-            var result = await _handler.Handle(command, CancellationToken.None);
+        // Assert
+        result.IsSuccess.ShouldBeFalse();
+        result.Error.ShouldBeOfType<ProductNotFoundException>();
+    }
 
-            result.IsSuccess.ShouldBeFalse();
-            result.Error.ShouldBeOfType<ProductNotFoundException>();
-        }
+    [Fact]
+    public async Task Handle_Should_ReturnFailureResult_WhenFailedToDeleteProduct()
+    {
+        // Arrange
+        var productId = ProductId.Of(Guid.NewGuid());
+        var command = new DeleteProduct.Command(productId);
+        var productData = new ProductData(
+            "Test Product",
+            "Test Description",
+            Money.Of(100, Currency.USDollar.Code),
+            "http://example.com/image.jpg",
+            Category.Electronics
+        );
+        var product = Product.Create(productData);
 
-        [Fact]
-        public async Task Handle_Should_ReturnFailureResult_WhenFailedToDeleteProduct()
-        {
-            var productId = Guid.NewGuid();
-            var command = new DeleteProduct.Command(productId);
-            var productData = new ProductData(
-                productId,
-                "Test Product",
-                "Test Description",
-                Money.Of(100, Currency.USDollar.Code),
-                Rating.Of(5, 1),
-                "http://example.com/image.jpg",
-                Category.Electronics,
-                DateTime.UtcNow,
-                null
-            );
-            var product = Product.Create(productData);
+        _productWriteRepositoryMock.Setup(repo => repo.FetchStreamAsync(productId.Value, null, It.IsAny<CancellationToken>())).ReturnsAsync(product);
+        _productWriteRepositoryMock.Setup(repo => repo.AppendEventsAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new Exception("Failed to delete product"));
 
-            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(productId))).ReturnsAsync(product);
-            _productRepositoryMock.Setup(repo => repo.Complete()).ReturnsAsync(false);
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
 
-            var result = await _handler.Handle(command, CancellationToken.None);
+        // Assert
+        result.IsSuccess.ShouldBeFalse();
+        result.Error.Message.ShouldBe("Failed to delete product");
+    }
 
-            result.IsSuccess.ShouldBeFalse();
-            result.Error.ShouldBeOfType<FailedToDeleteProductException>();
-        }
+    [Fact]
+    public async Task Handle_Should_ReturnSuccessResult_WhenProductIsDeleted()
+    {
+        // Arrange
+        var productId = ProductId.Of(Guid.NewGuid());
+        var command = new DeleteProduct.Command(productId);
+        var productData = new ProductData(
+            "Test Product",
+            "Test Description",
+            Money.Of(100, Currency.USDollar.Code),
+            "http://example.com/image.jpg",
+            Category.Electronics
+        );
+        var product = Product.Create(productData);
 
-        [Fact]
-        public async Task Handle_Should_ReturnSuccessResult_WhenProductIsDeleted()
-        {
-            var productId = Guid.NewGuid();
-            var command = new DeleteProduct.Command(productId);
-            var productData = new ProductData(
-                productId,
-                "Test Product",
-                "Test Description",
-                Money.Of(100, Currency.USDollar.Code),
-                Rating.Of(5, 1),
-                "http://example.com/image.jpg",
-                Category.Electronics,
-                DateTime.UtcNow,
-                null
-            );
-            var product = Product.Create(productData);
+        _productWriteRepositoryMock.Setup(repo => repo.FetchStreamAsync(productId.Value, null, It.IsAny<CancellationToken>())).ReturnsAsync(product);
+        _productWriteRepositoryMock.Setup(repo => repo.AppendEventsAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.FromResult<long>(0));
 
-            _productRepositoryMock.Setup(repo => repo.GetProduct(ProductId.Of(productId))).ReturnsAsync(product);
-            _productRepositoryMock.Setup(repo => repo.Complete()).ReturnsAsync(true);
+        // Act
+        var result = await _handler.Handle(command, CancellationToken.None);
 
-            var result = await _handler.Handle(command, CancellationToken.None);
-
-            result.IsSuccess.ShouldBeTrue();
-            _productRepositoryMock.Verify(repo => repo.DeleteProduct(It.IsAny<Product>()), Times.Once);
-        }
+        // Assert
+        result.IsSuccess.ShouldBeTrue();
+        _productWriteRepositoryMock.Verify(repo => repo.AppendEventsAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 }

@@ -95,29 +95,6 @@ namespace API.Controllers.Tests
         }
 
         [Fact]
-        public async Task CreateProduct_Should_ReturnBadRequest_WhenFailedToCreateProduct()
-        {
-            // Arrange
-            var productDto = new CreateProductDto(
-                "Test Product",
-                "Test Description",
-                new CreatePriceDto(100, "USD"),
-                "Test Category",
-                "Test Brand"
-            );
-            _mediatorMock.Setup(m => m.Send(It.IsAny<AddProduct.Command>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<Unit>.Failure(new FailedToCreateProductException()));
-
-            // Act
-            var result = await _controller.AddProduct(productDto);
-
-            // Assert
-            result.ShouldBeOfType<BadRequestObjectResult>();
-            var badRequestResult = result as BadRequestObjectResult;
-            badRequestResult.Value.ShouldBe("Failed to create the product");
-        }
-
-        [Fact]
         public async Task CreateProduct_Should_ReturnOkResult_WhenProductIsCreatedSuccessfully()
         {
             // Arrange
@@ -139,7 +116,7 @@ namespace API.Controllers.Tests
         }
 
         [Fact]
-        public async Task EditProduct_Should_ReturnNotFound_WhenProductNotFound()
+        public async Task UpdateProduct_Should_ReturnNotFound_WhenProductNotFound()
         {
             // Arrange
             var productId = Guid.NewGuid();
@@ -163,7 +140,7 @@ namespace API.Controllers.Tests
         }
 
         [Fact]
-        public async Task EditProduct_Should_ReturnOkResult_WhenProductIsUpdatedSuccessfully()
+        public async Task UpdateProduct_Should_ReturnOkResult_WhenProductIsUpdatedSuccessfully()
         {
             // Arrange
             var productId = Guid.NewGuid();
@@ -185,20 +162,20 @@ namespace API.Controllers.Tests
         }
 
         [Fact]
-        public async Task DeleteProduct_Should_ReturnBadRequest_WhenFailedToDeleteProduct()
+        public async Task DeleteProduct_Should_ReturnNotFound_WhenProductNotFound()
         {
             // Arrange
             var productId = Guid.NewGuid();
             _mediatorMock.Setup(m => m.Send(It.IsAny<DeleteProduct.Command>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<Unit>.Failure(new FailedToDeleteProductException()));
+                .ReturnsAsync(Result<Unit>.Failure(new ProductNotFoundException()));
 
             // Act
             var result = await _controller.DeleteProduct(productId);
 
             // Assert
-            result.ShouldBeOfType<BadRequestObjectResult>();
-            var badRequestResult = result as BadRequestObjectResult;
-            badRequestResult.Value.ShouldBe("Failed to delete the product");
+            result.ShouldBeOfType<NotFoundObjectResult>();
+            var notFoundResult = result as NotFoundObjectResult;
+            notFoundResult.Value.ShouldBe("Product not found");
         }
 
         [Fact]
