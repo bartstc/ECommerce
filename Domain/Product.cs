@@ -61,7 +61,6 @@ public class Product : AggregateRoot<ProductId>
     private void Apply(ProductEvent.ProductAdded @event)
     {
         Id = ProductId.Of(@event.ProductId);
-        Rating = Rating.Of(0, 0);
         Status = ProductStatus.Active;
         Name = @event.Name;
         Category = @event.Category;
