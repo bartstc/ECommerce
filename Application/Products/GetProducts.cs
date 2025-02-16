@@ -9,9 +9,9 @@ namespace Application.Products
 {
     public class GetProducts
     {
-        public record Query : IRequest<Result<List<ProductDto>>>;
+        public record Query : IRequest<Result<List<ProductDetails>>>;
 
-        public class Handler : IRequestHandler<Query, Result<List<ProductDto>>>
+        public class Handler : IRequestHandler<Query, Result<List<ProductDetails>>>
         {
             private readonly IQuerySession _querySession;
 
@@ -20,13 +20,13 @@ namespace Application.Products
                 _querySession = querySession;
             }
 
-            public async Task<Result<List<ProductDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<ProductDetails>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var products = await _querySession.Query<ProductDetails>().ToListAsync(cancellationToken);
 
-                var productDtos = products.Select(product => product.ToDto()).ToList();
+                var productDtos = products.Select(p => p).ToList();
 
-                return Result<List<ProductDto>>.Success(productDtos);
+                return Result<List<ProductDetails>>.Success(productDtos);
             }
         }
     }

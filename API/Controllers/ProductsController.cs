@@ -1,3 +1,4 @@
+using API.Products.Dtos;
 using Application.Products;
 using Application.Products.Dtos;
 using Application.Products.Exceptions;
@@ -22,7 +23,7 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> GetProducts()
     {
         var result = await Mediator.Send(new GetProducts.Query());
-        return HandleResult(result);
+        return HandleResult(result, products => products.Select(p => p.ToDto()).ToList());
     }
 
     [HttpGet("{id}")]
@@ -32,7 +33,7 @@ public class ProductsController : BaseApiController
     {
         var result = await Mediator.Send(new GetProduct.Query(ProductId.Of(id)));
         if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
-        return HandleResult(result);
+        return HandleResult(result, product => product.ToDto());
     }
 
     [HttpPost]
