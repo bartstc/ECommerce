@@ -13,4 +13,19 @@ public abstract record ProductRule
             return status != ProductStatus.Active;
         }
     }
+
+    public record ProductDataIsValidRule(ProductData productData) : IBusinessRule
+    {
+        public string Message => "Product data is invalid";
+
+        public bool IsBroken()
+        {
+            return productData is null
+                || string.IsNullOrWhiteSpace(productData.Name)
+                || string.IsNullOrWhiteSpace(productData.Category.ToString())
+                || string.IsNullOrWhiteSpace(productData.Description)
+                || string.IsNullOrWhiteSpace(productData.ImageUrl)
+                || productData.Price is null;
+        }
+    }
 }

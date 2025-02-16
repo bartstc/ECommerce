@@ -1,5 +1,4 @@
 using Ecommerce.Core.Domain;
-using ECommerce.Core.Exceptions;
 
 namespace Domain;
 
@@ -18,19 +17,7 @@ public class Product : AggregateRoot<ProductId>
 
     public static Product Create(ProductData productData)
     {
-        var (Name, Description, Price, ImageUrl, Category) = productData
-            ?? throw new ArgumentNullException(nameof(productData));
-
-        if (string.IsNullOrWhiteSpace(Name))
-            throw new BusinessValidationException("Product name cannot be null or whitespace.");
-        if (string.IsNullOrWhiteSpace(Category.ToString()))
-            throw new BusinessValidationException("Product category cannot be null or whitespace.");
-        if (string.IsNullOrWhiteSpace(Description))
-            throw new BusinessValidationException("Product description cannot be null or whitespace.");
-        if (string.IsNullOrWhiteSpace(ImageUrl))
-            throw new BusinessValidationException("ImageUrl cannot be null.");
-        if (Price is null)
-            throw new BusinessValidationException("Product price cannot be null.");
+        CheckRule(new ProductRule.ProductDataIsValidRule(productData));
 
         return new Product(productData);
     }
@@ -38,6 +25,7 @@ public class Product : AggregateRoot<ProductId>
     public void Update(ProductData productData)
     {
         CheckRule(new ProductRule.ProductMustBeActiveRule(Status));
+        CheckRule(new ProductRule.ProductDataIsValidRule(productData));
 
         var @event = new ProductEvent.ProductUpdated(
             Id.Value,

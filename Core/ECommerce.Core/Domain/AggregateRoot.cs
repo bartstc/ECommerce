@@ -26,7 +26,7 @@ public abstract class AggregateRoot<TKey> : Entity<TKey>, IAggregateRoot<TKey>
 	protected void AppendEvent(IDomainEvent @event)
 		=> _uncommittedEvents.Enqueue(@event);
 
-	protected void CheckRule(IBusinessRule rule)
+	protected static void CheckRule(IBusinessRule rule)
 	{
 		if (rule.IsBroken())
 			throw new BusinessRuleException(rule);
