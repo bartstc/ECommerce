@@ -24,6 +24,8 @@ namespace Application.Products
             {
                 var product = await _querySession.LoadAsync<ProductDetails>(request.ProductId.Value);
 
+                if (product.Status == ProductStatus.Deleted) return Result<ProductDetails>.Failure(new ProductNotFoundException());
+
                 if (product == null) return Result<ProductDetails>.Failure(new ProductNotFoundException());
 
                 return Result<ProductDetails>.Success(product);
