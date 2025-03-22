@@ -1,6 +1,3 @@
-using Ecommerce.Core.Domain;
-using ECommerce.Core.Exceptions;
-
 namespace ProductCatalog.Domain;
 
 public class Rating : ValueObject<Rating>

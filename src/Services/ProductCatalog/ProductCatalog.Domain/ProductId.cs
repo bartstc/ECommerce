@@ -1,5 +1,3 @@
-using Ecommerce.Core.Domain;
-
 namespace ProductCatalog.Domain;
 
 public sealed class ProductId : StronglyTypedId<Guid>

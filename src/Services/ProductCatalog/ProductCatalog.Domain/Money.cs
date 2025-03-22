@@ -1,7 +1,4 @@
-﻿using Ecommerce.Core.Domain;
-using ECommerce.Core.Exceptions;
-
-namespace ProductCatalog.Domain;
+﻿namespace ProductCatalog.Domain;
 
 public class Money : ValueObject<Money>
 {

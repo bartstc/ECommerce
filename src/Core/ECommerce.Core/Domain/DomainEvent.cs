@@ -1,6 +1,6 @@
 using ECommerce.Core.Domain;
 
-namespace EcommerceDDD.Core.Domain;
+namespace Ecommerce.Core.Domain;
 
 public record DomainEvent : IDomainEvent
 {

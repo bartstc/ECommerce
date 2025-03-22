@@ -1,5 +1,3 @@
-using EcommerceDDD.Core.Domain;
-
 namespace ProductCatalog.Domain;
 
 public abstract record ProductEvent

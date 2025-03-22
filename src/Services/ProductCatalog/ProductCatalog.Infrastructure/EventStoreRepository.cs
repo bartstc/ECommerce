@@ -2,6 +2,7 @@ using Ecommerce.Core.Domain;
 using ECommerce.Core.Persistence;
 using Marten;
 using Marten.Events;
+using Microsoft.Extensions.Logging;
 
 namespace ProductCatalog.Infrastructure;
 
