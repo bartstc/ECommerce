@@ -1,6 +1,5 @@
 using Marten;
 using Microsoft.AspNetCore.Identity;
-using ProductCatalog.Domain;
 using ProductCatalog.Infrastructure.Auth;
 
 namespace ProductCatalog.Infrastructure;

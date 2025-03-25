@@ -1,5 +1,3 @@
-using ECommerce.Core.Persistence;
-
 namespace ProductCatalog.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork

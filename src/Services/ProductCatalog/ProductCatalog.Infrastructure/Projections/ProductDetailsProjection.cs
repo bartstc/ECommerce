@@ -1,5 +1,4 @@
 using Marten.Events.Aggregation;
-using ProductCatalog.Domain;
 
 namespace ProductCatalog.Infrastructure.Projections;
 

@@ -1,5 +1,3 @@
-using ProductCatalog.Domain;
-
 namespace ProductCatalog.Infrastructure.Projections;
 
 public record ProductDetails(
