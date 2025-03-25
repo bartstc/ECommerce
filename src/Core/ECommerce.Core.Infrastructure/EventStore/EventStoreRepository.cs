@@ -1,8 +1,7 @@
-using Marten;
 using Marten.Events;
 using Microsoft.Extensions.Logging;
 
-namespace ProductCatalog.Infrastructure;
+namespace Ecommerce.Core.Infrastructure.EventStore;
 
 public class EventStoreRepository<TA>(
     IDocumentSession documentSession,

@@ -1,10 +1,8 @@
-using Marten;
 using Marten.Events.Daemon.Resiliency;
-using MediatR;
 using Newtonsoft.Json;
 using Weasel.Core;
 
-namespace ProductCatalog.API.Extensions;
+namespace Ecommerce.Core.Infrastructure.EventStore;
 
 public static class MartenConfigExtension
 {
@@ -16,8 +14,7 @@ public static class MartenConfigExtension
             throw new ArgumentNullException(nameof(services));
 
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        var martenConfig = configuration.GetSection("EventStore")
-            .Get<MartenSettings>();
+        var martenConfig = configuration.GetSection("EventStore").Get<MartenSettings>();
 
         if (string.IsNullOrEmpty(connectionString))
             throw new ArgumentNullException("EventStore connection string is missing");

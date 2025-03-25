@@ -6,6 +6,7 @@ using ProductCatalog.Infrastructure;
 using ProductCatalog.Infrastructure.Projections;
 using ProductCatalog.Application.Products;
 using ProductCatalog.Domain;
+using Ecommerce.Core.Infrastructure.EventStore;
 
 namespace ProductCatalog.API.Extensions;
 
