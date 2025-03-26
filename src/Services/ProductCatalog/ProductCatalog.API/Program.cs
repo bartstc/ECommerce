@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Marten;
 using Microsoft.OpenApi.Models;
 using ProductCatalog.API.Extensions;
-using ProductCatalog.API.Middleware;
 using ProductCatalog.Infrastructure;
 using ProductCatalog.Infrastructure.Auth;
+using Ecommerce.Core.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 

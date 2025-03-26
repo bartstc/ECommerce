@@ -13,11 +13,11 @@ public class Product : AggregateRoot<ProductId>
     public DateTime? UpdatedAt { get; private set; }
     public DateTime? DeletedAt { get; private set; }
 
-    public static Product Create(ProductData productData)
+    public static Product Create(ProductData productData, Guid? id = null)
     {
         CheckRule(new ProductRule.ProductDataIsValidRule(productData));
 
-        return new Product(productData);
+        return new Product(productData, id);
     }
 
     public void Update(ProductData productData)
@@ -90,9 +90,11 @@ public class Product : AggregateRoot<ProductId>
         DeletedAt = @event.Timestamp;
     }
 
-    private Product(ProductData productData)
+    private Product(
+        ProductData productData,
+        Guid? id = null) // For seed purposes
     {
-        var productId = Guid.NewGuid();
+        var productId = id ?? Guid.NewGuid();
         var @event = new ProductEvent.ProductAdded(
             productId,
             productData.Name,

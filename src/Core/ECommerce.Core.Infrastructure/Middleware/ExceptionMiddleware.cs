@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace ProductCatalog.API.Middleware;
+namespace Ecommerce.Core.Infrastructure.Middleware;
 
 public class ExceptionMiddleware
 {
