@@ -13,11 +13,11 @@ public class Product : AggregateRoot<ProductId>
     public DateTime? UpdatedAt { get; private set; }
     public DateTime? DeletedAt { get; private set; }
 
-    public static Product Create(ProductData productData, Guid? id = null)
+    public static Product Create(ProductData productData, ProductId? productId = null)
     {
         CheckRule(new ProductRule.ProductDataIsValidRule(productData));
 
-        return new Product(productData, id);
+        return new Product(productData, productId?.Value);
     }
 
     public void Update(ProductData productData)
