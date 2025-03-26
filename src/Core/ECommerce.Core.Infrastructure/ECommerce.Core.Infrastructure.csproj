@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Marten" Version="7.37.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.10" />
   </ItemGroup>
 
 </Project>

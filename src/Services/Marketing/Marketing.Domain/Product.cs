@@ -24,11 +24,11 @@ public class Product : AggregateRoot<ProductId>
         Apply(@event);
     }
 
-    public void Delete()
+    public void Archive()
     {
         CheckRule(new ProductRule.ProductMustBeActiveRule(Status));
 
-        var @event = new ProductEvent.ProductDeleted(Id.Value);
+        var @event = new ProductEvent.ProductArchived(Id.Value);
         AppendEvent(@event);
         Apply(@event);
     }
@@ -47,15 +47,15 @@ public class Product : AggregateRoot<ProductId>
         UpdatedAt = @event.Timestamp;
     }
 
-    private void Apply(ProductEvent.ProductDeleted @event)
+    private void Apply(ProductEvent.ProductArchived @event)
     {
-        Status = ProductStatus.Deleted;
+        Status = ProductStatus.Archived;
         DeletedAt = @event.Timestamp;
     }
 
     private Product(ProductData productData)
     {
-        var productId = Guid.NewGuid();
+        var productId = productData.ProductId.Value;
         var @event = new ProductEvent.ProductCreated(productId);
 
         AppendEvent(@event);

@@ -1,3 +1,3 @@
 namespace Marketing.Domain;
 
-public record class ProductData(Rating Rating);
+public record class ProductData(ProductId ProductId);

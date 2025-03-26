@@ -20,7 +20,7 @@ public abstract record ProductRule
 
         public bool IsBroken()
         {
-            return productData is null || productData.Rating is null;
+            return productData is null || productData.ProductId is null;
         }
     }
 }

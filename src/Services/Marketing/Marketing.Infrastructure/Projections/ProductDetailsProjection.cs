@@ -34,7 +34,7 @@ public class ProductDetailsProjection : SingleStreamProjection<ProductDetails>
         };
     }
 
-    public static ProductDetails Apply(ProductEvent.ProductDeleted @event, ProductDetails current) =>
+    public static ProductDetails Apply(ProductEvent.ProductArchived @event, ProductDetails current) =>
         current with
         {
             Status = ProductStatus.Deleted,
