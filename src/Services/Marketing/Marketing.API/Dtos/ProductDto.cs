@@ -1,7 +1,7 @@
 using Marketing.Infrastructure.Projections;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Marketing.API.Products.Dtos;
+namespace Marketing.API.Dtos;
 
 [SwaggerSchema("Product details")]
 public record ProductDto(
