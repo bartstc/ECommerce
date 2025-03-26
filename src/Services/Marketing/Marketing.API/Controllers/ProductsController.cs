@@ -32,7 +32,7 @@ public class ProductsController : BaseApiController
     [SwaggerOperation("Create a new product")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddProduct([FromBody, SwaggerParameter("The product details")] CreateProductDto productDto)
+    public async Task<IActionResult> CreateProduct([FromBody, SwaggerParameter("The product details")] CreateProductDto productDto)
     {
         var result = await Mediator.Send(new CreateProduct.Command(productDto));
         return HandleResult(result);

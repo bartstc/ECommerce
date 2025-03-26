@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using ECommerce.Core.Persistence;
 using Ecommerce.Core.Infrastructure.EventStore;
 using Marketing.Infrastructure.Projections;
+using Marketing.Application;
 
 namespace Marketing.API.Extensions;
 
@@ -23,9 +24,9 @@ public static class ApplicationServiceExtensions
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
             });
         });
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetProducts).Assembly));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetProduct).Assembly));
         services.AddFluentValidationAutoValidation();
-        services.AddValidatorsFromAssemblyContaining<AddProduct>();
+        services.AddValidatorsFromAssemblyContaining<CreateProduct>();
         services.AddHttpContextAccessor();
 
         services.AddScoped<IEventStoreRepository<Product>, EventStoreRepository<Product>>();
