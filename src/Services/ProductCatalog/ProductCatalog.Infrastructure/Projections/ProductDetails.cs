@@ -8,8 +8,6 @@ public record ProductDetails(
     string ImageUrl,
     decimal PriceAmount,
     string PriceCode,
-    double RatingRate,
-    int RatingCount,
     ProductStatus Status,
     DateTime AddedAt,
     DateTime? UpdatedAt,

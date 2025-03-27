@@ -7,17 +7,16 @@ public class Product : AggregateRoot<ProductId>
     public string Description { get; private set; }
     public string ImageUrl { get; private set; }
     public Money Price { get; private set; }
-    public Rating Rating { get; private set; }
     public ProductStatus Status { get; private set; }
     public DateTime AddedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
     public DateTime? DeletedAt { get; private set; }
 
-    public static Product Create(ProductData productData, ProductId? productId = null)
+    public static Product Create(ProductData productData)
     {
         CheckRule(new ProductRule.ProductDataIsValidRule(productData));
 
-        return new Product(productData, productId?.Value);
+        return new Product(productData);
     }
 
     public void Update(ProductData productData)
@@ -34,15 +33,6 @@ public class Product : AggregateRoot<ProductId>
             productData.ImageUrl,
             productData.Category);
 
-        AppendEvent(@event);
-        Apply(@event);
-    }
-
-    public void Rate(double rating)
-    {
-        CheckRule(new ProductRule.ProductMustBeActiveRule(Status));
-
-        var @event = new ProductEvent.ProductRated(Id.Value, rating);
         AppendEvent(@event);
         Apply(@event);
     }
@@ -65,7 +55,6 @@ public class Product : AggregateRoot<ProductId>
         Description = @event.Description;
         ImageUrl = @event.ImageUrl;
         Price = Money.Of(@event.PriceAmount, @event.PriceCode);
-        Rating = Rating.Of(0, 0);
         AddedAt = @event.Timestamp;
     }
 
@@ -79,22 +68,15 @@ public class Product : AggregateRoot<ProductId>
         UpdatedAt = @event.Timestamp;
     }
 
-    private void Apply(ProductEvent.ProductRated @event)
-    {
-        Rating = Rating.Recalculate(@event.Rating);
-    }
-
     private void Apply(ProductEvent.ProductDeleted @event)
     {
         Status = ProductStatus.Deleted;
         DeletedAt = @event.Timestamp;
     }
 
-    private Product(
-        ProductData productData,
-        Guid? id = null) // For seed purposes
+    private Product(ProductData productData)
     {
-        var productId = id ?? Guid.NewGuid();
+        var productId = productData.ProductId?.Value ?? Guid.NewGuid();
         var @event = new ProductEvent.ProductAdded(
             productId,
             productData.Name,

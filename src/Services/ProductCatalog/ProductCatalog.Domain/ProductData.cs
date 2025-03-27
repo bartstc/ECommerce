@@ -5,5 +5,6 @@ public record class ProductData(
     string Description,
     Money Price,
     string ImageUrl,
-    Category Category
+    Category Category,
+    ProductId? ProductId = null // for seed purposes
 );

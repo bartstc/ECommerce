@@ -10,7 +10,6 @@ public record ProductDto(
     [property: SwaggerSchema("Product name")] string Name,
     [property: SwaggerSchema("Product description")] string Description,
     [property: SwaggerSchema("Product price")] MoneyDto Price,
-    [property: SwaggerSchema("Product rating")] RatingDto Rating,
     [property: SwaggerSchema("Product image URL")] string ImageUrl,
     [property: SwaggerSchema("Product category")] string Category,
     [property: SwaggerSchema("Date when the product was added")] DateTime AddedAt,
@@ -21,12 +20,6 @@ public record ProductDto(
 public record MoneyDto(
     [property: SwaggerSchema("Amount of money")] decimal Amount,
     [property: SwaggerSchema("Currency code")] string Currency
-);
-
-[SwaggerSchema("Product rating details")]
-public record RatingDto(
-    [property: SwaggerSchema("Rating value")] double Rate,
-    [property: SwaggerSchema("Number of ratings")] int Count
 );
 
 public static class ProductDtoMapper
@@ -40,10 +33,6 @@ public static class ProductDtoMapper
             Price: new MoneyDto(
                 Amount: product.PriceAmount,
                 Currency: product.PriceCode
-            ),
-            Rating: new RatingDto(
-                Rate: Math.Round(product.RatingRate, 2),
-                Count: product.RatingCount
             ),
             ImageUrl: product.ImageUrl,
             Category: MapCategoryToString(product.Category),

@@ -72,16 +72,4 @@ public class ProductsController : BaseApiController
         if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
         return HandleResult(result);
     }
-
-    [HttpPatch("{id}/rate")]
-    [SwaggerOperation("Rate a product by ID")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RateProduct([FromRoute, SwaggerParameter("The product ID")] Guid id, [FromBody, SwaggerParameter("The rating details")] RateProductDto rateProductDto)
-    {
-        var result = await Mediator.Send(new RateProduct.Command(ProductId.Of(id), rateProductDto));
-        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
-        return HandleResult(result);
-    }
 }

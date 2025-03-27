@@ -21,8 +21,6 @@ public class ProductDetailsProjection : SingleStreamProjection<ProductDetails>
             ImageUrl: @event.ImageUrl,
             PriceAmount: @event.PriceAmount,
             PriceCode: @event.PriceCode,
-            RatingRate: 0,
-            RatingCount: 0,
             Status: ProductStatus.Active,
             AddedAt: @event.Timestamp,
             UpdatedAt: null,
@@ -39,18 +37,6 @@ public class ProductDetailsProjection : SingleStreamProjection<ProductDetails>
             Category = @event.Category,
             UpdatedAt = @event.Timestamp
         };
-
-    public static ProductDetails Apply(ProductEvent.ProductRated @event, ProductDetails current)
-    {
-        var rating = Rating.Of(current.RatingRate, current.RatingCount);
-        var newRating = rating.Recalculate(@event.Rating);
-
-        return current with
-        {
-            RatingRate = newRating.Rate,
-            RatingCount = newRating.Count
-        };
-    }
 
     public static ProductDetails Apply(ProductEvent.ProductDeleted @event, ProductDetails current) =>
         current with
