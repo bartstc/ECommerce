@@ -1,6 +1,7 @@
 using ECommerce.Core.Application;
 using Marten;
 using MediatR;
+using ProductCatalog.Domain;
 using ProductCatalog.Infrastructure.Projections;
 
 namespace ProductCatalog.Application.Products;
@@ -20,7 +21,10 @@ public class ListProducts
 
         public async Task<Result<List<ProductDetails>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var products = await _querySession.Query<ProductDetails>().ToListAsync(cancellationToken);
+            var products = await _querySession
+                .Query<ProductDetails>()
+                .Where(p => p.Status == ProductStatus.Active)
+                .ToListAsync(cancellationToken);
 
             var productDtos = products.Select(p => p).ToList();
 
