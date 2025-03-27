@@ -1,8 +1,4 @@
-using ECommerce.Core.Application;
-using Marten;
-using MediatR;
 using ProductCatalog.Application.Products.Exceptions;
-using ProductCatalog.Domain;
 using ProductCatalog.Infrastructure.Projections;
 
 namespace ProductCatalog.Application.Products;

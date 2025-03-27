@@ -1,10 +1,6 @@
 using Application.Products.Validators;
 using FluentValidation;
-using MediatR;
-using ECommerce.Core.Application;
-using ECommerce.Core.Persistence;
 using ProductCatalog.Application.Products.Dtos;
-using ProductCatalog.Domain;
 using ProductCatalog.Application.Products.Mappers;
 
 namespace ProductCatalog.Application.Products;

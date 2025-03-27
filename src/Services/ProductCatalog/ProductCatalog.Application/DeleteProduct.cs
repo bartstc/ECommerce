@@ -1,8 +1,4 @@
-using ECommerce.Core.Application;
-using ECommerce.Core.Persistence;
-using MediatR;
 using ProductCatalog.Application.Products.Exceptions;
-using ProductCatalog.Domain;
 
 namespace ProductCatalog.Application.Products;
 

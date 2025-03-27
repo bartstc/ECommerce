@@ -1,13 +1,9 @@
 using Application.Products.Validators;
-using ECommerce.Core.Application;
-using ECommerce.Core.Persistence;
 using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.Logging;
 using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Exceptions;
 using ProductCatalog.Application.Products.Mappers;
-using ProductCatalog.Domain;
 
 namespace Application.Products
 {
