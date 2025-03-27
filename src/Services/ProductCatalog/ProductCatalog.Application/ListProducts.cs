@@ -5,7 +5,7 @@ using ProductCatalog.Infrastructure.Projections;
 
 namespace ProductCatalog.Application.Products;
 
-public class GetProducts
+public class ListProducts
 {
     public record Query : IRequest<Result<List<ProductDetails>>>;
 

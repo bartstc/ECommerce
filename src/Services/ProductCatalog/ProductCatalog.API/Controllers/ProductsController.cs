@@ -22,9 +22,9 @@ public class ProductsController : BaseApiController
     [HttpGet]
     [SwaggerOperation("Get a list of all products")]
     [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetProducts()
+    public async Task<IActionResult> ListProducts()
     {
-        var result = await Mediator.Send(new GetProducts.Query());
+        var result = await Mediator.Send(new ListProducts.Query());
         return HandleResult(result, products => products.Select(p => p.ToDto()).ToList());
     }
 

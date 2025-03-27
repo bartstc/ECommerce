@@ -31,7 +31,7 @@ public static class ApplicationServiceExtensions
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
             });
         });
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetProducts).Assembly));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ListProducts).Assembly));
         services.AddFluentValidationAutoValidation();
         services.AddValidatorsFromAssemblyContaining<AddProduct>();
         services.AddHttpContextAccessor();
