@@ -37,7 +37,8 @@ namespace Application.Products
 
                     stream.Aggregate.Update(request.ProductDto.ToProductData());
 
-                    await _productWriteRepository.AppendEventsAsync(stream.Aggregate);
+                    _productWriteRepository.AppendEventsAsync(stream.Aggregate);
+                    await _productWriteRepository.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {

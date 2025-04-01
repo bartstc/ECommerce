@@ -32,7 +32,8 @@ public class AddProduct
             {
                 var product = Product.Create(request.ProductDto.ToProductData());
 
-                await _productWriteRepository.AppendEventsAsync(product);
+                _productWriteRepository.AppendEventsAsync(product);
+                await _productWriteRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {

@@ -25,7 +25,8 @@ public class DeleteProduct
 
                 stream.Aggregate.Delete();
 
-                await _productWriteRepository.AppendEventsAsync(stream.Aggregate);
+                _productWriteRepository.AppendEventsAsync(stream.Aggregate);
+                await _productWriteRepository.SaveChangesAsync();
             }
             catch (Exception ex)
             {

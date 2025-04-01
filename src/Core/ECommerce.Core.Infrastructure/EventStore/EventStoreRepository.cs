@@ -9,20 +9,24 @@ public class EventStoreRepository<TA>(
 ) : IEventStoreRepository<TA> where TA : class, IAggregateRoot<StronglyTypedId<Guid>>
 {
     private readonly IDocumentSession _documentSession = documentSession
-        ?? throw new ArgumentNullException(nameof(documentSession));
+                                                         ?? throw new ArgumentNullException(nameof(documentSession));
+
     private readonly ILogger<EventStoreRepository<TA>> _logger = logger
-        ?? throw new ArgumentNullException(nameof(logger));
+                                                                 ?? throw new ArgumentNullException(nameof(logger));
+
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        await _documentSession.SaveChangesAsync(cancellationToken);
+    }
 
     // Stores uncommited events from an aggregate 
-    public async Task<long> AppendEventsAsync(TA aggregate, CancellationToken cancellationToken = default)
+    public long AppendEventsAsync(TA aggregate, CancellationToken cancellationToken = default)
     {
         var events = aggregate.GetUncommittedEvents().ToArray();
         var nextVersion = aggregate.Version + events.Length;
 
         aggregate.ClearUncommittedEvents();
         _documentSession.Events.Append(aggregate.Id.Value, nextVersion, events);
-
-        await _documentSession.SaveChangesAsync();
 
         return nextVersion;
     }
@@ -34,9 +38,15 @@ public class EventStoreRepository<TA>(
         return aggregate ?? null;
     }
 
-    public async Task<IEventStream<A>> FetchForWriting<A>(Guid id, CancellationToken cancellationToken = default) where A : class, IAggregateRoot<StronglyTypedId<Guid>>
+    public async Task<IEventStream<A>> FetchForWriting<A>(Guid id, CancellationToken cancellationToken = default)
+        where A : class, IAggregateRoot<StronglyTypedId<Guid>>
     {
         var aggregate = await _documentSession.Events.FetchForWriting<A>(id, cancellationToken);
         return aggregate;
+    }
+
+    public void StoreDocument<TDocument>(TDocument document, CancellationToken cancellationToken = default)
+    {
+        _documentSession.Store<TDocument>(document);
     }
 }
