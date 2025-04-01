@@ -7,6 +7,7 @@ using ProductCatalog.Infrastructure.Projections;
 using ProductCatalog.Application.Products;
 using ProductCatalog.Domain;
 using Ecommerce.Core.Infrastructure.EventStore;
+using ProductCatalog.Infrastructure.Documents;
 
 namespace ProductCatalog.API.Extensions;
 
@@ -19,17 +20,16 @@ public static class ApplicationServiceExtensions
         services.AddRouting(options => options.LowercaseUrls = true);
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-        services.AddDbContext<DataContext>(opt =>
+        services.AddDbContext<DataContext>(opt => { opt.UseNpgsql(config.GetConnectionString("DefaultConnection")); });
+        services.AddMarten(config, options =>
         {
-            opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+            options.ConfigureProjections();
+            options.ConfigureDocuments();
         });
-        services.AddMarten(config, options => options.ConfigureProjections());
         services.AddCors(opt =>
         {
-            opt.AddPolicy("CorsPolicy", policy =>
-            {
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
-            });
+            opt.AddPolicy("CorsPolicy",
+                policy => { policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"); });
         });
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ListProducts).Assembly));
         services.AddFluentValidationAutoValidation();

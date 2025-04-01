@@ -1,4 +1,3 @@
-using Marten;
 using Marten.Events.Projections;
 
 namespace ProductCatalog.Infrastructure.Projections;
