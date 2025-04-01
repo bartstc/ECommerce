@@ -3,6 +3,7 @@ using FluentValidation;
 using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Exceptions;
 using ProductCatalog.Application.Products.Mappers;
+using ProductCatalog.Infrastructure.Documents;
 
 namespace Application.Products
 {
@@ -21,10 +22,12 @@ namespace Application.Products
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly IEventStoreRepository<Product> _productWriteRepository;
+            private readonly IQuerySession _querySession;
 
-            public Handler(IEventStoreRepository<Product> productWriteRepository)
+            public Handler(IEventStoreRepository<Product> productWriteRepository, IQuerySession querySession)
             {
                 _productWriteRepository = productWriteRepository;
+                _querySession = querySession;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
@@ -32,12 +35,21 @@ namespace Application.Products
                 try
                 {
                     var stream = await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value);
+                    var document = await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value);
 
-                    if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductNotFoundException());
+                    if (stream.Aggregate is null) return Result<Unit>.Failure(new ProductNotFoundException());
+                    if (document is null) return Result<Unit>.Failure(new ProductNotFoundException());
 
                     stream.Aggregate.Update(request.ProductDto.ToProductData());
+                    
+                    var updatedDocument = new ProductDocument(
+                        stream.Aggregate.Id.Value,
+                        stream.Aggregate.Name,
+                        stream.Aggregate.Description,
+                        stream.Aggregate.ImageUrl);
 
                     _productWriteRepository.AppendEventsAsync(stream.Aggregate);
+                    _productWriteRepository.StoreDocument(updatedDocument);
                     await _productWriteRepository.SaveChangesAsync();
                 }
                 catch (Exception ex)

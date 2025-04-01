@@ -20,7 +20,7 @@ public class EventStoreRepository<TA>(
     }
 
     // Stores uncommited events from an aggregate 
-    public long AppendEventsAsync(TA aggregate, CancellationToken cancellationToken = default)
+    public long AppendEventsAsync(TA aggregate)
     {
         var events = aggregate.GetUncommittedEvents().ToArray();
         var nextVersion = aggregate.Version + events.Length;
@@ -45,8 +45,8 @@ public class EventStoreRepository<TA>(
         return aggregate;
     }
 
-    public void StoreDocument<TDocument>(TDocument document, CancellationToken cancellationToken = default)
+    public void StoreDocument<TDocument>(params TDocument[] documents)
     {
-        _documentSession.Store<TDocument>(document);
+        _documentSession.Store(documents);
     }
 }

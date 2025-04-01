@@ -2,6 +2,7 @@ using Application.Products.Validators;
 using FluentValidation;
 using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Mappers;
+using ProductCatalog.Infrastructure.Documents;
 
 namespace ProductCatalog.Application.Products;
 
@@ -32,7 +33,14 @@ public class AddProduct
             {
                 var product = Product.Create(request.ProductDto.ToProductData());
 
+                var productDocument = new ProductDocument(
+                    product.Id.Value,
+                    product.Name,
+                    product.Description,
+                    product.ImageUrl);
+
                 _productWriteRepository.AppendEventsAsync(product);
+                _productWriteRepository.StoreDocument(productDocument);
                 await _productWriteRepository.SaveChangesAsync();
             }
             catch (Exception ex)
