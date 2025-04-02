@@ -34,8 +34,8 @@ namespace Application.Products
             {
                 try
                 {
-                    var stream = await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value);
-                    var document = await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value);
+                    var stream = await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
+                    var document = await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
                     if (stream.Aggregate is null) return Result<Unit>.Failure(new ProductNotFoundException());
                     if (document is null) return Result<Unit>.Failure(new ProductNotFoundException());

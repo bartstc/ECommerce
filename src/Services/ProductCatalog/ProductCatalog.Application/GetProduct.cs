@@ -19,7 +19,7 @@ public class GetProduct
 
         public async Task<Result<ProductDocument>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var document = await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value);
+            var document = await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
             if (document == null) return Result<ProductDocument>.Failure(new ProductNotFoundException());
 

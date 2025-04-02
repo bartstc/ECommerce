@@ -19,14 +19,14 @@ public class ArchiveProduct
         {
             try
             {
-                var stream = await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value);
+                var stream = await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
 
                 if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
                 stream.Aggregate.Archive();
 
                 _productWriteRepository.AppendEventsAsync(stream.Aggregate);
-                await _productWriteRepository.SaveChangesAsync();
+                await _productWriteRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)
             {
