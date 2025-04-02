@@ -8,13 +8,13 @@ namespace ProductCatalog.Application.Products;
 
 public class AddProduct
 {
-    public record Command(CreateProductDto ProductDto) : IRequest<Result<Unit>>;
+    public record Command(AddProductDto ProductDto) : IRequest<Result<Unit>>;
 
     public class CommandValidator : AbstractValidator<Command>
     {
         public CommandValidator()
         {
-            RuleFor(x => x.ProductDto).SetValidator(new ProductValidator());
+            RuleFor(x => x.ProductDto).SetValidator(new AddProductValidator());
         }
     }
 

@@ -43,7 +43,8 @@ public class ProductsController : BaseApiController
     [SwaggerOperation("Add a new product")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> AddProduct([FromBody, SwaggerParameter("The product details")] CreateProductDto productDto)
+    public async Task<IActionResult> AddProduct(
+        [FromBody, SwaggerParameter("The product details")] AddProductDto productDto)
     {
         var result = await Mediator.Send(new AddProduct.Command(productDto));
         return HandleResult(result);
@@ -54,7 +55,8 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateProduct([FromRoute, SwaggerParameter("The product ID")] Guid id, [FromBody, SwaggerParameter("The updated product details")] CreateProductDto productDto)
+    public async Task<IActionResult> UpdateProduct([FromRoute, SwaggerParameter("The product ID")] Guid id,
+        [FromBody, SwaggerParameter("The updated product details")] UpdateProductDto productDto)
     {
         var result = await Mediator.Send(new UpdateProduct.Command(ProductId.Of(id), productDto));
         if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);

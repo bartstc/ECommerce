@@ -1,14 +1,14 @@
 namespace ProductCatalog.Application.Products.Dtos;
 
-public record CreateProductDto(
+public record AddProductDto(
     string Name,
     string Description,
-    CreatePriceDto Price,
+    AddPriceDto Price,
     string ImageUrl,
     string Category
 );
 
-public record CreatePriceDto(
+public record AddPriceDto(
     decimal Amount,
     string Code
 );

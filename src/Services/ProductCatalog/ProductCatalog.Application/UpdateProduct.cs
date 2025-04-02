@@ -9,13 +9,13 @@ namespace Application.Products
 {
     public class UpdateProduct
     {
-        public record Command(ProductId ProductId, CreateProductDto ProductDto) : IRequest<Result<Unit>>;
+        public record Command(ProductId ProductId, UpdateProductDto ProductDto) : IRequest<Result<Unit>>;
 
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.ProductDto).SetValidator(new ProductValidator());
+                RuleFor(x => x.ProductDto).SetValidator(new UpdateProductValidator());
             }
         }
 
@@ -34,28 +34,26 @@ namespace Application.Products
             {
                 try
                 {
-                    var stream = await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
-                    var document = await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
+                    var document =
+                        await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
-                    if (stream.Aggregate is null) return Result<Unit>.Failure(new ProductNotFoundException());
                     if (document is null) return Result<Unit>.Failure(new ProductNotFoundException());
-
-                    stream.Aggregate.Update(request.ProductDto.ToProductData());
+                    if (document.Status == ProductStatus.Deleted)
+                        return Result<Unit>.Failure(new ProductNotFoundException());
 
                     var updatedDocument = new ProductDocument(
                         request.ProductId.Value,
-                        stream.Aggregate.Category,
+                        document.Category,
                         request.ProductDto.Name,
                         request.ProductDto.Description,
                         request.ProductDto.ImageUrl,
-                        request.ProductDto.Price.Amount,
-                        request.ProductDto.Price.Code,
-                        stream.Aggregate.Status,
-                        stream.Aggregate.AddedAt,
-                        stream.Aggregate.UpdatedAt,
-                        stream.Aggregate.DeletedAt);
+                        document.PriceAmount,
+                        document.PriceCode,
+                        document.Status,
+                        document.AddedAt,
+                        DateTime.Now,
+                        document.DeletedAt);
 
-                    _productWriteRepository.AppendEventsAsync(stream.Aggregate);
                     _productWriteRepository.StoreDocument(updatedDocument);
                     await _productWriteRepository.SaveChangesAsync(cancellationToken);
                 }

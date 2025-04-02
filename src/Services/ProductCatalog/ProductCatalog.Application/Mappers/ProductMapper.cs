@@ -4,7 +4,7 @@ namespace ProductCatalog.Application.Products.Mappers;
 
 public static class ProductMapper
 {
-    public static ProductData ToProductData(this CreateProductDto productDto)
+    public static ProductData ToProductData(this AddProductDto productDto)
     {
         return new ProductData(
             Money.Of(productDto.Price.Amount, productDto.Price.Code),
