@@ -15,10 +15,7 @@ public class ProductDetailsProjection : SingleStreamProjection<ProductDetails>
     public static ProductDetails Create(ProductEvent.ProductAdded @event) =>
         new(
             Id: @event.ProductId,
-            Name: @event.Name,
             Category: @event.Category,
-            Description: @event.Description,
-            ImageUrl: @event.ImageUrl,
             PriceAmount: @event.PriceAmount,
             PriceCode: @event.PriceCode,
             Status: ProductStatus.Active,
@@ -29,12 +26,8 @@ public class ProductDetailsProjection : SingleStreamProjection<ProductDetails>
     public static ProductDetails Apply(ProductEvent.ProductUpdated @event, ProductDetails current) =>
         current with
         {
-            Name = @event.Name,
-            Description = @event.Description,
             PriceAmount = @event.PriceAmount,
             PriceCode = @event.PriceCode,
-            ImageUrl = @event.ImageUrl,
-            Category = @event.Category,
             UpdatedAt = @event.Timestamp
         };
 

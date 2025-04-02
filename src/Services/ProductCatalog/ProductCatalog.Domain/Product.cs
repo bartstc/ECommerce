@@ -2,10 +2,7 @@ namespace ProductCatalog.Domain;
 
 public class Product : AggregateRoot<ProductId>
 {
-    public string Name { get; private set; }
     public Category Category { get; private set; }
-    public string Description { get; private set; }
-    public string ImageUrl { get; private set; }
     public Money Price { get; private set; }
     public ProductStatus Status { get; private set; }
     public DateTime AddedAt { get; private set; }
@@ -26,12 +23,8 @@ public class Product : AggregateRoot<ProductId>
 
         var @event = new ProductEvent.ProductUpdated(
             Id.Value,
-            productData.Name,
-            productData.Description,
             productData.Price.Amount,
-            productData.Price.Currency.Code,
-            productData.ImageUrl,
-            productData.Category);
+            productData.Price.Currency.Code);
 
         AppendEvent(@event);
         Apply(@event);
@@ -50,20 +43,13 @@ public class Product : AggregateRoot<ProductId>
     {
         Id = ProductId.Of(@event.ProductId);
         Status = ProductStatus.Active;
-        Name = @event.Name;
         Category = @event.Category;
-        Description = @event.Description;
-        ImageUrl = @event.ImageUrl;
         Price = Money.Of(@event.PriceAmount, @event.PriceCode);
         AddedAt = @event.Timestamp;
     }
 
     private void Apply(ProductEvent.ProductUpdated @event)
     {
-        Name = @event.Name;
-        Category = @event.Category;
-        Description = @event.Description;
-        ImageUrl = @event.ImageUrl;
         Price = Money.Of(@event.PriceAmount, @event.PriceCode);
         UpdatedAt = @event.Timestamp;
     }
@@ -79,11 +65,8 @@ public class Product : AggregateRoot<ProductId>
         var productId = productData.ProductId?.Value ?? Guid.NewGuid();
         var @event = new ProductEvent.ProductAdded(
             productId,
-            productData.Name,
-            productData.Description,
             productData.Price.Amount,
             productData.Price.Currency.Code,
-            productData.ImageUrl,
             productData.Category);
 
         AppendEvent(@event);

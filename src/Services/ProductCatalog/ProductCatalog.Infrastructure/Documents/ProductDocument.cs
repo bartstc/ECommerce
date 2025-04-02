@@ -2,8 +2,8 @@
 
 public record ProductDocument(
     Guid ProductId,
-    string Name,
     Category Category,
+    string Name,
     string Description,
     string ImageUrl,
     decimal PriceAmount,

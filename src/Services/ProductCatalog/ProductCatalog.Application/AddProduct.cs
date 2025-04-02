@@ -35,8 +35,8 @@ public class AddProduct
 
                 var productDocument = new ProductDocument(
                     product.Id.Value,
-                    request.ProductDto.Name,
                     product.Category,
+                    request.ProductDto.Name,
                     request.ProductDto.Description,
                     request.ProductDto.ImageUrl,
                     request.ProductDto.Price.Amount,

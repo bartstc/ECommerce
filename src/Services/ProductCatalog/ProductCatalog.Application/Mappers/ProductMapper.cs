@@ -1,5 +1,4 @@
 using ProductCatalog.Application.Products.Dtos;
-using ProductCatalog.Domain;
 
 namespace ProductCatalog.Application.Products.Mappers;
 
@@ -8,10 +7,7 @@ public static class ProductMapper
     public static ProductData ToProductData(this CreateProductDto productDto)
     {
         return new ProductData(
-            productDto.Name,
-            productDto.Description,
             Money.Of(productDto.Price.Amount, productDto.Price.Code),
-            productDto.ImageUrl,
             MapStringToCategory(productDto.Category)
         );
     }

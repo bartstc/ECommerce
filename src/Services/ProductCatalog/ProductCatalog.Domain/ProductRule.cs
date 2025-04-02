@@ -21,10 +21,7 @@ public abstract record ProductRule
         public bool IsBroken()
         {
             return productData is null
-                || string.IsNullOrWhiteSpace(productData.Name)
                 || string.IsNullOrWhiteSpace(productData.Category.ToString())
-                || string.IsNullOrWhiteSpace(productData.Description)
-                || string.IsNullOrWhiteSpace(productData.ImageUrl)
                 || productData.Price is null;
         }
     }

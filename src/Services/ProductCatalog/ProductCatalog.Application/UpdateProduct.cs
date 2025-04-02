@@ -44,8 +44,8 @@ namespace Application.Products
 
                     var updatedDocument = new ProductDocument(
                         request.ProductId.Value,
-                        request.ProductDto.Name,
                         stream.Aggregate.Category,
+                        request.ProductDto.Name,
                         request.ProductDto.Description,
                         request.ProductDto.ImageUrl,
                         request.ProductDto.Price.Amount,
