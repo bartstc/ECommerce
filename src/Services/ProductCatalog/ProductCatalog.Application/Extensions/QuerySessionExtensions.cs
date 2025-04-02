@@ -1,13 +1,13 @@
-using ProductCatalog.Infrastructure.Projections;
+using ProductCatalog.Infrastructure.Documents;
 
-namespace ProductCatalog.Infrastructure.Extensions;
+namespace ProductCatalog.Application.Extensions;
 
 public static class QuerySessionExtensions
 {
-    public static IQueryable<ProductDetails> QueryActiveProducts(this IQuerySession session)
+    public static IQueryable<ProductDocument> QueryActiveProducts(this IQuerySession session)
     {
         return session
-            .Query<ProductDetails>()
+            .Query<ProductDocument>()
             .Where(p => p.Status == ProductStatus.Active);
     }
 }

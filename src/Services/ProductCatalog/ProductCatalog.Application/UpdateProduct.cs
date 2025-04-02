@@ -45,12 +45,19 @@ namespace Application.Products
                     var updatedDocument = new ProductDocument(
                         request.ProductId.Value,
                         request.ProductDto.Name,
+                        stream.Aggregate.Category,
                         request.ProductDto.Description,
-                        request.ProductDto.ImageUrl);
+                        request.ProductDto.ImageUrl,
+                        request.ProductDto.Price.Amount,
+                        request.ProductDto.Price.Code,
+                        stream.Aggregate.Status,
+                        stream.Aggregate.AddedAt,
+                        stream.Aggregate.UpdatedAt,
+                        stream.Aggregate.DeletedAt);
 
                     _productWriteRepository.AppendEventsAsync(stream.Aggregate);
                     _productWriteRepository.StoreDocument(updatedDocument);
-                    await _productWriteRepository.SaveChangesAsync();
+                    await _productWriteRepository.SaveChangesAsync(cancellationToken);
                 }
                 catch (Exception ex)
                 {

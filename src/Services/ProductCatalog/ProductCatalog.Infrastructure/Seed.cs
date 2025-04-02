@@ -204,8 +204,15 @@ public class Seed
                 session.Store(new ProductDocument(
                     product.Id.Value,
                     product.Name,
+                    product.Category,
                     product.Description,
-                    product.ImageUrl));
+                    product.ImageUrl,
+                    product.Price.Amount,
+                    product.Price.Currency.Code,
+                    product.Status,
+                    product.AddedAt,
+                    product.UpdatedAt,
+                    product.DeletedAt));
             }
 
             await session.SaveChangesAsync();

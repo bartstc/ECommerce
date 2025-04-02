@@ -1,5 +1,5 @@
 using ProductCatalog.Domain;
-using ProductCatalog.Infrastructure.Projections;
+using ProductCatalog.Infrastructure.Documents;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ProductCatalog.API.Products.Dtos;
@@ -24,10 +24,10 @@ public record MoneyDto(
 
 public static class ProductDtoMapper
 {
-    public static ProductDto ToDto(this ProductDetails product)
+    public static ProductDto ToDto(this ProductDocument product)
     {
         return new ProductDto(
-            Id: product.Id,
+            Id: product.ProductId,
             Name: product.Name,
             Description: product.Description,
             Price: new MoneyDto(

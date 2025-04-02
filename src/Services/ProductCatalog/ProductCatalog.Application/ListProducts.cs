@@ -1,13 +1,13 @@
-using ProductCatalog.Infrastructure.Extensions;
-using ProductCatalog.Infrastructure.Projections;
+using ProductCatalog.Application.Extensions;
+using ProductCatalog.Infrastructure.Documents;
 
 namespace ProductCatalog.Application.Products;
 
 public class ListProducts
 {
-    public record Query : IRequest<Result<List<ProductDetails>>>;
+    public record Query : IRequest<Result<List<ProductDocument>>>;
 
-    public class Handler : IRequestHandler<Query, Result<List<ProductDetails>>>
+    public class Handler : IRequestHandler<Query, Result<List<ProductDocument>>>
     {
         private readonly IQuerySession _querySession;
 
@@ -16,7 +16,7 @@ public class ListProducts
             _querySession = querySession;
         }
 
-        public async Task<Result<List<ProductDetails>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<List<ProductDocument>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var products = await _querySession
                 .QueryActiveProducts()
@@ -24,7 +24,7 @@ public class ListProducts
 
             var productDtos = products.Select(p => p).ToList();
 
-            return Result<List<ProductDetails>>.Success(productDtos);
+            return Result<List<ProductDocument>>.Success(productDtos);
         }
     }
 }

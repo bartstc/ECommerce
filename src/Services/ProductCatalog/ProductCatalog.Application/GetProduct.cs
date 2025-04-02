@@ -1,30 +1,32 @@
 using ProductCatalog.Application.Products.Exceptions;
-using ProductCatalog.Infrastructure.Projections;
+using ProductCatalog.Infrastructure.Documents;
 
 namespace ProductCatalog.Application.Products;
 
 public class GetProduct
 {
-    public record Query(ProductId ProductId) : IRequest<Result<ProductDetails>>;
+    public record Query(ProductId ProductId) : IRequest<Result<ProductDocument>>;
 
-    public class Handler : IRequestHandler<Query, Result<ProductDetails>>
+    public class Handler : IRequestHandler<Query, Result<ProductDocument>>
     {
         private readonly IQuerySession _querySession;
+
         public Handler(IQuerySession querySession)
 
         {
             _querySession = querySession;
         }
 
-        public async Task<Result<ProductDetails>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<ProductDocument>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var product = await _querySession.LoadAsync<ProductDetails>(request.ProductId.Value);
+            var document = await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value);
 
-            if (product == null) return Result<ProductDetails>.Failure(new ProductNotFoundException());
+            if (document == null) return Result<ProductDocument>.Failure(new ProductNotFoundException());
 
-            if (product.Status == ProductStatus.Deleted) return Result<ProductDetails>.Failure(new ProductNotFoundException());
+            if (document.Status == ProductStatus.Deleted)
+                return Result<ProductDocument>.Failure(new ProductNotFoundException());
 
-            return Result<ProductDetails>.Success(product);
+            return Result<ProductDocument>.Success(document);
         }
     }
 }

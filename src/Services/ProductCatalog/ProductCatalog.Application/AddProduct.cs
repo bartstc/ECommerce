@@ -36,12 +36,19 @@ public class AddProduct
                 var productDocument = new ProductDocument(
                     product.Id.Value,
                     request.ProductDto.Name,
+                    product.Category,
                     request.ProductDto.Description,
-                    request.ProductDto.ImageUrl);
+                    request.ProductDto.ImageUrl,
+                    request.ProductDto.Price.Amount,
+                    request.ProductDto.Price.Code,
+                    product.Status,
+                    product.AddedAt,
+                    product.UpdatedAt,
+                    product.DeletedAt);
 
                 _productWriteRepository.AppendEventsAsync(product);
                 _productWriteRepository.StoreDocument(productDocument);
-                await _productWriteRepository.SaveChangesAsync();
+                await _productWriteRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)
             {
