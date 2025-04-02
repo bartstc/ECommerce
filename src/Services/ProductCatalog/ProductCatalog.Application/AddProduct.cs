@@ -35,9 +35,9 @@ public class AddProduct
 
                 var productDocument = new ProductDocument(
                     product.Id.Value,
-                    product.Name,
-                    product.Description,
-                    product.ImageUrl);
+                    request.ProductDto.Name,
+                    request.ProductDto.Description,
+                    request.ProductDto.ImageUrl);
 
                 _productWriteRepository.AppendEventsAsync(product);
                 _productWriteRepository.StoreDocument(productDocument);

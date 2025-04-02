@@ -41,12 +41,12 @@ namespace Application.Products
                     if (document is null) return Result<Unit>.Failure(new ProductNotFoundException());
 
                     stream.Aggregate.Update(request.ProductDto.ToProductData());
-                    
+
                     var updatedDocument = new ProductDocument(
-                        stream.Aggregate.Id.Value,
-                        stream.Aggregate.Name,
-                        stream.Aggregate.Description,
-                        stream.Aggregate.ImageUrl);
+                        request.ProductId.Value,
+                        request.ProductDto.Name,
+                        request.ProductDto.Description,
+                        request.ProductDto.ImageUrl);
 
                     _productWriteRepository.AppendEventsAsync(stream.Aggregate);
                     _productWriteRepository.StoreDocument(updatedDocument);
