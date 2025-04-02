@@ -14,15 +14,15 @@ public class ProductValidator : AbstractValidator<CreateProductDto>
             {
                 RuleFor(x => x.Price.Amount).GreaterThan(0).WithMessage("Price amount must be greater than 0.");
                 RuleFor(x => x.Price.Code).NotEmpty()
-                    .Must(BeValudCurrencyCode).WithMessage("Invalid currency code value");
+                    .Must(BeValidCurrencyCode).WithMessage("Invalid currency code value");
             });
         RuleFor(x => x.ImageUrl).NotEmpty();
         RuleFor(x => x.Category)
             .NotEmpty()
-            .Must(BeAValidCategory).WithMessage("Invalid category value");
+            .Must(BeValidCategory).WithMessage("Invalid category value");
     }
 
-    private bool BeAValidCategory(string category)
+    private bool BeValidCategory(string category)
     {
         return category switch
         {
@@ -33,7 +33,7 @@ public class ProductValidator : AbstractValidator<CreateProductDto>
         };
     }
 
-    private bool BeValudCurrencyCode(string category)
+    private bool BeValidCurrencyCode(string category)
     {
         return category switch
         {
