@@ -23,7 +23,7 @@ public class ProductDetailsProjection : SingleStreamProjection<ProductDetails>
             UpdatedAt: null,
             DeletedAt: null);
 
-    public static ProductDetails Apply(ProductEvent.ProductUpdated @event, ProductDetails current) =>
+    public static ProductDetails Apply(ProductEvent.PriceUpdated @event, ProductDetails current) =>
         current with
         {
             PriceAmount = @event.PriceAmount,

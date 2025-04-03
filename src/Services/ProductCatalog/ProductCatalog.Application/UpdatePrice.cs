@@ -1,11 +1,22 @@
+﻿using Application.Products.Validators;
+using FluentValidation;
+using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Exceptions;
 using ProductCatalog.Infrastructure.Documents;
 
 namespace ProductCatalog.Application.Products;
 
-public class DeleteProduct
+public class UpdatePrice
 {
-    public record Command(ProductId ProductId) : IRequest<Result<Unit>>;
+    public record Command(ProductId ProductId, UpdatePriceDto UpdatePriceDto) : IRequest<Result<Unit>>;
+
+    public class CommandValidator : AbstractValidator<Command>
+    {
+        public CommandValidator()
+        {
+            RuleFor(x => x.UpdatePriceDto).SetValidator(new UpdatePriceValidator());
+        }
+    }
 
     public class Handler : IRequestHandler<Command, Result<Unit>>
     {
@@ -28,18 +39,18 @@ public class DeleteProduct
                     await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
                 if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductNotFoundException());
-                if (document == null) return Result<Unit>.Failure(new ProductNotFoundException());
+                if (document is null) return Result<Unit>.Failure(new ProductNotFoundException());
 
                 if (document.Status == ProductStatus.Deleted)
                     return Result<Unit>.Failure(new ProductNotFoundException());
 
-                stream.Aggregate.Delete();
+                stream.Aggregate.UpdatePrice(Money.Of(request.UpdatePriceDto.Amount, request.UpdatePriceDto.Code));
 
                 var updatedDocument = document with
                 {
-                    Status = ProductStatus.Deleted,
-                    UpdatedAt = DateTime.Now,
-                    DeletedAt = DateTime.Now
+                    PriceAmount = request.UpdatePriceDto.Amount,
+                    PriceCode = request.UpdatePriceDto.Code,
+                    UpdatedAt = DateTime.Now
                 };
 
                 _productWriteRepository.AppendEventsAsync(stream.Aggregate);

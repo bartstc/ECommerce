@@ -44,7 +44,8 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddProduct(
-        [FromBody, SwaggerParameter("The product details")] AddProductDto productDto)
+        [FromBody, SwaggerParameter("The product details")]
+        AddProductDto productDto)
     {
         var result = await Mediator.Send(new AddProduct.Command(productDto));
         return HandleResult(result);
@@ -56,7 +57,8 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateProduct([FromRoute, SwaggerParameter("The product ID")] Guid id,
-        [FromBody, SwaggerParameter("The updated product details")] UpdateProductDto productDto)
+        [FromBody, SwaggerParameter("The updated product details")]
+        UpdateProductDto productDto)
     {
         var result = await Mediator.Send(new UpdateProduct.Command(ProductId.Of(id), productDto));
         if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
@@ -71,6 +73,22 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> DeleteProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
     {
         var result = await Mediator.Send(new DeleteProduct.Command(ProductId.Of(id)));
+        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
+        return HandleResult(result);
+    }
+
+    [HttpPatch("{id}/price")]
+    [SwaggerOperation("Update product price by ID")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdatePrice(
+        [FromRoute, SwaggerParameter("The product ID")]
+        Guid id,
+        [FromBody, SwaggerParameter("The updated price details")]
+        UpdatePriceDto priceDto)
+    {
+        var result = await Mediator.Send(new UpdatePrice.Command(ProductId.Of(id), priceDto));
         if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
         return HandleResult(result);
     }

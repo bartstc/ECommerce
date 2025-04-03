@@ -21,8 +21,18 @@ public abstract record ProductRule
         public bool IsBroken()
         {
             return productData is null
-                || string.IsNullOrWhiteSpace(productData.Category.ToString())
-                || productData.Price is null;
+                   || string.IsNullOrWhiteSpace(productData.Category.ToString())
+                   || productData.Price is null;
+        }
+    }
+
+    public record PriceIsValidRule(Money price) : IBusinessRule
+    {
+        public string Message => "Price is invalid";
+
+        public bool IsBroken()
+        {
+            return price is null;
         }
     }
 }

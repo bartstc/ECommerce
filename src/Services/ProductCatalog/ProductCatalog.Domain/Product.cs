@@ -16,15 +16,15 @@ public class Product : AggregateRoot<ProductId>
         return new Product(productData);
     }
 
-    public void Update(ProductData productData)
+    public void UpdatePrice(Money price)
     {
         CheckRule(new ProductRule.ProductMustBeActiveRule(Status));
-        CheckRule(new ProductRule.ProductDataIsValidRule(productData));
+        CheckRule(new ProductRule.PriceIsValidRule(price));
 
-        var @event = new ProductEvent.ProductUpdated(
+        var @event = new ProductEvent.PriceUpdated(
             Id.Value,
-            productData.Price.Amount,
-            productData.Price.Currency.Code);
+            price.Amount,
+            Price.Currency.Code);
 
         AppendEvent(@event);
         Apply(@event);
@@ -48,7 +48,7 @@ public class Product : AggregateRoot<ProductId>
         AddedAt = @event.Timestamp;
     }
 
-    private void Apply(ProductEvent.ProductUpdated @event)
+    private void Apply(ProductEvent.PriceUpdated @event)
     {
         Price = Money.Of(@event.PriceAmount, @event.PriceCode);
         UpdatedAt = @event.Timestamp;
@@ -73,5 +73,7 @@ public class Product : AggregateRoot<ProductId>
         Apply(@event);
     }
 
-    private Product() { }
+    private Product()
+    {
+    }
 }

@@ -2,7 +2,6 @@ using Application.Products.Validators;
 using FluentValidation;
 using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Exceptions;
-using ProductCatalog.Application.Products.Mappers;
 using ProductCatalog.Infrastructure.Documents;
 
 namespace Application.Products
@@ -41,18 +40,13 @@ namespace Application.Products
                     if (document.Status == ProductStatus.Deleted)
                         return Result<Unit>.Failure(new ProductNotFoundException());
 
-                    var updatedDocument = new ProductDocument(
-                        request.ProductId.Value,
-                        document.Category,
-                        request.ProductDto.Name,
-                        request.ProductDto.Description,
-                        request.ProductDto.ImageUrl,
-                        document.PriceAmount,
-                        document.PriceCode,
-                        document.Status,
-                        document.AddedAt,
-                        DateTime.Now,
-                        document.DeletedAt);
+                    var updatedDocument = document with
+                    {
+                        Name = request.ProductDto.Name,
+                        Description = request.ProductDto.Description,
+                        ImageUrl = request.ProductDto.ImageUrl,
+                        UpdatedAt = DateTime.Now
+                    };
 
                     _productWriteRepository.StoreDocument(updatedDocument);
                     await _productWriteRepository.SaveChangesAsync(cancellationToken);

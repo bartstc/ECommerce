@@ -9,7 +9,7 @@ public abstract record ProductEvent
         Category Category
     ) : DomainEvent;
 
-    public record ProductUpdated(
+    public record PriceUpdated(
         Guid ProductId,
         decimal PriceAmount,
         string PriceCode
