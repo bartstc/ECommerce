@@ -20,7 +20,7 @@ public class EventStoreRepository<TA>(
     }
 
     // Stores uncommited events from an aggregate 
-    public long AppendEventsAsync(TA aggregate)
+    public long AppendEvents(TA aggregate)
     {
         var events = aggregate.GetUncommittedEvents().ToArray();
         var nextVersion = aggregate.Version + events.Length;
@@ -29,13 +29,6 @@ public class EventStoreRepository<TA>(
         _documentSession.Events.Append(aggregate.Id.Value, nextVersion, events);
 
         return nextVersion;
-    }
-
-    [Obsolete("FetchStreamAsync is obsolete. Use FetchForWriting instead.")]
-    public async Task<TA> FetchStreamAsync(Guid id, int? version = null, CancellationToken cancellationToken = default)
-    {
-        var aggregate = await _documentSession.Events.AggregateStreamAsync<TA>(id, version ?? 0);
-        return aggregate ?? null;
     }
 
     public async Task<IEventStream<A>> FetchForWriting<A>(Guid id, CancellationToken cancellationToken = default)

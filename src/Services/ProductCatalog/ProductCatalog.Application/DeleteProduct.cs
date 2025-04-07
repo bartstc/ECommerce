@@ -42,7 +42,7 @@ public class DeleteProduct
                     DeletedAt = DateTime.Now
                 };
 
-                _productWriteRepository.AppendEventsAsync(stream.Aggregate);
+                _productWriteRepository.AppendEvents(stream.Aggregate);
                 _productWriteRepository.StoreDocument(updatedDocument);
                 await _productWriteRepository.SaveChangesAsync(cancellationToken);
             }

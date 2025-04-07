@@ -32,7 +32,7 @@ public class CreateProduct
 
                 var product = Product.Create(productData);
 
-                _productWriteRepository.AppendEventsAsync(product);
+                _productWriteRepository.AppendEvents(product);
                 await _productWriteRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)

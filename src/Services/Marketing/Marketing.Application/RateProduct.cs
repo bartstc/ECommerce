@@ -34,7 +34,7 @@ public class RateProduct
 
                 stream.Aggregate.Rate(request.rateProductDto.Rating);
 
-                _productWriteRepository.AppendEventsAsync(stream.Aggregate);
+                _productWriteRepository.AppendEvents(stream.Aggregate);
                 await _productWriteRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)

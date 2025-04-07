@@ -46,7 +46,7 @@ public class AddProduct
                     product.UpdatedAt,
                     product.DeletedAt);
 
-                _productWriteRepository.AppendEventsAsync(product);
+                _productWriteRepository.AppendEvents(product);
                 _productWriteRepository.StoreDocument(productDocument);
                 await _productWriteRepository.SaveChangesAsync(cancellationToken);
             }

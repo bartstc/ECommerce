@@ -25,7 +25,7 @@ public class ArchiveProduct
 
                 stream.Aggregate.Archive();
 
-                _productWriteRepository.AppendEventsAsync(stream.Aggregate);
+                _productWriteRepository.AppendEvents(stream.Aggregate);
                 await _productWriteRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)
