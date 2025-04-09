@@ -33,9 +33,14 @@ public class DummyEventStream<A> : IEventStream<A>
 
     public void AppendMany(IEnumerable<object> events)
     {
+        foreach (var @event in events)
+        {
+            AppendOne(@event);
+        }
     }
 
     public void AppendOne(object @event)
     {
+        Events.Append(@event);
     }
 }

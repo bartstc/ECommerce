@@ -1,7 +1,6 @@
 using Marketing.API.Dtos;
 using Marketing.Application;
 using Marketing.Application.Dtos;
-using Marketing.Application.Products.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

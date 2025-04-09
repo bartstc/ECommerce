@@ -1,5 +1,3 @@
-using Marketing.Application.Products.Exceptions;
-
 namespace Marketing.Application;
 
 public class ArchiveProduct

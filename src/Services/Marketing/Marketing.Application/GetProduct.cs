@@ -1,4 +1,3 @@
-using Marketing.Application.Products.Exceptions;
 using Marketing.Infrastructure.Projections;
 using Marten;
 

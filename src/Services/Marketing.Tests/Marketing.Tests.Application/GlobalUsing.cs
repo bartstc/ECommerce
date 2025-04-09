@@ -1,0 +1,9 @@
+﻿global using Shouldly;
+global using Marketing.Application;
+global using Marketing.Application.Dtos;
+global using Marketing.Domain;
+global using ECommerce.Core.Persistence;
+global using Marten;
+global using Marten.Events;
+global using Moq;
+global using ECommerce.Core.Testing;

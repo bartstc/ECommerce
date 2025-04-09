@@ -1,5 +1,4 @@
 using Marketing.Application.Dtos;
-using Marketing.Application.Products.Exceptions;
 
 namespace Marketing.Application;
 

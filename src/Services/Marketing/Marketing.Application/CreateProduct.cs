@@ -1,5 +1,6 @@
 using Marketing.Application.Dtos;
 using Marketing.Application.Validators;
+using Marten;
 
 namespace Marketing.Application;
 
@@ -18,16 +19,26 @@ public class CreateProduct
     public class Handler : IRequestHandler<Command, Result<Unit>>
     {
         private readonly IEventStoreRepository<Product> _productWriteRepository;
+        private readonly IQuerySession _querySession;
 
-        public Handler(IEventStoreRepository<Product> productWriteRepository)
+        public Handler(IEventStoreRepository<Product> productWriteRepository, IQuerySession querySession)
         {
             _productWriteRepository = productWriteRepository;
+            _querySession = querySession;
         }
 
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             try
             {
+                var state = await _querySession.Events
+                    .FetchStreamStateAsync(request.ProductDto.ProductId, cancellationToken);
+
+                if (state != null)
+                {
+                    return Result<Unit>.Failure(new ProductAlreadyExistsException());
+                }
+
                 var productData = new ProductData(ProductId.Of(request.ProductDto.ProductId));
 
                 var product = Product.Create(productData);

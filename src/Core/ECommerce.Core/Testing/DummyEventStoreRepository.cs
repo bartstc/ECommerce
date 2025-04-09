@@ -1,12 +1,15 @@
 ﻿using Ecommerce.Core.Domain;
 using ECommerce.Core.Persistence;
+using JasperFx.Core;
+using Marten.Events;
 
 namespace ECommerce.Core.Testing;
 
 public class DummyEventStoreRepository<TA> : IEventStoreRepository<TA>
     where TA : class, IAggregateRoot<StronglyTypedId<Guid>>
 {
-    public List<StreamAction> AggregateStream = new();
+    private readonly List<DummyEventStream<TA>> eventStreams = new();
+    private readonly List<StreamAction> streamActions = new();
 
     public Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -16,36 +19,51 @@ public class DummyEventStoreRepository<TA> : IEventStoreRepository<TA>
     public long AppendEvents(TA aggregate)
     {
         var nextVersion = aggregate.Version + 1;
-        AggregateStream.Add(new StreamAction(
+        var events = aggregate.GetUncommittedEvents().ToList();
+
+        var stream = eventStreams.FirstOrDefault(s => s.Id == aggregate.Id.Value);
+        if (stream == null)
+        {
+            stream = new DummyEventStream<TA>(aggregate.Id.Value, 0, new List<IEvent>(), aggregate);
+            eventStreams.Add(stream);
+        }
+
+        stream.AppendMany(events);
+
+        streamActions.Add(new StreamAction(
             aggregate.Id.Value,
-            aggregate, nextVersion,
-            aggregate.GetUncommittedEvents())
-        );
+            aggregate,
+            nextVersion,
+            events
+        ));
 
         return nextVersion;
     }
 
-    public Task<Marten.Events.IEventStream<A>> FetchForWriting<A>(Guid id,
-        CancellationToken cancellationToken = default)
+    public Task<IEventStream<A>> FetchForWriting<A>(Guid id, CancellationToken cancellationToken = default)
         where A : class, IAggregateRoot<StronglyTypedId<Guid>>
     {
-        var streamAction = AggregateStream.FirstOrDefault(c => c.Stream == id);
-        var eventStream = new DummyEventStream<A>(
-            id,
-            streamAction?.ExpectedVersion ?? 0,
-            new List<Marten.Events.IEvent>(),
-            streamAction?.Aggregate as A,
-            cancellationToken
-        );
+        var stream = eventStreams.FirstOrDefault(s => s.Id == id) as DummyEventStream<A>;
+        if (stream == null)
+        {
+            stream = new DummyEventStream<A>(
+                id,
+                0,
+                new List<IEvent>(),
+                null,
+                cancellationToken
+            );
+            eventStreams.Add(stream as DummyEventStream<TA>);
+        }
 
-        return Task.FromResult<Marten.Events.IEventStream<A>>(eventStream);
+        return Task.FromResult<IEventStream<A>>(stream);
     }
 
     public void StoreDocument<TDocument>(params TDocument[] documents)
     {
     }
 
-    public record class StreamAction(
+    public record StreamAction(
         Guid Stream,
         TA Aggregate,
         long ExpectedVersion,
