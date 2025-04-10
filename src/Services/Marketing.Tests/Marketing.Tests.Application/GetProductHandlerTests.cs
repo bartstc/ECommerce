@@ -4,13 +4,15 @@ namespace Marketing.Tests.Application;
 
 public class GetProductHandlerTests
 {
+    private readonly Mock<IEventStoreRepository<Product>> _productWriteRepository;
     private readonly Mock<IQuerySession> _querySession;
     private readonly GetProduct.Handler _handler;
 
     public GetProductHandlerTests()
     {
+        _productWriteRepository = new Mock<IEventStoreRepository<Product>>();
         _querySession = new Mock<IQuerySession>();
-        _handler = new GetProduct.Handler(_querySession.Object);
+        _handler = new GetProduct.Handler(_productWriteRepository.Object);
     }
 
     [Fact]
@@ -27,7 +29,7 @@ public class GetProductHandlerTests
             null,
             null);
 
-        _querySession.Setup(s => s.LoadAsync<ProductDetails>(productId, It.IsAny<CancellationToken>()))
+        _productWriteRepository.Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedProduct);
 
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -42,7 +44,7 @@ public class GetProductHandlerTests
         var productId = Guid.NewGuid();
         var query = new GetProduct.Query(ProductId.Of(productId));
 
-        _querySession.Setup(s => s.LoadAsync<ProductDetails>(productId, It.IsAny<CancellationToken>()))
+        _productWriteRepository.Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((ProductDetails)null);
 
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -65,7 +67,7 @@ public class GetProductHandlerTests
             null,
             null);
 
-        _querySession.Setup(s => s.LoadAsync<ProductDetails>(productId, It.IsAny<CancellationToken>()))
+        _productWriteRepository.Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(archivedProduct);
 
         var result = await _handler.Handle(query, CancellationToken.None);

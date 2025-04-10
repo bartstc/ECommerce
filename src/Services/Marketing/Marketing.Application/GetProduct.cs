@@ -1,5 +1,4 @@
 using Marketing.Infrastructure.Projections;
-using Marten;
 
 namespace Marketing.Application;
 
@@ -9,19 +8,22 @@ public class GetProduct
 
     public class Handler : IRequestHandler<Query, Result<ProductDetails>>
     {
-        private readonly IQuerySession _querySession;
-        public Handler(IQuerySession querySession)
+        private readonly IEventStoreRepository<Product> _productWriteRepository;
+
+        public Handler(IEventStoreRepository<Product> productWriteRepository)
         {
-            _querySession = querySession;
+            _productWriteRepository = productWriteRepository;
         }
 
         public async Task<Result<ProductDetails>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var product = await _querySession.LoadAsync<ProductDetails>(request.ProductId.Value, cancellationToken);
+            var product =
+                await _productWriteRepository.FetchLatest<ProductDetails>(request.ProductId.Value, cancellationToken);
 
             if (product == null) return Result<ProductDetails>.Failure(new ProductNotFoundException());
 
-            if (product.Status == ProductStatus.Archived) return Result<ProductDetails>.Failure(new ProductNotFoundException());
+            if (product.Status == ProductStatus.Archived)
+                return Result<ProductDetails>.Failure(new ProductNotFoundException());
 
             return Result<ProductDetails>.Success(product);
         }
