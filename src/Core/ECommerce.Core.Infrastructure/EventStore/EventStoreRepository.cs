@@ -31,14 +31,21 @@ public class EventStoreRepository<TA>(
         return nextVersion;
     }
 
-    public async Task<IEventStream<A>> FetchForWriting<A>(Guid id, CancellationToken cancellationToken = default)
-        where A : class, IAggregateRoot<StronglyTypedId<Guid>>
+    public async Task<IEventStream<TA>> FetchForWriting<TA>(Guid id, CancellationToken cancellationToken = default)
+        where TA : class, IAggregateRoot<StronglyTypedId<Guid>>
     {
-        var aggregate = await _documentSession.Events.FetchForWriting<A>(id, cancellationToken);
+        var aggregate = await _documentSession.Events.FetchForWriting<TA>(id, cancellationToken);
+        return aggregate;
+    }
+    
+    public async Task<TP> FetchLatest<TP>(Guid id, CancellationToken cancellationToken = default)
+        where TP : class
+    {
+        var aggregate = await _documentSession.Events.FetchLatest<TP>(id, cancellationToken);
         return aggregate;
     }
 
-    public void StoreDocument<TDocument>(params TDocument[] documents)
+    public void StoreDocument<TD>(params TD[] documents)
     {
         _documentSession.Store(documents);
     }

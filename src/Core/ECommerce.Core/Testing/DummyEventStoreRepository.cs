@@ -59,6 +59,12 @@ public class DummyEventStoreRepository<TA> : IEventStoreRepository<TA>
         return Task.FromResult<IEventStream<A>>(stream);
     }
 
+    public async Task<TP> FetchLatest<TP>(Guid id, CancellationToken cancellationToken = default)
+        where TP : class
+    {
+       throw new NotImplementedException();
+    }
+
     public void StoreDocument<TDocument>(params TDocument[] documents)
     {
     }
