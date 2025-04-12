@@ -4,7 +4,7 @@ namespace Marketing.Application;
 
 public class RateProduct
 {
-    public record Command(ProductId ProductId, RateProductDto rateProductDto) : IRequest<Result<Unit>>;
+    public record Command(ProductId ProductId, RateProductDto rateProductDto) : ICommand<Result<Unit>>;
 
     public class CommandValidator : AbstractValidator<Command>
     {
@@ -14,27 +14,21 @@ public class RateProduct
         }
     }
 
-    public class Handler : IRequestHandler<Command, Result<Unit>>
+    public class Handler(IEventStoreRepository<Product> productRepository) : ICommandHandler<Command, Result<Unit>>
     {
-        private readonly IEventStoreRepository<Product> _productWriteRepository;
-
-        public Handler(IEventStoreRepository<Product> productWriteRepository)
-        {
-            _productWriteRepository = productWriteRepository;
-        }
-
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             try
             {
-                var stream = await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
+                var stream =
+                    await productRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
 
                 if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductNotFoundException());
 
                 stream.Aggregate.Rate(request.rateProductDto.Rating);
 
-                _productWriteRepository.AppendEvents(stream.Aggregate);
-                await _productWriteRepository.SaveChangesAsync(cancellationToken);
+                productRepository.AppendEvents(stream.Aggregate);
+                await productRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)
             {
