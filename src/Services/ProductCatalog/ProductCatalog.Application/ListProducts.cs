@@ -5,20 +5,13 @@ namespace ProductCatalog.Application.Products;
 
 public class ListProducts
 {
-    public record Query : IRequest<Result<List<ProductDocument>>>;
+    public record Query : IQuery<Result<List<ProductDocument>>>;
 
-    public class Handler : IRequestHandler<Query, Result<List<ProductDocument>>>
+    public class Handler(IQuerySession querySession) : IQueryHandler<Query, Result<List<ProductDocument>>>
     {
-        private readonly IQuerySession _querySession;
-
-        public Handler(IQuerySession querySession)
-        {
-            _querySession = querySession;
-        }
-
         public async Task<Result<List<ProductDocument>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var products = await _querySession
+            var products = await querySession
                 .QueryActiveProducts()
                 .ToListAsync(cancellationToken);
 

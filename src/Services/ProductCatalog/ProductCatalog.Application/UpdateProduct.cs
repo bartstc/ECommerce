@@ -8,7 +8,7 @@ namespace Application.Products
 {
     public class UpdateProduct
     {
-        public record Command(ProductId ProductId, UpdateProductDto ProductDto) : IRequest<Result<Unit>>;
+        public record Command(ProductId ProductId, UpdateProductDto ProductDto) : ICommand<Result<Unit>>;
 
         public class CommandValidator : AbstractValidator<Command>
         {
@@ -18,23 +18,15 @@ namespace Application.Products
             }
         }
 
-        public class Handler : IRequestHandler<Command, Result<Unit>>
+        public class Handler(IEventStoreRepository<Product> productRepository, IQuerySession querySession)
+            : ICommandHandler<Command, Result<Unit>>
         {
-            private readonly IEventStoreRepository<Product> _productWriteRepository;
-            private readonly IQuerySession _querySession;
-
-            public Handler(IEventStoreRepository<Product> productWriteRepository, IQuerySession querySession)
-            {
-                _productWriteRepository = productWriteRepository;
-                _querySession = querySession;
-            }
-
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 try
                 {
                     var document =
-                        await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
+                        await querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
                     if (document is null) return Result<Unit>.Failure(new ProductNotFoundException());
                     if (document.Status == ProductStatus.Deleted)
@@ -48,8 +40,8 @@ namespace Application.Products
                         UpdatedAt = DateTime.Now
                     };
 
-                    _productWriteRepository.StoreDocument(updatedDocument);
-                    await _productWriteRepository.SaveChangesAsync(cancellationToken);
+                    productRepository.StoreDocument(updatedDocument);
+                    await productRepository.SaveChangesAsync(cancellationToken);
                 }
                 catch (Exception ex)
                 {

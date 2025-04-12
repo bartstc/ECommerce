@@ -1,5 +1,3 @@
-using Application.Products.Validators;
-using FluentValidation;
 using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Mappers;
 using ProductCatalog.Infrastructure.Documents;
@@ -8,7 +6,7 @@ namespace ProductCatalog.Application.Products;
 
 public class AddProduct
 {
-    public record Command(AddProductDto ProductDto) : IRequest<Result<Unit>>;
+    public record Command(AddProductDto ProductDto) : ICommand<Result<Unit>>;
 
     public class CommandValidator : AbstractValidator<Command>
     {
@@ -18,15 +16,8 @@ public class AddProduct
         }
     }
 
-    public class Handler : IRequestHandler<Command, Result<Unit>>
+    public class Handler(IEventStoreRepository<Product> productRepository) : ICommandHandler<Command, Result<Unit>>
     {
-        private readonly IEventStoreRepository<Product> _productWriteRepository;
-
-        public Handler(IEventStoreRepository<Product> productWriteRepository)
-        {
-            _productWriteRepository = productWriteRepository;
-        }
-
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             try
@@ -46,9 +37,9 @@ public class AddProduct
                     product.UpdatedAt,
                     product.DeletedAt);
 
-                _productWriteRepository.AppendEvents(product);
-                _productWriteRepository.StoreDocument(productDocument);
-                await _productWriteRepository.SaveChangesAsync(cancellationToken);
+                productRepository.AppendEvents(product);
+                productRepository.StoreDocument(productDocument);
+                await productRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)
             {

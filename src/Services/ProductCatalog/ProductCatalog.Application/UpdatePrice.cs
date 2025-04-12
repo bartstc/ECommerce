@@ -1,6 +1,4 @@
-﻿using Application.Products.Validators;
-using FluentValidation;
-using ProductCatalog.Application.Products.Dtos;
+﻿using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Exceptions;
 using ProductCatalog.Infrastructure.Documents;
 
@@ -8,7 +6,7 @@ namespace ProductCatalog.Application.Products;
 
 public class UpdatePrice
 {
-    public record Command(ProductId ProductId, UpdatePriceDto UpdatePriceDto) : IRequest<Result<Unit>>;
+    public record Command(ProductId ProductId, UpdatePriceDto UpdatePriceDto) : ICommand<Result<Unit>>;
 
     public class CommandValidator : AbstractValidator<Command>
     {
@@ -18,25 +16,17 @@ public class UpdatePrice
         }
     }
 
-    public class Handler : IRequestHandler<Command, Result<Unit>>
+    public class Handler(IEventStoreRepository<Product> productRepository, IQuerySession querySession)
+        : ICommandHandler<Command, Result<Unit>>
     {
-        private readonly IEventStoreRepository<Product> _productWriteRepository;
-        private readonly IQuerySession _querySession;
-
-        public Handler(IEventStoreRepository<Product> productWriteRepository, IQuerySession querySession)
-        {
-            _productWriteRepository = productWriteRepository;
-            _querySession = querySession;
-        }
-
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             try
             {
                 var stream =
-                    await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
+                    await productRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
                 var document =
-                    await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
+                    await querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
                 if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductNotFoundException());
                 if (document is null) return Result<Unit>.Failure(new ProductNotFoundException());
@@ -53,9 +43,9 @@ public class UpdatePrice
                     UpdatedAt = DateTime.Now
                 };
 
-                _productWriteRepository.AppendEvents(stream.Aggregate);
-                _productWriteRepository.StoreDocument(updatedDocument);
-                await _productWriteRepository.SaveChangesAsync(cancellationToken);
+                productRepository.AppendEvents(stream.Aggregate);
+                productRepository.StoreDocument(updatedDocument);
+                await productRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)
             {

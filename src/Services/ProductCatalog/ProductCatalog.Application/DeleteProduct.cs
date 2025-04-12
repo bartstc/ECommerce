@@ -5,27 +5,19 @@ namespace ProductCatalog.Application.Products;
 
 public class DeleteProduct
 {
-    public record Command(ProductId ProductId) : IRequest<Result<Unit>>;
+    public record Command(ProductId ProductId) : ICommand<Result<Unit>>;
 
-    public class Handler : IRequestHandler<Command, Result<Unit>>
+    public class Handler(IEventStoreRepository<Product> productRepository, IQuerySession querySession)
+        : ICommandHandler<Command, Result<Unit>>
     {
-        private readonly IEventStoreRepository<Product> _productWriteRepository;
-        private readonly IQuerySession _querySession;
-
-        public Handler(IEventStoreRepository<Product> productWriteRepository, IQuerySession querySession)
-        {
-            _productWriteRepository = productWriteRepository;
-            _querySession = querySession;
-        }
-
         public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             try
             {
                 var stream =
-                    await _productWriteRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
+                    await productRepository.FetchForWriting<Product>(request.ProductId.Value, cancellationToken);
                 var document =
-                    await _querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
+                    await querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
                 if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductNotFoundException());
                 if (document == null) return Result<Unit>.Failure(new ProductNotFoundException());
@@ -42,9 +34,9 @@ public class DeleteProduct
                     DeletedAt = DateTime.Now
                 };
 
-                _productWriteRepository.AppendEvents(stream.Aggregate);
-                _productWriteRepository.StoreDocument(updatedDocument);
-                await _productWriteRepository.SaveChangesAsync(cancellationToken);
+                productRepository.AppendEvents(stream.Aggregate);
+                productRepository.StoreDocument(updatedDocument);
+                await productRepository.SaveChangesAsync(cancellationToken);
             }
             catch (Exception ex)
             {
