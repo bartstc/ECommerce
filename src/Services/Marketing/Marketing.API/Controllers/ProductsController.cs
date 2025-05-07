@@ -1,7 +1,9 @@
+using ECommerce.Core.Application;
 using Marketing.API.Dtos;
 using Marketing.Application;
 using Marketing.Application.Dtos;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -30,11 +32,20 @@ public class ProductsController : BaseApiController
     [HttpPost]
     [SwaggerOperation("Create a new product")]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateProduct([FromBody, SwaggerParameter("The product details")] CreateProductDto productDto)
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+    public async Task<Results<Created, BadRequest<ErrorResponse>, Conflict<ErrorResponse>>> CreateProduct(
+        [FromBody, SwaggerParameter("The product details")]
+        CreateProductDto productDto)
     {
         var result = await Mediator.Send(new CreateProduct.Command(productDto));
-        return HandleResult(result);
+
+        return result.Match<Results<Created, BadRequest<ErrorResponse>, Conflict<ErrorResponse>>>(
+            unit => TypedResults.Created(),
+            error => TypedResults.BadRequest(new ErrorResponse(error.Message)),
+            businessError => TypedResults.BadRequest(new ErrorResponse(businessError.Message)),
+            alreadyExists => TypedResults.Conflict(new ErrorResponse(alreadyExists.Message))
+        );
     }
 
     [HttpDelete("{id}")]
@@ -54,7 +65,9 @@ public class ProductsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RateProduct([FromRoute, SwaggerParameter("The product ID")] Guid id, [FromBody, SwaggerParameter("The rating details")] RateProductDto rateProductDto)
+    public async Task<IActionResult> RateProduct([FromRoute, SwaggerParameter("The product ID")] Guid id,
+        [FromBody, SwaggerParameter("The rating details")]
+        RateProductDto rateProductDto)
     {
         var result = await Mediator.Send(new RateProduct.Command(ProductId.Of(id), rateProductDto));
         if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);

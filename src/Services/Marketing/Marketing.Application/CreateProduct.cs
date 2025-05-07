@@ -2,7 +2,9 @@ namespace Marketing.Application;
 
 public class CreateProduct
 {
-    public record Command(CreateProductDto ProductDto) : ICommand<Result<Unit>>;
+    public record Command(CreateProductDto ProductDto)
+        : ICommand<OneOf<Unit, CoreException.Error, CoreException.BusinessRuleError,
+            ProductException.AlreadyExists>>;
 
     public class CommandValidator : AbstractValidator<Command>
     {
@@ -13,9 +15,13 @@ public class CreateProduct
     }
 
     public class Handler(IEventStoreRepository<Product> productRepository, IQuerySession querySession)
-        : ICommandHandler<Command, Result<Unit>>
+        : ICommandHandler<Command,
+            OneOf<Unit, CoreException.Error, CoreException.BusinessRuleError, ProductException.AlreadyExists>>
     {
-        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<OneOf<Unit, CoreException.Error, CoreException.BusinessRuleError,
+                ProductException.AlreadyExists>>
+            Handle(
+                Command request, CancellationToken cancellationToken)
         {
             try
             {
@@ -24,7 +30,7 @@ public class CreateProduct
 
                 if (state != null)
                 {
-                    return Result<Unit>.Failure(new ProductAlreadyExistsException());
+                    return new ProductException.AlreadyExists();
                 }
 
                 var productData = new ProductData(ProductId.Of(request.ProductDto.ProductId));
@@ -34,12 +40,16 @@ public class CreateProduct
                 productRepository.AppendEvents(product);
                 await productRepository.SaveChangesAsync(cancellationToken);
             }
+            catch (BusinessRuleException businessRuleException)
+            {
+                return new CoreException.BusinessRuleError(businessRuleException.Message);
+            }
             catch (Exception ex)
             {
-                return Result<Unit>.FromException(ex);
+                return new CoreException.Error("Could not create a product");
             }
 
-            return Result<Unit>.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

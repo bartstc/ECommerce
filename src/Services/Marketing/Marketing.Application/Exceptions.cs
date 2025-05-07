@@ -1,15 +1,7 @@
-using ECommerce.Core.Exceptions;
-
 namespace Marketing.Application;
 
-public class ProductNotFoundException : ApplicationLogicException
+public abstract record ProductException(string Message)
 {
-    public ProductNotFoundException() : base("Product not found") { }
-}
-
-public class ProductAlreadyExistsException : ApplicationLogicException
-{
-    public ProductAlreadyExistsException() : base("Product already exists")
-    {
-    }
+    public sealed record NotFound() : ProductException("Product not found");
+    public sealed record AlreadyExists() : ProductException("Product already exists");
 }

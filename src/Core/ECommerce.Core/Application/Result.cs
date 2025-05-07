@@ -40,6 +40,12 @@ public class ErrorResponse
         ExceptionType = ex.GetType().Name;
     }
 
+    public ErrorResponse(string message)
+    {
+        Message = message;
+        ExceptionType = "Error";
+    }
+
     public bool TypeOf<T>() where T : Exception
     {
         return ExceptionType == typeof(T).Name;

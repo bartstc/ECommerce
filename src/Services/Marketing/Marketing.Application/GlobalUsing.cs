@@ -1,9 +1,11 @@
 global using Marketing.Domain;
 global using ECommerce.Core.Application;
 global using ECommerce.Core.Persistence;
+global using ECommerce.Core.Exceptions;
 global using Marketing.Application.Dtos;
 global using Marketing.Application.Validators;
 global using FluentValidation;
 global using MediatR;
 global using Marten;
 global using ECommerce.Core.CQRS;
+global using OneOf;
