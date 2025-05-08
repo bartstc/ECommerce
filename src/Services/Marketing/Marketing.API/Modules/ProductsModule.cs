@@ -1,0 +1,15 @@
+﻿using Carter;
+using Marketing.API.Endpoints;
+
+namespace Marketing.API.Modules;
+
+public class ProductsModule : ICarterModule
+{
+    public void AddRoutes(IEndpointRouteBuilder app)
+    {
+        var group = app.MapGroup("api/products")
+            .WithTags("Products");
+
+        new CreateProductEndpoint().RegisterEndpoint(group);
+    }
+}

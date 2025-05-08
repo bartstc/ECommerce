@@ -29,24 +29,24 @@ public class ProductsController : BaseApiController
         return HandleResult(result, product => product.ToDto());
     }
 
-    [HttpPost]
-    [SwaggerOperation("Create a new product")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
-    public async Task<Results<Created, BadRequest<ErrorResponse>, Conflict<ErrorResponse>>> CreateProduct(
-        [FromBody, SwaggerParameter("The product details")]
-        CreateProductDto productDto)
-    {
-        var result = await Mediator.Send(new CreateProduct.Command(productDto));
-
-        return result.Match<Results<Created, BadRequest<ErrorResponse>, Conflict<ErrorResponse>>>(
-            unit => TypedResults.Created(),
-            error => TypedResults.BadRequest(new ErrorResponse(error.Message)),
-            businessError => TypedResults.BadRequest(new ErrorResponse(businessError.Message)),
-            alreadyExists => TypedResults.Conflict(new ErrorResponse(alreadyExists.Message))
-        );
-    }
+    // [HttpPost]
+    // [SwaggerOperation("Create a new product")]
+    // [ProducesResponseType(StatusCodes.Status201Created)]
+    // [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    // [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status409Conflict)]
+    // public async Task<Results<Created, BadRequest<ErrorResponse>, Conflict<ErrorResponse>>> CreateProduct(
+    //     [FromBody, SwaggerParameter("The product details")]
+    //     CreateProductDto productDto)
+    // {
+    //     var result = await Mediator.Send(new CreateProduct.Command(productDto));
+    //
+    //     return result.Match<Results<Created, BadRequest<ErrorResponse>, Conflict<ErrorResponse>>>(
+    //         unit => TypedResults.Created(),
+    //         error => TypedResults.BadRequest(new ErrorResponse(error.Message)),
+    //         businessError => TypedResults.BadRequest(new ErrorResponse(businessError.Message)),
+    //         alreadyExists => TypedResults.Conflict(new ErrorResponse(alreadyExists.Message))
+    //     );
+    // }
 
     [HttpDelete("{id}")]
     [SwaggerOperation("Archive the product")]
