@@ -48,17 +48,17 @@ public class ProductsController : BaseApiController
     //     );
     // }
 
-    [HttpDelete("{id}")]
-    [SwaggerOperation("Archive the product")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ArchiveProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
-    {
-        var result = await Mediator.Send(new ArchiveProduct.Command(ProductId.Of(id)));
-        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
-        return HandleResult(result);
-    }
+    // [HttpDelete("{id}")]
+    // [SwaggerOperation("Archive the product")]
+    // [ProducesResponseType(StatusCodes.Status204NoContent)]
+    // [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    // [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    // public async Task<IActionResult> ArchiveProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
+    // {
+    //     var result = await Mediator.Send(new ArchiveProduct.Command(ProductId.Of(id)));
+    //     if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
+    //     return HandleResult(result);
+    // }
 
     [HttpPatch("{id}/rate")]
     [SwaggerOperation("Rate the product")]

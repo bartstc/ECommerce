@@ -1,4 +1,6 @@
-﻿namespace Marketing.Tests.Application;
+﻿using MediatR;
+
+namespace Marketing.Tests.Application;
 
 public class ArchiveProductHandlerTests
 {
@@ -26,13 +28,14 @@ public class ArchiveProductHandlerTests
 
         var result = await _handler.Handle(command, CancellationToken.None);
 
-        result.IsSuccess.ShouldBeTrue();
+        result.AsT0.ShouldBeOfType<Unit>();
+
         _productWriteRepository.Verify(r => r.AppendEvents(It.IsAny<Product>()), Times.Once);
         _productWriteRepository.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
-    public async Task Handle_Should_ReturnFailure_WhenProductNotFound()
+    public async Task Handle_Should_ReturnNotFound_WhenProductNotFound()
     {
         var productId = Guid.NewGuid();
         var command = new ArchiveProduct.Command(ProductId.Of(productId));
@@ -44,8 +47,8 @@ public class ArchiveProductHandlerTests
 
         var result = await _handler.Handle(command, CancellationToken.None);
 
-        result.IsSuccess.ShouldBeFalse();
-        result.Error.Message.ShouldBe(new ProductNotFoundException().Message);
+        result.AsT3.Message.ShouldBe(new ProductException.NotFound().Message);
+
         _productWriteRepository.Verify(r => r.AppendEvents(It.IsAny<Product>()), Times.Never);
         _productWriteRepository.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }

@@ -1,17 +1,12 @@
-﻿using Marketing.Application;
-using Marketing.Application.Dtos;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Marketing.API.Endpoints;
-
-public record CreateProductResponse(Guid Id);
+﻿namespace Marketing.API.Endpoints;
 
 public class CreateProductEndpoint
 {
     public void RegisterEndpoint(RouteGroupBuilder group)
     {
         group.MapPost("",
-                async Task<IResult> ([FromBody] CreateProductDto productDto, ISender sender) =>
+                async Task<IResult> ([FromBody, SwaggerParameter("The product details")] CreateProductDto productDto,
+                    ISender sender) =>
                 {
                     var result = await sender.Send(new CreateProduct.Command(productDto));
 
@@ -23,9 +18,9 @@ public class CreateProductEndpoint
                     );
                 })
             .WithName("CreateProduct")
-            .Produces<CreateProductResponse>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status201Created)
             .ProducesProblem(StatusCodes.Status409Conflict)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
             .WithOpenApi();
     }
 }

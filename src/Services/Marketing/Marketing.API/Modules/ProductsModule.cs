@@ -11,5 +11,6 @@ public class ProductsModule : ICarterModule
             .WithTags("Products");
 
         new CreateProductEndpoint().RegisterEndpoint(group);
+        new ArchiveProductEndpoint().RegisterEndpoint(group);
     }
 }
