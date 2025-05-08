@@ -1,4 +1,5 @@
-﻿
+﻿using MediatR;
+
 namespace Marketing.Tests.Application;
 
 public class RateProductHandlerTests
@@ -15,7 +16,6 @@ public class RateProductHandlerTests
     [Fact]
     public async Task Handle_Should_RateProduct_WhenProductExists()
     {
-        // Arrange
         var productId = Guid.NewGuid();
         var rateDto = new RateProductDto(5);
         var command = new RateProduct.Command(ProductId.Of(productId), rateDto);
@@ -27,19 +27,17 @@ public class RateProductHandlerTests
             .Setup(r => r.FetchForWriting<Product>(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(eventStream);
 
-        // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
-        // Assert
-        result.IsSuccess.ShouldBeTrue();
+        result.AsT0.ShouldBeOfType<Unit>();
+
         _productWriteRepository.Verify(r => r.AppendEvents(It.IsAny<Product>()), Times.Once);
         _productWriteRepository.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
-    public async Task Handle_Should_ReturnFailure_WhenProductNotFound()
+    public async Task Handle_Should_ReturnNotFound_WhenProductNotFound()
     {
-        // Arrange
         var productId = Guid.NewGuid();
         var rateDto = new RateProductDto(5);
         var command = new RateProduct.Command(ProductId.Of(productId), rateDto);
@@ -49,12 +47,10 @@ public class RateProductHandlerTests
             .Setup(r => r.FetchForWriting<Product>(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(eventStream);
 
-        // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
-        // Assert
-        result.IsSuccess.ShouldBeFalse();
-        result.Error.Message.ShouldBe(new ProductNotFoundException().Message);
+        result.AsT3.Message.ShouldBe(new ProductException.NotFound().Message);
+
         _productWriteRepository.Verify(r => r.AppendEvents(It.IsAny<Product>()), Times.Never);
         _productWriteRepository.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }

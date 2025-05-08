@@ -8,7 +8,6 @@ using Marketing.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCarter();
-builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddSwaggerGen(c =>
@@ -30,7 +29,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("CorsPolicy");
 
-app.MapControllers();
 app.MapCarter();
 
 using var scope = app.Services.CreateScope();

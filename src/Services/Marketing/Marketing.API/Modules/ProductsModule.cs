@@ -13,5 +13,6 @@ public class ProductsModule : ICarterModule
         new GetProductEndpoint().RegisterEndpoint(group);
         new CreateProductEndpoint().RegisterEndpoint(group);
         new ArchiveProductEndpoint().RegisterEndpoint(group);
+        new RateProductEndpoint().RegisterEndpoint(group);
     }
 }
