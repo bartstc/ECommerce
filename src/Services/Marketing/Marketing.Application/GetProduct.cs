@@ -4,22 +4,22 @@ namespace Marketing.Application;
 
 public class GetProduct
 {
-    public record Query(ProductId ProductId) : IQuery<Result<ProductDetails>>;
+    public record Query(ProductId ProductId) : IQuery<OneOf<ProductDetails, ProductException.NotFound>>;
 
     public class Handler(IEventStoreRepository<Product> productRepository)
-        : IQueryHandler<Query, Result<ProductDetails>>
+        : IQueryHandler<Query, OneOf<ProductDetails, ProductException.NotFound>>
     {
-        public async Task<Result<ProductDetails>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<OneOf<ProductDetails, ProductException.NotFound>> Handle(Query request,
+            CancellationToken cancellationToken)
         {
             var product =
                 await productRepository.FetchLatest<ProductDetails>(request.ProductId.Value, cancellationToken);
 
-            if (product == null) return Result<ProductDetails>.Failure(new ProductNotFoundException());
+            if (product == null) return new ProductException.NotFound();
 
-            if (product.Status == ProductStatus.Archived)
-                return Result<ProductDetails>.Failure(new ProductNotFoundException());
+            if (product.Status == ProductStatus.Archived) return new ProductException.NotFound();
 
-            return Result<ProductDetails>.Success(product);
+            return product;
         }
     }
 }

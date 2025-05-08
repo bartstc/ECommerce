@@ -18,16 +18,16 @@ public class ProductsController : BaseApiController
         Mediator = mediator;
     }
 
-    [HttpGet("{id}")]
-    [SwaggerOperation("Get details of a specific product by ID")]
-    [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
-    {
-        var result = await Mediator.Send(new GetProduct.Query(ProductId.Of(id)));
-        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
-        return HandleResult(result, product => product.ToDto());
-    }
+    // [HttpGet("{id}")]
+    // [SwaggerOperation("Get details of a specific product by ID")]
+    // [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
+    // [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    // public async Task<IActionResult> GetProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
+    // {
+    //     var result = await Mediator.Send(new GetProduct.Query(ProductId.Of(id)));
+    //     if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
+    //     return HandleResult(result, product => product.ToDto());
+    // }
 
     // [HttpPost]
     // [SwaggerOperation("Create a new product")]

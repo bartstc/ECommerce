@@ -5,13 +5,11 @@ namespace Marketing.Tests.Application;
 public class GetProductHandlerTests
 {
     private readonly Mock<IEventStoreRepository<Product>> _productWriteRepository;
-    private readonly Mock<IQuerySession> _querySession;
     private readonly GetProduct.Handler _handler;
 
     public GetProductHandlerTests()
     {
         _productWriteRepository = new Mock<IEventStoreRepository<Product>>();
-        _querySession = new Mock<IQuerySession>();
         _handler = new GetProduct.Handler(_productWriteRepository.Object);
     }
 
@@ -29,32 +27,32 @@ public class GetProductHandlerTests
             null,
             null);
 
-        _productWriteRepository.Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
+        _productWriteRepository
+            .Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedProduct);
 
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        result.IsSuccess.ShouldBeTrue();
-        result.Value.ShouldBe(expectedProduct);
+        result.AsT0.ShouldBe(expectedProduct);
     }
 
     [Fact]
-    public async Task Handle_Should_ReturnFailure_WhenProductNotFound()
+    public async Task Handle_Should_ReturnNotFound_WhenProductNotFound()
     {
         var productId = Guid.NewGuid();
         var query = new GetProduct.Query(ProductId.Of(productId));
 
-        _productWriteRepository.Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
+        _productWriteRepository
+            .Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((ProductDetails)null);
 
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        result.IsSuccess.ShouldBeFalse();
-        result.Error.Message.ShouldBe(new ProductNotFoundException().Message);
+        result.AsT1.Message.ShouldBe(new ProductException.NotFound().Message);
     }
 
     [Fact]
-    public async Task Handle_Should_ReturnFailure_WhenProductIsArchived()
+    public async Task Handle_Should_ReturnNotFound_WhenProductIsArchived()
     {
         var productId = Guid.NewGuid();
         var query = new GetProduct.Query(ProductId.Of(productId));
@@ -67,12 +65,12 @@ public class GetProductHandlerTests
             null,
             null);
 
-        _productWriteRepository.Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
+        _productWriteRepository
+            .Setup(s => s.FetchLatest<ProductDetails>(productId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(archivedProduct);
 
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        result.IsSuccess.ShouldBeFalse();
-        result.Error.Message.ShouldBe(new ProductNotFoundException().Message);
+        result.AsT1.Message.ShouldBe(new ProductException.NotFound().Message);
     }
 }
