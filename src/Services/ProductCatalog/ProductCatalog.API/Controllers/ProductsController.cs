@@ -19,25 +19,25 @@ public class ProductsController : BaseApiController
         Mediator = mediator;
     }
 
-    [HttpGet]
-    [SwaggerOperation("Get a list of all products")]
-    [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ListProducts()
-    {
-        var result = await Mediator.Send(new ListProducts.Query());
-        return HandleResult(result, products => products.Select(p => p.ToDto()).ToList());
-    }
+    // [HttpGet]
+    // [SwaggerOperation("Get a list of all products")]
+    // [ProducesResponseType(typeof(List<ProductDto>), StatusCodes.Status200OK)]
+    // public async Task<IActionResult> ListProducts()
+    // {
+    //     var result = await Mediator.Send(new ListProducts.Query());
+    //     return HandleResult(result, products => products.Select(p => p.ToDto()).ToList());
+    // }
 
-    [HttpGet("{id}")]
-    [SwaggerOperation("Get details of a specific product by ID")]
-    [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
-    {
-        var result = await Mediator.Send(new GetProduct.Query(ProductId.Of(id)));
-        if (!result.IsSuccess && result.Error.TypeOf<ProductException>()) return NotFound(result.Error);
-        return HandleResult(result, product => product.ToDto());
-    }
+    // [HttpGet("{id}")]
+    // [SwaggerOperation("Get details of a specific product by ID")]
+    // [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
+    // [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    // public async Task<IActionResult> GetProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
+    // {
+    //     var result = await Mediator.Send(new GetProduct.Query(ProductId.Of(id)));
+    //     if (!result.IsSuccess && result.Error.TypeOf<ProductException>()) return NotFound(result.Error);
+    //     return HandleResult(result, product => product.ToDto());
+    // }
 
     [HttpPost]
     [SwaggerOperation("Add a new product")]

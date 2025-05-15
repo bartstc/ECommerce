@@ -1,15 +1,15 @@
 using ProductCatalog.Application.Extensions;
 using ProductCatalog.Infrastructure.Documents;
 
-namespace ProductCatalog.Application.Products;
+namespace ProductCatalog.Application;
 
 public class ListProducts
 {
-    public record Query : IQuery<Result<List<ProductDocument>>>;
+    public record Query : IQuery<OneOf<List<ProductDocument>>>;
 
-    public class Handler(IQuerySession querySession) : IQueryHandler<Query, Result<List<ProductDocument>>>
+    public class Handler(IQuerySession querySession) : IQueryHandler<Query, OneOf<List<ProductDocument>>>
     {
-        public async Task<Result<List<ProductDocument>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<OneOf<List<ProductDocument>>> Handle(Query request, CancellationToken cancellationToken)
         {
             var products = await querySession
                 .QueryActiveProducts()
@@ -17,7 +17,7 @@ public class ListProducts
 
             var productDtos = products.Select(p => p).ToList();
 
-            return Result<List<ProductDocument>>.Success(productDtos);
+            return productDtos;
         }
     }
 }

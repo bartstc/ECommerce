@@ -9,5 +9,6 @@ public class ProductsModule : ICarterModule
         var group = app.MapGroup("api/products").WithTags("Products");
         
         new GetProductEndpoint().RegisterEndpoint(group);
+        new ListProductsEndpoint().RegisterEndpoint(group);
     }
 }
