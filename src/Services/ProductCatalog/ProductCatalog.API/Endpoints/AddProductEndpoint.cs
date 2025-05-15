@@ -14,8 +14,8 @@ public class AddProductEndpoint
 
                     return result.Match(
                         unit => Results.Created(),
-                        error => Results.BadRequest(new { Message = error.Message }),
-                        businessError => Results.BadRequest(new { Message = businessError.Message })
+                        businessError => Results.BadRequest(new { Message = businessError.Message }),
+                        error => Results.BadRequest(new { Message = error.Message })
                     );
                 })
             .WithName("AddProduct")

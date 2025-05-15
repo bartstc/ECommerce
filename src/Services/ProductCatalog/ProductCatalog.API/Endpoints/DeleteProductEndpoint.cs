@@ -11,9 +11,9 @@ public class DeleteProductEndpoint
 
                     return result.Match(
                         unit => Results.NoContent(),
-                        error => Results.BadRequest(new { Message = error.Message }),
+                        notFound => Results.NotFound(new { Message = notFound.Message }),
                         businessError => Results.BadRequest(new { Message = businessError.Message }),
-                        notFound => Results.NotFound(new { Message = notFound.Message })
+                        error => Results.BadRequest(new { Message = error.Message })
                     );
                 })
             .WithName("DeleteProduct")
