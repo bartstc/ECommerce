@@ -1,12 +1,14 @@
+using ECommerce.Core.Exceptions;
 using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Mappers;
 using ProductCatalog.Infrastructure.Documents;
 
-namespace ProductCatalog.Application.Products;
+namespace ProductCatalog.Application;
 
 public class AddProduct
 {
-    public record Command(AddProductDto ProductDto) : ICommand<Result<Unit>>;
+    public record Command(AddProductDto ProductDto)
+        : ICommand<OneOf<Unit, CoreException.BusinessRuleError, CoreException.Error>>;
 
     public class CommandValidator : AbstractValidator<Command>
     {
@@ -16,9 +18,11 @@ public class AddProduct
         }
     }
 
-    public class Handler(IEventStoreRepository<Product> productRepository) : ICommandHandler<Command, Result<Unit>>
+    public class Handler(IEventStoreRepository<Product> productRepository)
+        : ICommandHandler<Command, OneOf<Unit, CoreException.BusinessRuleError, CoreException.Error>>
     {
-        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<OneOf<Unit, CoreException.BusinessRuleError, CoreException.Error>> Handle(Command request,
+            CancellationToken cancellationToken)
         {
             try
             {
@@ -41,12 +45,16 @@ public class AddProduct
                 productRepository.StoreDocument(productDocument);
                 await productRepository.SaveChangesAsync(cancellationToken);
             }
+            catch (BusinessRuleException businessRuleException)
+            {
+                return new CoreException.BusinessRuleError(businessRuleException.Message);
+            }
             catch (Exception ex)
             {
-                return Result<Unit>.FromException(ex);
+                return new CoreException.Error("Could not create a product");
             }
 
-            return Result<Unit>.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

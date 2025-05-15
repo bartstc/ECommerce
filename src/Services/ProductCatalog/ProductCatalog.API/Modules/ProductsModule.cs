@@ -10,5 +10,6 @@ public class ProductsModule : ICarterModule
         
         new GetProductEndpoint().RegisterEndpoint(group);
         new ListProductsEndpoint().RegisterEndpoint(group);
+        new AddProductEndpoint().RegisterEndpoint(group);
     }
 }
