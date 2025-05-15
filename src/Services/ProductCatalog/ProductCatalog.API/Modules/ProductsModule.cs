@@ -11,5 +11,8 @@ public class ProductsModule : ICarterModule
         new GetProductEndpoint().RegisterEndpoint(group);
         new ListProductsEndpoint().RegisterEndpoint(group);
         new AddProductEndpoint().RegisterEndpoint(group);
+        new UpdateProductEndpoint().RegisterEndpoint(group);
+        new DeleteProductEndpoint().RegisterEndpoint(group);
+        new UpdatePriceEndpoint().RegisterEndpoint(group);
     }
 }

@@ -1,15 +1,19 @@
 using ProductCatalog.Infrastructure.Documents;
 
-namespace ProductCatalog.Application.Products;
+namespace ProductCatalog.Application;
 
 public class DeleteProduct
 {
-    public record Command(ProductId ProductId) : ICommand<Result<Unit>>;
+    public record Command(ProductId ProductId)
+        : ICommand<OneOf<Unit, ProductException.NotFound, CoreException.BusinessRuleError, CoreException.Error>>;
 
     public class Handler(IEventStoreRepository<Product> productRepository, IQuerySession querySession)
-        : ICommandHandler<Command, Result<Unit>>
+        : ICommandHandler<Command,
+            OneOf<Unit, ProductException.NotFound, CoreException.BusinessRuleError, CoreException.Error>>
     {
-        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
+        public async
+            Task<OneOf<Unit, ProductException.NotFound, CoreException.BusinessRuleError, CoreException.Error>> Handle(
+                Command request, CancellationToken cancellationToken)
         {
             try
             {
@@ -18,11 +22,10 @@ public class DeleteProduct
                 var document =
                     await querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
-                if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductException());
-                if (document == null) return Result<Unit>.Failure(new ProductException());
+                if (stream.Aggregate == null) return new ProductException.NotFound();
+                if (document == null) return new ProductException.NotFound();
 
-                if (document.Status == ProductStatus.Deleted)
-                    return Result<Unit>.Failure(new ProductException());
+                if (document.Status == ProductStatus.Deleted) return new ProductException.NotFound();
 
                 stream.Aggregate.Delete();
 
@@ -37,12 +40,16 @@ public class DeleteProduct
                 productRepository.StoreDocument(updatedDocument);
                 await productRepository.SaveChangesAsync(cancellationToken);
             }
+            catch (BusinessRuleException businessRuleException)
+            {
+                return new CoreException.BusinessRuleError(businessRuleException.Message);
+            }
             catch (Exception ex)
             {
-                return Result<Unit>.FromException(ex);
+                return new CoreException.Error("Could not delete the product");
             }
 
-            return Result<Unit>.Success(Unit.Value);
+            return Unit.Value;
         }
     }
 }

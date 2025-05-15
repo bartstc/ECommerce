@@ -1,13 +1,16 @@
-﻿namespace ProductCatalog.API.Endpoints;
+﻿using ProductCatalog.Application.Products.Dtos;
 
-public class DeleteProductEndpoint
+namespace ProductCatalog.API.Endpoints;
+
+public class UpdatePriceEndpoint
 {
     public void RegisterEndpoint(RouteGroupBuilder group)
     {
-        group.MapDelete("{id}",
-                async Task<IResult> ([FromRoute, SwaggerParameter("The product ID")] Guid id, ISender sender) =>
+        group.MapPatch("{id}/price",
+                async Task<IResult> ([FromRoute, SwaggerParameter("The product ID")] Guid id,
+                    [FromBody] UpdatePriceDto updatePriceDto, ISender sender) =>
                 {
-                    var result = await sender.Send(new DeleteProduct.Command(ProductId.Of(id)));
+                    var result = await sender.Send(new UpdatePrice.Command(ProductId.Of(id), updatePriceDto));
 
                     return result.Match(
                         unit => Results.NoContent(),
@@ -16,7 +19,7 @@ public class DeleteProductEndpoint
                         notFound => Results.NotFound(new { Message = notFound.Message })
                     );
                 })
-            .WithName("DeleteProduct")
+            .WithName("UpdateProductPrice")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status404NotFound)
             .ProducesProblem(StatusCodes.Status400BadRequest)

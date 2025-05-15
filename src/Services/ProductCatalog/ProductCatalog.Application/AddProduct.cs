@@ -1,4 +1,3 @@
-using ECommerce.Core.Exceptions;
 using ProductCatalog.Application.Products.Dtos;
 using ProductCatalog.Application.Products.Mappers;
 using ProductCatalog.Infrastructure.Documents;
@@ -51,7 +50,7 @@ public class AddProduct
             }
             catch (Exception ex)
             {
-                return new CoreException.Error("Could not create a product");
+                return new CoreException.Error("Could not add the product");
             }
 
             return Unit.Value;
