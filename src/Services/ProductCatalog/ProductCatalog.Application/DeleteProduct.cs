@@ -1,4 +1,3 @@
-using ProductCatalog.Application.Products.Exceptions;
 using ProductCatalog.Infrastructure.Documents;
 
 namespace ProductCatalog.Application.Products;
@@ -19,11 +18,11 @@ public class DeleteProduct
                 var document =
                     await querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
-                if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductNotFoundException());
-                if (document == null) return Result<Unit>.Failure(new ProductNotFoundException());
+                if (stream.Aggregate == null) return Result<Unit>.Failure(new ProductException());
+                if (document == null) return Result<Unit>.Failure(new ProductException());
 
                 if (document.Status == ProductStatus.Deleted)
-                    return Result<Unit>.Failure(new ProductNotFoundException());
+                    return Result<Unit>.Failure(new ProductException());
 
                 stream.Aggregate.Delete();
 

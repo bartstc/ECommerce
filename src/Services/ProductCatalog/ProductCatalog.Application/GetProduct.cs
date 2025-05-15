@@ -1,24 +1,24 @@
-using ProductCatalog.Application.Products.Exceptions;
 using ProductCatalog.Infrastructure.Documents;
 
-namespace ProductCatalog.Application.Products;
+namespace ProductCatalog.Application;
 
 public class GetProduct
 {
-    public record Query(ProductId ProductId) : IQuery<Result<ProductDocument>>;
+    public record Query(ProductId ProductId) : IQuery<OneOf<ProductDocument, ProductException.NotFound>>;
 
-    public class Handler(IQuerySession querySession) : IQueryHandler<Query, Result<ProductDocument>>
+    public class Handler(IQuerySession querySession)
+        : IQueryHandler<Query, OneOf<ProductDocument, ProductException.NotFound>>
     {
-        public async Task<Result<ProductDocument>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<OneOf<ProductDocument, ProductException.NotFound>> Handle(Query request,
+            CancellationToken cancellationToken)
         {
             var document = await querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
-            if (document == null) return Result<ProductDocument>.Failure(new ProductNotFoundException());
+            if (document == null) return new ProductException.NotFound();
 
-            if (document.Status == ProductStatus.Deleted)
-                return Result<ProductDocument>.Failure(new ProductNotFoundException());
+            if (document.Status == ProductStatus.Deleted) return new ProductException.NotFound();
 
-            return Result<ProductDocument>.Success(document);
+            return document;
         }
     }
 }

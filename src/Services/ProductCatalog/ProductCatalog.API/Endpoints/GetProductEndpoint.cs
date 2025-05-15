@@ -1,6 +1,6 @@
-﻿using Marketing.API.Dtos;
+﻿using ProductCatalog.API.Products.Dtos;
 
-namespace Marketing.API.Endpoints;
+namespace ProductCatalog.API.Endpoints;
 
 public class GetProductEndpoint
 {

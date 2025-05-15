@@ -1,4 +1,3 @@
-using Carter;
 using Marten;
 using Microsoft.OpenApi.Models;
 using Marketing.API.Extensions;

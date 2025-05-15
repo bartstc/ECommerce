@@ -6,3 +6,4 @@ global using ECommerce.Core.Persistence;
 global using Application.Products.Validators;
 global using ECommerce.Core.CQRS;
 global using FluentValidation;
+global using OneOf;

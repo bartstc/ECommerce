@@ -1,5 +1,4 @@
-﻿using Carter;
-using Marketing.API.Endpoints;
+﻿using Marketing.API.Endpoints;
 
 namespace Marketing.API.Modules;
 

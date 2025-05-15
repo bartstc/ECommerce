@@ -1,7 +1,7 @@
 using Application.Products.Validators;
 using FluentValidation;
+using ProductCatalog.Application;
 using ProductCatalog.Application.Products.Dtos;
-using ProductCatalog.Application.Products.Exceptions;
 using ProductCatalog.Infrastructure.Documents;
 
 namespace Application.Products
@@ -28,9 +28,9 @@ namespace Application.Products
                     var document =
                         await querySession.LoadAsync<ProductDocument>(request.ProductId.Value, cancellationToken);
 
-                    if (document is null) return Result<Unit>.Failure(new ProductNotFoundException());
+                    if (document is null) return Result<Unit>.Failure(new ProductException());
                     if (document.Status == ProductStatus.Deleted)
-                        return Result<Unit>.Failure(new ProductNotFoundException());
+                        return Result<Unit>.Failure(new ProductException());
 
                     var updatedDocument = document with
                     {

@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.EntityFrameworkCore;
 using Marten;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ProductCatalog.API.Extensions;
 using ProductCatalog.Infrastructure;
@@ -11,13 +9,14 @@ using Ecommerce.Core.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(opt =>
-{
-    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-    opt.Filters.Add(new AuthorizeFilter(policy));
-});
+// builder.Services.AddControllers(opt =>
+// {
+//     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+//     opt.Filters.Add(new AuthorizeFilter(policy));
+// });
+// builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddCarter();
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddIdentityServices(builder.Configuration);
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -38,10 +37,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("CorsPolicy");
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.MapCarter();
 
-app.MapControllers();
+// app.UseAuthentication();
+// app.UseAuthorization();
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

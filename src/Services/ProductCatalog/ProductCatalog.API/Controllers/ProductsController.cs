@@ -2,9 +2,9 @@ using Application.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.API.Products.Dtos;
+using ProductCatalog.Application;
 using ProductCatalog.Application.Products;
 using ProductCatalog.Application.Products.Dtos;
-using ProductCatalog.Application.Products.Exceptions;
 using ProductCatalog.Domain;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -35,7 +35,7 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> GetProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
     {
         var result = await Mediator.Send(new GetProduct.Query(ProductId.Of(id)));
-        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
+        if (!result.IsSuccess && result.Error.TypeOf<ProductException>()) return NotFound(result.Error);
         return HandleResult(result, product => product.ToDto());
     }
 
@@ -61,7 +61,7 @@ public class ProductsController : BaseApiController
         UpdateProductDto productDto)
     {
         var result = await Mediator.Send(new UpdateProduct.Command(ProductId.Of(id), productDto));
-        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
+        if (!result.IsSuccess && result.Error.TypeOf<ProductException>()) return NotFound(result.Error);
         return HandleResult(result);
     }
 
@@ -73,7 +73,7 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> DeleteProduct([FromRoute, SwaggerParameter("The product ID")] Guid id)
     {
         var result = await Mediator.Send(new DeleteProduct.Command(ProductId.Of(id)));
-        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
+        if (!result.IsSuccess && result.Error.TypeOf<ProductException>()) return NotFound(result.Error);
         return HandleResult(result);
     }
 
@@ -89,7 +89,7 @@ public class ProductsController : BaseApiController
         UpdatePriceDto priceDto)
     {
         var result = await Mediator.Send(new UpdatePrice.Command(ProductId.Of(id), priceDto));
-        if (!result.IsSuccess && result.Error.TypeOf<ProductNotFoundException>()) return NotFound(result.Error);
+        if (!result.IsSuccess && result.Error.TypeOf<ProductException>()) return NotFound(result.Error);
         return HandleResult(result);
     }
 }

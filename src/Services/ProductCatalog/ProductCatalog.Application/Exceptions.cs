@@ -1,8 +1,6 @@
-using ECommerce.Core.Exceptions;
+namespace ProductCatalog.Application;
 
-namespace ProductCatalog.Application.Products.Exceptions;
-
-public class ProductNotFoundException : ApplicationLogicException
+public abstract record ProductException(string Message)
 {
-    public ProductNotFoundException() : base("Product not found") { }
+    public sealed record NotFound() : ProductException("Product not found");
 }
