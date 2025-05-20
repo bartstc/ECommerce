@@ -1,0 +1,12 @@
+﻿services:
+  productcatalogdb:
+    image: postgres
+    
+volumes:
+  postgres_product_catalog:
+    
+#  productcatalog.api:
+#    image: productcatalog.api
+#    build:
+#      context: .
+#      dockerfile: src/Services/ProductCatalog/ProductCatalog.API/Dockerfile
