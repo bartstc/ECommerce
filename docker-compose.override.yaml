@@ -10,3 +10,15 @@
       - POSTGRES_DB=EcommerceProductCatalog
     volumes:
       - postgres_product_catalog:/var/lib/postgresql/data
+  
+  marketingdb:
+    container_name: marketingdb
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=EcommerceMarketing
+    volumes:
+      - postgres_marketing:/var/lib/postgresql/data

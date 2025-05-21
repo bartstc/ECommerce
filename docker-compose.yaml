@@ -1,10 +1,14 @@
 ﻿services:
   productcatalogdb:
     image: postgres
-    
+  
+  marketingdb:
+    image: postgres
+
 volumes:
   postgres_product_catalog:
-    
+  postgres_marketing:
+
 #  productcatalog.api:
 #    image: productcatalog.api
 #    build:
