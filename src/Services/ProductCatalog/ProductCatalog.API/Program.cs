@@ -14,9 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 //     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 //     opt.Filters.Add(new AuthorizeFilter(policy));
 // });
-// builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddCarter();
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddAuthorization();
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -39,8 +40,8 @@ app.UseCors("CorsPolicy");
 
 app.MapCarter();
 
-// app.UseAuthentication();
-// app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
